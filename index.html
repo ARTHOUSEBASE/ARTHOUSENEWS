@@ -19,6 +19,7 @@
             --text: #0a0a0a;
             --gray: #666666;
             --light-gray: #e5e5e5;
+            --base-blue: #0000ff;
             --green: #10b981;
             --blue: #3b82f6;
             --purple: #8b5cf6;
@@ -42,7 +43,7 @@
             height: 100%;
             z-index: 0;
             pointer-events: none;
-            opacity: 0.3;
+            opacity: 0.2;
         }
 
         .grain {
@@ -106,7 +107,7 @@
         }
 
         .live-indicator {
-            color: var(--green);
+            color: var(--base-blue);
             animation: pulse 2s infinite;
         }
 
@@ -120,24 +121,11 @@
             max-width: 900px;
             margin: 0 auto;
             padding: 2rem 1rem 1.5rem;
-        }
-
-        .ascii-art {
-            font-size: 0.5rem;
-            line-height: 1.1;
-            color: var(--gray);
-            margin-bottom: 1rem;
-            overflow-x: auto;
-        }
-
-        @media (min-width: 768px) {
-            .ascii-art {
-                font-size: 0.7rem;
-            }
+            text-align: center;
         }
 
         .title {
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             font-weight: 600;
             margin-bottom: 0.75rem;
             line-height: 1.3;
@@ -145,7 +133,7 @@
 
         @media (min-width: 768px) {
             .title {
-                font-size: 1.75rem;
+                font-size: 2rem;
             }
         }
 
@@ -153,7 +141,7 @@
             display: inline-block;
             width: 2px;
             height: 1em;
-            background: var(--text);
+            background: var(--base-blue);
             margin-left: 0.15rem;
             animation: blink 1s step-end infinite;
             vertical-align: text-bottom;
@@ -163,7 +151,7 @@
             font-size: 0.8rem;
             color: var(--gray);
             max-width: 500px;
-            margin-bottom: 1rem;
+            margin: 0 auto 1rem;
             line-height: 1.6;
         }
 
@@ -177,6 +165,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
+            justify-content: center;
         }
 
         .badge {
@@ -188,20 +177,32 @@
         }
 
         .badge.live {
-            border-color: var(--green);
-            color: var(--green);
-            background: rgba(16, 185, 129, 0.05);
+            border-color: var(--base-blue);
+            color: var(--base-blue);
+            background: rgba(0, 0, 255, 0.05);
         }
 
-        .tabs {
+        .category-nav {
             max-width: 900px;
             margin: 0 auto;
             padding: 0 1rem;
+        }
+
+        .category-title {
+            font-size: 0.65rem;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .tabs {
             display: flex;
             gap: 0.25rem;
             border-bottom: 1px solid var(--light-gray);
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
+            padding-bottom: 1px;
         }
 
         .tab-btn {
@@ -220,12 +221,12 @@
         }
 
         .tab-btn:hover {
-            color: var(--text);
+            color: var(--base-blue);
         }
 
         .tab-btn.active {
-            color: var(--text);
-            border-bottom-color: var(--text);
+            color: var(--base-blue);
+            border-bottom-color: var(--base-blue);
         }
 
         .content {
@@ -254,9 +255,10 @@
         }
 
         .section-header h2 {
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             font-weight: 600;
             letter-spacing: 0.05em;
+            color: var(--base-blue);
         }
 
         .source {
@@ -279,13 +281,14 @@
         }
 
         .stat-card:hover {
-            border-color: var(--text);
+            border-color: var(--base-blue);
         }
 
         .stat-value {
             font-size: 1rem;
             font-weight: 600;
             margin-bottom: 0.25rem;
+            color: var(--base-blue);
         }
 
         .stat-label {
@@ -309,28 +312,14 @@
         }
 
         .feed-item:hover {
-            border-color: var(--text);
+            border-color: var(--base-blue);
         }
 
-        .feed-item.sale {
-            background: rgba(16, 185, 129, 0.03);
-            border-left: 3px solid var(--green);
-        }
-
-        .feed-item.mint {
-            background: rgba(59, 130, 246, 0.03);
-            border-left: 3px solid var(--blue);
-        }
-
-        .feed-item.listing {
-            background: rgba(139, 92, 246, 0.03);
-            border-left: 3px solid var(--purple);
-        }
-
-        .feed-item.auction {
-            background: rgba(249, 115, 22, 0.03);
-            border-left: 3px solid var(--orange);
-        }
+        .feed-item.sale { border-left: 3px solid var(--green); }
+        .feed-item.mint { border-left: 3px solid var(--blue); }
+        .feed-item.listing { border-left: 3px solid var(--purple); }
+        .feed-item.auction { border-left: 3px solid var(--orange); }
+        .feed-item.tweet { border-left: 3px solid var(--base-blue); }
 
         .feed-header {
             display: flex;
@@ -343,6 +332,7 @@
         .feed-type {
             font-weight: 600;
             text-transform: uppercase;
+            color: var(--base-blue);
         }
 
         .feed-platform {
@@ -355,17 +345,30 @@
         }
 
         .feed-title {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-weight: 600;
             margin-bottom: 0.4rem;
             line-height: 1.3;
         }
 
         .feed-excerpt {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             color: var(--gray);
             line-height: 1.5;
             margin-bottom: 0.5rem;
+        }
+
+        .tweet-text {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            margin-bottom: 0.5rem;
+        }
+
+        .tweet-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.7rem;
+            color: var(--gray);
         }
 
         .feed-meta {
@@ -390,7 +393,7 @@
             opacity: 0;
             transition: opacity 0.3s;
             text-decoration: none;
-            color: var(--text);
+            color: var(--base-blue);
             font-size: 1rem;
         }
 
@@ -444,23 +447,8 @@
             position: relative;
         }
 
-        .links a::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: var(--text);
-            transition: width 0.3s;
-        }
-
         .links a:hover {
-            color: var(--text);
-        }
-
-        .links a:hover::after {
-            width: 100%;
+            color: var(--base-blue);
         }
 
         @keyframes blink {
@@ -477,24 +465,6 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        .loading {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .skeleton {
-            height: 80px;
-            background: linear-gradient(90deg, var(--light-gray) 25%, #f0f0f0 50%, var(--light-gray) 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
-        }
-
-        @keyframes loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
     </style>
 </head>
 <body>
@@ -505,7 +475,7 @@
         <div class="header-content">
             <div class="logo">
                 <span class="logo-text">ARTHOUSE</span>
-                <span class="version">v1.2</span>
+                <span class="version">v1.6</span>
             </div>
             <div class="status">
                 <span id="clock">00:00:00</span>
@@ -516,61 +486,57 @@
 
     <main class="main">
         <section class="hero">
-            <pre class="ascii-art">
-   ___  ____  ________  ___  ________
-  / _ \/ __ \/ ___/ _ \/ _ |/ ___/ _ \
- / , _/ /_/ / (_ / ___/ __ / /__/ , _/
-/_/|_|\____/\___/_/  /_/ |_\___/_/|_| 
-            </pre>
-            
             <h1 class="title">
                 <span id="typewriter"></span><span class="cursor">_</span>
             </h1>
             
             <p class="subtitle">
-                Art intelligence from Paragraph, Base, and open sources.
+                Art intelligence from social and on-chain sources.
             </p>
 
             <div class="badges">
-                <span class="badge">📄 PARAGRAPH</span>
+                <span class="badge">𝕏 SOCIAL</span>
                 <span class="badge">⛓ BASE</span>
-                <span class="badge">📰 RSS</span>
+                <span class="badge">📰 NEWS</span>
                 <span class="badge live">● LIVE</span>
             </div>
         </section>
 
-        <nav class="tabs">
-            <button class="tab-btn active" onclick="switchTab('paragraph', this)">
-                📄 PARAGRAPH
-            </button>
-            <button class="tab-btn" onclick="switchTab('base', this)">
-                ⛓ BASE
-            </button>
-            <button class="tab-btn" onclick="switchTab('rss', this)">
-                📰 ART_NEWS
-            </button>
-            <button class="tab-btn" onclick="switchTab('nft', this)">
-                🎨 NFT_DROPS
-            </button>
-            <button class="tab-btn" onclick="switchTab('onchain', this)">
-                🔍 ONCHAIN
-            </button>
+        <nav class="category-nav">
+            <div class="category-title">Select Category</div>
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('xfeed', this)">
+                    𝕏 SOCIAL
+                </button>
+                <button class="tab-btn" onclick="switchTab('onchain', this)">
+                    ⛓ ONCHAIN
+                </button>
+                <button class="tab-btn" onclick="switchTab('market', this)">
+                    📊 MARKET
+                </button>
+                <button class="tab-btn" onclick="switchTab('drops', this)">
+                    🎨 DROPS
+                </button>
+                <button class="tab-btn" onclick="switchTab('news', this)">
+                    📰 NEWS
+                </button>
+            </div>
         </nav>
 
         <section class="content">
-            <!-- Paragraph -->
-            <div id="paragraph" class="tab-content active">
+            <!-- X SOCIAL FEED - FIRST & DEFAULT -->
+            <div id="xfeed" class="tab-content active">
                 <div class="section-header">
-                    <h2>📄 PARAGRAPH_PUBLICATIONS</h2>
-                    <span class="source">paragraph.xyz</span>
+                    <h2>𝕏 ART COMMUNITY</h2>
+                    <span class="source">x.com</span>
                 </div>
-                <div id="paragraph-feed" class="feed"></div>
+                <div id="x-feed" class="feed"></div>
             </div>
 
-            <!-- Base -->
-            <div id="base" class="tab-content">
+            <!-- On-chain Activity -->
+            <div id="onchain" class="tab-content">
                 <div class="section-header">
-                    <h2>⛓ BASE_ONCHAIN</h2>
+                    <h2>⛓ BASE ONCHAIN ACTIVITY</h2>
                     <span class="source">base.org</span>
                 </div>
                 <div class="stats-grid">
@@ -587,48 +553,48 @@
                         <div class="stat-label">⧫ VOLUME</div>
                     </div>
                 </div>
-                <div id="base-feed" class="feed"></div>
+                <div id="onchain-feed" class="feed"></div>
             </div>
 
-            <!-- RSS Art News -->
-            <div id="rss" class="tab-content">
+            <!-- Market Data -->
+            <div id="market" class="tab-content">
                 <div class="section-header">
-                    <h2>📰 ART_NEWS_AGGREGATOR</h2>
+                    <h2>📊 MARKET ANALYTICS</h2>
                     <span class="source">multiple_sources</span>
-                </div>
-                <div id="rss-feed" class="feed"></div>
-            </div>
-
-            <!-- NFT Drops -->
-            <div id="nft" class="tab-content">
-                <div class="section-header">
-                    <h2>🎨 NFT_DROP_CALENDAR</h2>
-                    <span class="source">community_curated</span>
-                </div>
-                <div id="nft-feed" class="feed"></div>
-            </div>
-
-            <!-- On-chain Analytics -->
-            <div id="onchain" class="tab-content">
-                <div class="section-header">
-                    <h2>🔍 ONCHAIN_ANALYTICS</h2>
-                    <span class="source">public_data</span>
                 </div>
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-value" id="stat-gas">0.5</div>
-                        <div class="stat-label">⛽ GWEI</div>
+                        <div class="stat-value" id="stat-floor">12.5</div>
+                        <div class="stat-label">📈 FLOOR_ETH</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value" id="stat-tx">1.2M</div>
-                        <div class="stat-label">📊 TX/DAY</div>
+                        <div class="stat-value" id="stat-vol-24h">245</div>
+                        <div class="stat-label">📊 VOL_24H</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value" id="stat-contracts">45K</div>
-                        <div class="stat-label">📜 CONTRACTS</div>
+                        <div class="stat-value" id="stat-holders">8.2K</div>
+                        <div class="stat-label">👥 HOLDERS</div>
                     </div>
                 </div>
-                <div id="onchain-feed" class="feed"></div>
+                <div id="market-feed" class="feed"></div>
+            </div>
+
+            <!-- NFT Drops -->
+            <div id="drops" class="tab-content">
+                <div class="section-header">
+                    <h2>🎨 UPCOMING DROPS</h2>
+                    <span class="source">curated</span>
+                </div>
+                <div id="drops-feed" class="feed"></div>
+            </div>
+
+            <!-- Art News -->
+            <div id="news" class="tab-content">
+                <div class="section-header">
+                    <h2>📰 ART NEWS</h2>
+                    <span class="source">rss_aggregated</span>
+                </div>
+                <div id="news-feed" class="feed"></div>
             </div>
         </section>
     </main>
@@ -636,10 +602,10 @@
     <footer class="footer">
         <div class="footer-content">
             <div>
-                <strong>ARTHOUSE</strong> // Open Art Intelligence
+                <strong>ARTHOUSE</strong> // Social + On-Chain Intelligence
             </div>
             <div class="links">
-                <a href="https://paragraph.xyz" target="_blank">PARAGRAPH</a>
+                <a href="https://x.com" target="_blank">𝕏</a>
                 <a href="https://base.org" target="_blank">BASE</a>
                 <a href="https://github.com" target="_blank">GITHUB</a>
             </div>
@@ -649,36 +615,52 @@
     <script>
         // ===== DATA =====
         
-        const PARAGRAPH_DATA = [
+        const X_DATA = [
             {
-                id: 1,
-                title: "The Algorithmic Curator",
-                excerpt: "How machine learning systems identify patterns in contemporary art markets.",
-                author: "curator_ai",
-                date: "2024-02-20",
-                url: "https://paragraph.xyz/@arthouse/algorithmic-curator"
+                id: 'x1',
+                handle: '@digital_art_daily',
+                name: 'Digital Art Daily',
+                text: 'Just discovered an incredible generative art collection on Base. The intersection of code and creativity continues to evolve. Thread below 👇',
+                likes: 234,
+                retweets: 45,
+                time: '15m ago',
+                url: 'https://x.com'
             },
             {
-                id: 2,
-                title: "Base Chain for Digital Artists",
-                excerpt: "Why Layer 2 solutions are becoming preferred for generative art.",
-                author: "blockchain_lab",
-                date: "2024-02-19",
-                url: "https://paragraph.xyz/@arthouse/base-canvas"
+                id: 'x2',
+                handle: '@nftcollector',
+                name: 'NFT Collector',
+                text: 'Floor prices on Base NFTs showing steady growth this week. Blue-chip collections holding strong despite market volatility.',
+                likes: 567,
+                retweets: 89,
+                time: '42m ago',
+                url: 'https://x.com'
             },
             {
-                id: 3,
-                title: "Minimalism as Resistance",
-                excerpt: "Brutalist web design as philosophical stance in digital age.",
-                author: "design_theory",
-                date: "2024-02-18",
-                url: "https://paragraph.xyz/@arthouse/minimalism"
+                id: 'x3',
+                handle: '@artblocks',
+                name: 'Art Blocks',
+                text: 'New Curated drop announcement: Tyler Hobbs returns with Fidenza-inspired collection. Minting exclusively on Base.',
+                likes: 1203,
+                retweets: 234,
+                time: '1h ago',
+                url: 'https://x.com'
+            },
+            {
+                id: 'x4',
+                handle: '@basenft',
+                name: 'Base NFTs',
+                text: 'Weekly recap: 12K new wallets, $2.4M volume, 45 new collections. The Base art ecosystem is thriving. Data below 📊',
+                likes: 892,
+                retweets: 156,
+                time: '3h ago',
+                url: 'https://x.com'
             }
         ];
 
-        const BASE_DATA = [
+        const ONCHAIN_DATA = [
             {
-                id: 'b1',
+                id: 'oc1',
                 type: 'sale',
                 platform: 'ZORA',
                 tokenId: '042',
@@ -689,7 +671,7 @@
                 tx: '0xabc123def456'
             },
             {
-                id: 'b2',
+                id: 'oc2',
                 type: 'mint',
                 platform: 'BASEPAINT',
                 tokenId: '1337',
@@ -699,7 +681,7 @@
                 tx: '0xdef456ghi789'
             },
             {
-                id: 'b3',
+                id: 'oc3',
                 type: 'sale',
                 platform: 'FOUNDATION',
                 tokenId: '007',
@@ -708,131 +690,141 @@
                 value: '0.1200',
                 time: '2h ago',
                 tx: '0xjkl012mno345'
+            },
+            {
+                id: 'oc4',
+                type: 'transfer',
+                platform: 'ZORA',
+                tokenId: '999',
+                from: '0xaaaaaaaabbbbbbbbccccccccddddddddeeeeeeee',
+                to: '0xffffffffeeeeeeeeddddddddcccccccbbbbbbbbb',
+                time: '3h ago',
+                tx: '0xpqr678stu901'
             }
         ];
 
-        const RSS_DATA = [
+        const MARKET_DATA = [
             {
-                id: 'r1',
-                source: 'Hyperallergic',
-                title: 'Venice Biennale 2024: Key Exhibitions',
-                excerpt: 'A guide to the most significant national pavilions and collateral events.',
-                time: '2h ago',
-                url: 'https://hyperallergic.com',
-                category: 'exhibition'
+                id: 'm1',
+                collection: 'Fidenza',
+                metric: 'Floor Price',
+                value: '12.5 ETH',
+                change: '+5.2%',
+                trend: 'up',
+                time: 'Live'
             },
             {
-                id: 'r2',
-                source: 'Artnet News',
-                title: 'Digital Art Market Report Q1 2024',
-                excerpt: 'Analysis of NFT sales trends and emerging generative art platforms.',
-                time: '4h ago',
-                url: 'https://news.artnet.com',
-                category: 'market'
+                id: 'm2',
+                collection: 'Ringers',
+                metric: '24h Volume',
+                value: '45.2 ETH',
+                change: '+12.8%',
+                trend: 'up',
+                time: 'Live'
             },
             {
-                id: 'r3',
-                source: 'Frieze',
-                title: 'Artist Studio: Refik Anadol',
-                excerpt: 'Inside the AI art pioneer\'s Los Angeles studio and creative process.',
-                time: '6h ago',
-                url: 'https://frieze.com',
-                category: 'studio'
+                id: 'm3',
+                collection: 'Chromie Squiggle',
+                metric: 'Floor Price',
+                value: '8.1 ETH',
+                change: '-2.1%',
+                trend: 'down',
+                time: 'Live'
             },
             {
-                id: 'r4',
-                source: 'The Art Newspaper',
-                title: 'Museum Blockchain Initiative Launches',
-                excerpt: 'Major institutions pilot on-chain provenance tracking system.',
-                time: '8h ago',
-                url: 'https://theartnewspaper.com',
-                category: 'technology'
+                id: 'm4',
+                collection: 'BasePaint',
+                metric: 'Daily Active',
+                value: '1,234',
+                change: '+23.5%',
+                trend: 'up',
+                time: '24h'
             }
         ];
 
-        const NFT_DATA = [
+        const DROPS_DATA = [
             {
-                id: 'n1',
-                type: 'drop',
+                id: 'd1',
                 artist: 'XCOPY',
-                title: 'TRAITORS',
+                title: 'TRAITORS #2',
                 platform: 'SuperRare',
+                type: 'auction',
                 price: '5.0 ETH',
                 time: 'LIVE',
                 supply: '1/1',
                 url: 'https://superrare.com'
             },
             {
-                id: 'n2',
-                type: 'auction',
+                id: 'd2',
                 artist: 'Pak',
-                title: 'Merge [m]',
+                title: 'Merge [phase 2]',
                 platform: 'Foundation',
-                price: '12.5 ETH',
-                time: '4h left',
+                type: 'drop',
+                price: '0.5 ETH',
+                time: 'In 2h',
                 supply: 'Dynamic',
                 url: 'https://foundation.app'
             },
             {
-                id: 'n3',
-                type: 'mint',
+                id: 'd3',
                 artist: 'Tyler Hobbs',
-                title: 'Fidenza #',
+                title: 'Fidenza: Echoes',
                 platform: 'Art Blocks',
-                price: '0.5 ETH',
-                time: 'Opens 20:00 UTC',
+                type: 'mint',
+                price: '0.25 ETH',
+                time: 'Tomorrow',
                 supply: '500',
                 url: 'https://artblocks.io'
             },
             {
-                id: 'n4',
-                type: 'listing',
+                id: 'd4',
                 artist: 'Dmitri Cherniak',
-                title: 'Ringers #',
-                platform: 'OpenSea',
-                price: '45.0 ETH',
-                time: 'New listing',
-                supply: '1/1',
-                url: 'https://opensea.io'
+                title: 'Ringers: Remix',
+                platform: 'ZORA',
+                type: 'mint',
+                price: '0.05 ETH',
+                time: 'In 3d',
+                supply: '1000',
+                url: 'https://zora.co'
             }
         ];
 
-        const ONCHAIN_DATA = [
+        const NEWS_DATA = [
             {
-                id: 'o1',
-                type: 'whale',
-                title: 'Whale Movement Detected',
-                desc: '0x7a2...9f1 moved 150 ETH to Base',
-                value: '150 ETH',
-                time: '15m ago',
-                impact: 'high'
-            },
-            {
-                id: 'o2',
-                type: 'trend',
-                title: 'Gas Spike Alert',
-                desc: 'Network congestion due to popular mint',
-                value: '45 gwei',
-                time: '32m ago',
-                impact: 'medium'
-            },
-            {
-                id: 'o3',
-                type: 'contract',
-                title: 'New Contract Deployed',
-                desc: 'Generative art contract verified on Base',
-                value: '0x3f2...a1b',
-                time: '1h ago',
-                impact: 'low'
-            },
-            {
-                id: 'o4',
-                type: 'bridge',
-                title: 'Bridge Inflow',
-                desc: 'Significant ETH bridging from Mainnet',
-                value: '2.3K ETH',
+                id: 'n1',
+                source: 'Hyperallergic',
+                title: 'Venice Biennale Embraces Digital Art',
+                excerpt: 'This year\'s exhibition features unprecedented focus on blockchain-based works.',
+                category: 'exhibition',
                 time: '2h ago',
-                impact: 'high'
+                url: 'https://hyperallergic.com'
+            },
+            {
+                id: 'n2',
+                source: 'Artnet',
+                title: 'Museums Adopt On-Chain Provenance',
+                excerpt: 'Major institutions pilot blockchain tracking for contemporary acquisitions.',
+                category: 'technology',
+                time: '4h ago',
+                url: 'https://news.artnet.com'
+            },
+            {
+                id: 'n3',
+                source: 'Frieze',
+                title: 'The Rise of Generative Art Markets',
+                excerpt: 'How algorithmic art is reshaping collector behavior and market dynamics.',
+                category: 'market',
+                time: '6h ago',
+                url: 'https://frieze.com'
+            },
+            {
+                id: 'n4',
+                source: 'The Art Newspaper',
+                title: 'Base Network: Artist Haven',
+                excerpt: 'Why creators are choosing Base for experimental digital art projects.',
+                category: 'technology',
+                time: '8h ago',
+                url: 'https://theartnewspaper.com'
             }
         ];
 
@@ -843,44 +835,47 @@
         const getIcon = (type) => {
             const icons = {
                 sale: '💰', mint: '✨', transfer: '↗️',
-                drop: '🎨', auction: '🔨', listing: '📌',
-                whale: '🐋', trend: '📈', contract: '📜', bridge: '🌉',
-                exhibition: '🏛️', market: '📊', studio: '🎭', technology: '💻'
+                drop: '🎨', auction: '🔨', minting: '🖼️',
+                up: '📈', down: '📉',
+                exhibition: '🏛️', technology: '💻', market: '📊'
             };
             return icons[type] || '●';
         };
 
         // ===== RENDERERS =====
 
-        function renderParagraph() {
-            const el = document.getElementById('paragraph-feed');
-            el.innerHTML = PARAGRAPH_DATA.map((item, idx) => `
-                <article class="feed-item">
+        function renderX() {
+            const el = document.getElementById('x-feed');
+            el.innerHTML = X_DATA.map((item, idx) => `
+                <div class="feed-item tweet">
                     <div class="feed-header">
-                        <span class="feed-type">📝 ${item.platform}</span>
-                        <span class="feed-time">${item.date}</span>
+                        <span class="feed-type">𝕏 ${item.name}</span>
+                        <span class="feed-platform">${item.handle}</span>
+                        <span class="feed-time">${item.time}</span>
                     </div>
-                    <h3 class="feed-title">${item.title}</h3>
-                    <p class="feed-excerpt">${item.excerpt}</p>
-                    <div class="feed-meta">By ${item.author}</div>
+                    <p class="tweet-text">${item.text}</p>
+                    <div class="tweet-stats">
+                        <span>♥ ${item.likes}</span>
+                        <span>↻ ${item.retweets}</span>
+                    </div>
                     <a href="${item.url}" target="_blank" class="feed-link">↗</a>
-                    <div class="feed-index">${String(idx + 1).padStart(2, '0')}/${String(PARAGRAPH_DATA.length).padStart(2, '0')}</div>
-                </article>
+                    <div class="feed-index">${String(idx + 1).padStart(2, '0')}/${String(X_DATA.length).padStart(2, '0')}</div>
+                </div>
             `).join('');
         }
 
-        function renderBase() {
-            const el = document.getElementById('base-feed');
+        function renderOnchain() {
+            const el = document.getElementById('onchain-feed');
             
-            const sales = BASE_DATA.filter(i => i.type === 'sale').length;
-            const mints = BASE_DATA.filter(i => i.type === 'mint').length;
-            const vol = BASE_DATA.filter(i => i.value).reduce((a, i) => a + parseFloat(i.value), 0).toFixed(3);
+            const sales = ONCHAIN_DATA.filter(i => i.type === 'sale').length;
+            const mints = ONCHAIN_DATA.filter(i => i.type === 'mint').length;
+            const vol = ONCHAIN_DATA.filter(i => i.value).reduce((a, i) => a + parseFloat(i.value), 0).toFixed(3);
             
             document.getElementById('stat-sales').textContent = sales;
             document.getElementById('stat-mints').textContent = mints;
             document.getElementById('stat-volume').textContent = vol;
 
-            el.innerHTML = BASE_DATA.map((item, idx) => `
+            el.innerHTML = ONCHAIN_DATA.map((item, idx) => `
                 <div class="feed-item ${item.type}">
                     <div class="feed-header">
                         <span class="feed-type">${getIcon(item.type)} ${item.type}</span>
@@ -897,14 +892,48 @@
                     </div>
                     ${item.value ? `<div class="feed-value">${item.value} ETH</div>` : ''}
                     <a href="https://basescan.org/tx/${item.tx}" target="_blank" class="feed-link">↗</a>
-                    <div class="feed-index">${String(idx + 1).padStart(2, '0')}/${String(BASE_DATA.length).padStart(2, '0')}</div>
+                    <div class="feed-index">${String(idx + 1).padStart(2, '0')}/${String(ONCHAIN_DATA.length).padStart(2, '0')}</div>
                 </div>
             `).join('');
         }
 
-        function renderRSS() {
-            const el = document.getElementById('rss-feed');
-            el.innerHTML = RSS_DATA.map((item, idx) => `
+        function renderMarket() {
+            const el = document.getElementById('market-feed');
+            el.innerHTML = MARKET_DATA.map((item, idx) => `
+                <div class="feed-item ${item.trend === 'up' ? 'sale' : 'mint'}">
+                    <div class="feed-header">
+                        <span class="feed-type">${getIcon(item.trend)} ${item.collection}</span>
+                        <span class="feed-platform">${item.metric}</span>
+                        <span class="feed-time">${item.time}</span>
+                    </div>
+                    <div class="feed-title">${item.value}</div>
+                    <div class="feed-value">${item.change} ${item.trend === 'up' ? '📈' : '📉'}</div>
+                    <div class="feed-index">${String(idx + 1).padStart(2, '0')}/${String(MARKET_DATA.length).padStart(2, '0')}</div>
+                </div>
+            `).join('');
+        }
+
+        function renderDrops() {
+            const el = document.getElementById('drops-feed');
+            el.innerHTML = DROPS_DATA.map((item, idx) => `
+                <div class="feed-item ${item.type}">
+                    <div class="feed-header">
+                        <span class="feed-type">${getIcon(item.type)} ${item.artist}</span>
+                        <span class="feed-platform">${item.platform}</span>
+                        <span class="feed-time">${item.time}</span>
+                    </div>
+                    <h3 class="feed-title">${item.title}</h3>
+                    <div class="feed-meta">Supply: ${item.supply}</div>
+                    <div class="feed-value">${item.price}</div>
+                    <a href="${item.url}" target="_blank" class="feed-link">↗</a>
+                    <div class="feed-index">${String(idx + 1).padStart(2, '0')}/${String(DROPS_DATA.length).padStart(2, '0')}</div>
+                </div>
+            `).join('');
+        }
+
+        function renderNews() {
+            const el = document.getElementById('news-feed');
+            el.innerHTML = NEWS_DATA.map((item, idx) => `
                 <article class="feed-item ${item.category}">
                     <div class="feed-header">
                         <span class="feed-type">${getIcon(item.category)} ${item.source}</span>
@@ -914,44 +943,8 @@
                     <p class="feed-excerpt">${item.excerpt}</p>
                     <div class="feed-meta">Category: ${item.category}</div>
                     <a href="${item.url}" target="_blank" class="feed-link">↗</a>
-                    <div class="feed-index">${String(idx + 1).padStart(2, '0')}/${String(RSS_DATA.length).padStart(2, '0')}</div>
+                    <div class="feed-index">${String(idx + 1).padStart(2, '0')}/${String(NEWS_DATA.length).padStart(2, '0')}</div>
                 </article>
-            `).join('');
-        }
-
-        function renderNFT() {
-            const el = document.getElementById('nft-feed');
-            el.innerHTML = NFT_DATA.map((item, idx) => `
-                <div class="feed-item ${item.type}">
-                    <div class="feed-header">
-                        <span class="feed-type">${getIcon(item.type)} ${item.type}</span>
-                        <span class="feed-platform">${item.platform}</span>
-                        <span class="feed-time">${item.time}</span>
-                    </div>
-                    <h3 class="feed-title">${item.artist}: ${item.title}</h3>
-                    <div class="feed-meta">
-                        <span>Supply: ${item.supply}</span>
-                    </div>
-                    <div class="feed-value">${item.price}</div>
-                    <a href="${item.url}" target="_blank" class="feed-link">↗</a>
-                    <div class="feed-index">${String(idx + 1).padStart(2, '0')}/${String(NFT_DATA.length).padStart(2, '0')}</div>
-                </div>
-            `).join('');
-        }
-
-        function renderOnchain() {
-            const el = document.getElementById('onchain-feed');
-            el.innerHTML = ONCHAIN_DATA.map((item, idx) => `
-                <div class="feed-item ${item.impact === 'high' ? 'sale' : item.impact === 'medium' ? 'mint' : ''}">
-                    <div class="feed-header">
-                        <span class="feed-type">${getIcon(item.type)} ${item.type}</span>
-                        <span class="feed-time">${item.time}</span>
-                    </div>
-                    <h3 class="feed-title">${item.title}</h3>
-                    <p class="feed-excerpt">${item.desc}</p>
-                    <div class="feed-value">${item.value}</div>
-                    <div class="feed-index">${String(idx + 1).padStart(2, '0')}/${String(ONCHAIN_DATA.length).padStart(2, '0')}</div>
-                </div>
             `).join('');
         }
 
@@ -968,6 +961,7 @@
         function typeWriter(text, el, speed = 40) {
             let i = 0;
             el.textContent = '';
+            el.style.color = '#0000ff';
             const type = () => {
                 if (i < text.length) {
                     el.textContent += text.charAt(i);
@@ -995,7 +989,7 @@
             
             const initDots = () => {
                 dots = [];
-                for (let i = 0; i < 20; i++) {
+                for (let i = 0; i < 15; i++) {
                     dots.push({
                         x: Math.random() * w,
                         y: Math.random() * h,
@@ -1017,7 +1011,7 @@
                     
                     ctx.beginPath();
                     ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
-                    ctx.fillStyle = 'rgba(0,0,0,0.1)';
+                    ctx.fillStyle = 'rgba(0,0,255,0.08)';
                     ctx.fill();
                 });
                 
@@ -1030,7 +1024,7 @@
                             ctx.beginPath();
                             ctx.moveTo(dots[i].x, dots[i].y);
                             ctx.lineTo(dots[j].x, dots[j].y);
-                            ctx.strokeStyle = `rgba(0,0,0,${0.08 * (1 - dist/100)})`;
+                            ctx.strokeStyle = `rgba(0,0,255,${0.06 * (1 - dist/100)})`;
                             ctx.stroke();
                         }
                     }
@@ -1048,18 +1042,19 @@
         // ===== INIT =====
         
         document.addEventListener('DOMContentLoaded', () => {
-            typeWriter('ART_INTELLIGENCE', document.getElementById('typewriter'), 50);
+            // JUDUL ANIMASI DIUBAH: ARTHOUSE_INTELLIGENCE
+            typeWriter('ARTHOUSE_INTELLIGENCE', document.getElementById('typewriter'), 50);
             updateClock();
             setInterval(updateClock, 1000);
             initCanvas();
             
-            renderParagraph();
-            renderBase();
-            renderRSS();
-            renderNFT();
+            renderX();
             renderOnchain();
+            renderMarket();
+            renderDrops();
+            renderNews();
             
-            console.log('ARTHOUSE v1.2 // Ready');
+            console.log('ARTHOUSE v1.6 // ARTHOUSE_INTELLIGENCE Edition');
         });
     </script>
 </body>
