@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ARTHOUSE // Contemporary Art Intelligence</title>
+    <title>ARTHOUSE // Art Intelligence</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        /* ===== CSS START ===== */
         * {
             margin: 0;
             padding: 0;
@@ -22,10 +21,8 @@
             --light-gray: #e5e5e5;
             --green: #10b981;
             --blue: #3b82f6;
-        }
-
-        html {
-            scroll-behavior: smooth;
+            --purple: #8b5cf6;
+            --orange: #f97316;
         }
 
         body {
@@ -37,7 +34,6 @@
             min-height: 100vh;
         }
 
-        /* Background Canvas */
         #bg-canvas {
             position: fixed;
             top: 0;
@@ -46,10 +42,9 @@
             height: 100%;
             z-index: 0;
             pointer-events: none;
-            opacity: 0.4;
+            opacity: 0.3;
         }
 
-        /* Grain Overlay */
         .grain {
             position: fixed;
             top: 0;
@@ -62,7 +57,6 @@
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
         }
 
-        /* Header */
         .header {
             position: fixed;
             top: 0;
@@ -77,7 +71,7 @@
         .header-content {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 1rem 2rem;
+            padding: 0.75rem 1rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -86,33 +80,28 @@
         .logo {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-        }
-
-        .terminal-icon {
-            font-size: 1.2rem;
-            animation: pulse 2s infinite;
+            gap: 0.5rem;
         }
 
         .logo-text {
             font-weight: 600;
-            letter-spacing: 0.1em;
-            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            font-size: 0.8rem;
         }
 
         .version {
-            font-size: 0.65rem;
-            padding: 0.2rem 0.5rem;
+            font-size: 0.6rem;
+            padding: 0.1rem 0.4rem;
             border: 1px solid var(--light-gray);
-            border-radius: 3px;
+            border-radius: 2px;
             color: var(--gray);
         }
 
         .status {
             display: flex;
             align-items: center;
-            gap: 1rem;
-            font-size: 0.75rem;
+            gap: 0.75rem;
+            font-size: 0.65rem;
             color: var(--gray);
         }
 
@@ -121,62 +110,78 @@
             animation: pulse 2s infinite;
         }
 
-        /* Main Content */
         .main {
             position: relative;
             z-index: 10;
-            padding-top: 80px;
+            padding-top: 60px;
         }
 
-        /* Hero Section */
         .hero {
             max-width: 900px;
             margin: 0 auto;
-            padding: 4rem 2rem 3rem;
+            padding: 2rem 1rem 1.5rem;
         }
 
         .ascii-art {
-            font-size: 0.7rem;
-            line-height: 1.2;
+            font-size: 0.5rem;
+            line-height: 1.1;
             color: var(--gray);
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
             overflow-x: auto;
         }
 
+        @media (min-width: 768px) {
+            .ascii-art {
+                font-size: 0.7rem;
+            }
+        }
+
         .title {
-            font-size: 2.5rem;
+            font-size: 1.25rem;
             font-weight: 600;
-            margin-bottom: 1.5rem;
-            line-height: 1.2;
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
+        }
+
+        @media (min-width: 768px) {
+            .title {
+                font-size: 1.75rem;
+            }
         }
 
         .cursor {
             display: inline-block;
-            width: 3px;
+            width: 2px;
             height: 1em;
             background: var(--text);
-            margin-left: 0.2rem;
+            margin-left: 0.15rem;
             animation: blink 1s step-end infinite;
             vertical-align: text-bottom;
         }
 
         .subtitle {
-            font-size: 1.1rem;
+            font-size: 0.8rem;
             color: var(--gray);
-            max-width: 600px;
-            margin-bottom: 2rem;
-            line-height: 1.7;
+            max-width: 500px;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        @media (min-width: 768px) {
+            .subtitle {
+                font-size: 0.9rem;
+            }
         }
 
         .badges {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.75rem;
+            gap: 0.5rem;
         }
 
         .badge {
-            font-size: 0.7rem;
-            padding: 0.5rem 1rem;
+            font-size: 0.6rem;
+            padding: 0.35rem 0.6rem;
             border: 1px solid var(--light-gray);
             border-radius: 2px;
             color: var(--gray);
@@ -188,26 +193,30 @@
             background: rgba(16, 185, 129, 0.05);
         }
 
-        /* Tabs */
         .tabs {
             max-width: 900px;
             margin: 0 auto;
-            padding: 0 2rem;
+            padding: 0 1rem;
             display: flex;
+            gap: 0.25rem;
             border-bottom: 1px solid var(--light-gray);
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .tab-btn {
-            padding: 1rem 1.5rem;
+            padding: 0.6rem 0.8rem;
             background: none;
             border: none;
             font-family: inherit;
-            font-size: 0.8rem;
+            font-size: 0.65rem;
             font-weight: 500;
             color: var(--gray);
             cursor: pointer;
             transition: all 0.3s;
             border-bottom: 2px solid transparent;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .tab-btn:hover {
@@ -219,12 +228,11 @@
             border-bottom-color: var(--text);
         }
 
-        /* Content Area */
         .content {
             max-width: 900px;
             margin: 0 auto;
-            padding: 2rem;
-            min-height: 500px;
+            padding: 1rem;
+            min-height: 400px;
         }
 
         .tab-content {
@@ -240,33 +248,32 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
             border-bottom: 1px solid var(--light-gray);
         }
 
         .section-header h2 {
-            font-size: 0.85rem;
+            font-size: 0.7rem;
             font-weight: 600;
             letter-spacing: 0.05em;
         }
 
         .source {
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             color: var(--gray);
         }
 
-        /* Stats Grid */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin-bottom: 2rem;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
         }
 
         .stat-card {
             border: 1px solid var(--light-gray);
-            padding: 1.5rem;
+            padding: 0.75rem;
             text-align: center;
             transition: all 0.3s;
         }
@@ -276,27 +283,26 @@
         }
 
         .stat-value {
-            font-size: 1.5rem;
+            font-size: 1rem;
             font-weight: 600;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
         }
 
         .stat-label {
-            font-size: 0.65rem;
+            font-size: 0.55rem;
             color: var(--gray);
-            letter-spacing: 0.1em;
+            letter-spacing: 0.05em;
         }
 
-        /* Feed Items */
         .feed {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 0.75rem;
         }
 
         .feed-item {
             border: 1px solid var(--light-gray);
-            padding: 1.5rem;
+            padding: 1rem;
             transition: all 0.3s;
             position: relative;
             background: var(--bg);
@@ -316,12 +322,22 @@
             border-left: 3px solid var(--blue);
         }
 
+        .feed-item.listing {
+            background: rgba(139, 92, 246, 0.03);
+            border-left: 3px solid var(--purple);
+        }
+
+        .feed-item.auction {
+            background: rgba(249, 115, 22, 0.03);
+            border-left: 3px solid var(--orange);
+        }
+
         .feed-header {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 0.75rem;
-            font-size: 0.7rem;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.6rem;
         }
 
         .feed-type {
@@ -339,26 +355,27 @@
         }
 
         .feed-title {
-            font-size: 1rem;
+            font-size: 0.85rem;
             font-weight: 600;
-            margin-bottom: 0.5rem;
-            line-height: 1.4;
+            margin-bottom: 0.4rem;
+            line-height: 1.3;
         }
 
         .feed-excerpt {
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             color: var(--gray);
-            line-height: 1.6;
-            margin-bottom: 1rem;
+            line-height: 1.5;
+            margin-bottom: 0.5rem;
         }
 
         .feed-meta {
             display: flex;
             align-items: center;
-            gap: 1rem;
-            font-size: 0.75rem;
+            gap: 0.75rem;
+            font-size: 0.65rem;
             color: var(--gray);
             font-family: monospace;
+            flex-wrap: wrap;
         }
 
         .feed-value {
@@ -368,13 +385,13 @@
 
         .feed-link {
             position: absolute;
-            top: 1rem;
-            right: 1rem;
+            top: 0.75rem;
+            right: 0.75rem;
             opacity: 0;
             transition: opacity 0.3s;
             text-decoration: none;
             color: var(--text);
-            font-size: 1.2rem;
+            font-size: 1rem;
         }
 
         .feed-item:hover .feed-link {
@@ -383,17 +400,16 @@
 
         .feed-index {
             position: absolute;
-            bottom: 0.5rem;
-            right: 0.5rem;
-            font-size: 0.65rem;
+            bottom: 0.35rem;
+            right: 0.35rem;
+            font-size: 0.55rem;
             color: #ccc;
         }
 
-        /* Footer */
         .footer {
             border-top: 1px solid var(--light-gray);
-            padding: 2rem;
-            margin-top: 4rem;
+            padding: 1.5rem 1rem;
+            margin-top: 2rem;
             background: var(--bg);
         }
 
@@ -401,15 +417,25 @@
             max-width: 900px;
             margin: 0 auto;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.8rem;
+            flex-direction: column;
+            gap: 0.75rem;
+            font-size: 0.7rem;
             color: var(--gray);
+            text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            .footer-content {
+                flex-direction: row;
+                justify-content: space-between;
+                text-align: left;
+            }
         }
 
         .links {
             display: flex;
-            gap: 2rem;
+            gap: 1.5rem;
+            justify-content: center;
         }
 
         .links a {
@@ -437,7 +463,6 @@
             width: 100%;
         }
 
-        /* Animations */
         @keyframes blink {
             0%, 100% { opacity: 1; }
             50% { opacity: 0; }
@@ -453,15 +478,14 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Loading State */
         .loading {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 0.75rem;
         }
 
         .skeleton {
-            height: 100px;
+            height: 80px;
             background: linear-gradient(90deg, var(--light-gray) 25%, #f0f0f0 50%, var(--light-gray) 75%);
             background-size: 200% 100%;
             animation: loading 1.5s infinite;
@@ -471,69 +495,17 @@
             0% { background-position: 200% 0; }
             100% { background-position: -200% 0; }
         }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header-content {
-                padding: 1rem;
-            }
-            
-            .hero {
-                padding: 2rem 1rem;
-            }
-            
-            .title {
-                font-size: 1.5rem;
-            }
-            
-            .ascii-art {
-                font-size: 0.5rem;
-            }
-            
-            .tabs {
-                padding: 0 1rem;
-            }
-            
-            .tab-btn {
-                padding: 0.75rem 1rem;
-                font-size: 0.7rem;
-            }
-            
-            .content {
-                padding: 1rem;
-            }
-            
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .footer-content {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
-            }
-            
-            .links {
-                gap: 1rem;
-            }
-        }
-        /* ===== CSS END ===== */
     </style>
 </head>
 <body>
-    <!-- Background Animation -->
     <canvas id="bg-canvas"></canvas>
-    
-    <!-- Grain Overlay -->
     <div class="grain"></div>
 
-    <!-- Header -->
     <header class="header">
         <div class="header-content">
             <div class="logo">
-                <span class="terminal-icon">⌘</span>
                 <span class="logo-text">ARTHOUSE</span>
-                <span class="version">v1.0</span>
+                <span class="version">v1.2</span>
             </div>
             <div class="status">
                 <span id="clock">00:00:00</span>
@@ -542,16 +514,13 @@
         </div>
     </header>
 
-    <!-- Main Content -->
     <main class="main">
-        <!-- Hero Section -->
         <section class="hero">
             <pre class="ascii-art">
-    ___    __  _______  ____  __  _______
-   /   |  /  |/  / __ \/ __ \/ / / / ___/
-  / /| | / /|_/ / / / / / / / / / /\__ \ 
- / ___ |/ /  / / /_/ / /_/ / /_/ /___/ / 
-/_/  |_/_/  /_/\____/_____/\____//____/  
+   ___  ____  ________  ___  ________
+  / _ \/ __ \/ ___/ _ \/ _ |/ ___/ _ \
+ / , _/ /_/ / (_ / ___/ __ / /__/ , _/
+/_/|_|\____/\___/_/  /_/ |_\___/_/|_| 
             </pre>
             
             <h1 class="title">
@@ -559,48 +528,51 @@
             </h1>
             
             <p class="subtitle">
-                Automated curation from Paragraph.xyz and Base on-chain activity. 
-                Tracking digital art from publication to provenance.
+                Art intelligence from Paragraph, Base, and open sources.
             </p>
 
             <div class="badges">
-                <span class="badge">📄 PARAGRAPH_CONNECTED</span>
-                <span class="badge">⛓ BASE_INDEXED</span>
-                <span class="badge live">● LIVE_FEED</span>
+                <span class="badge">📄 PARAGRAPH</span>
+                <span class="badge">⛓ BASE</span>
+                <span class="badge">📰 RSS</span>
+                <span class="badge live">● LIVE</span>
             </div>
         </section>
 
-        <!-- Tab Navigation -->
         <nav class="tabs">
-            <button class="tab-btn active" onclick="switchTab('paragraph')">
-                📄 PARAGRAPH_PUBLICATIONS
+            <button class="tab-btn active" onclick="switchTab('paragraph', this)">
+                📄 PARAGRAPH
             </button>
-            <button class="tab-btn" onclick="switchTab('base')">
-                ⛓ BASE_ONCHAIN
+            <button class="tab-btn" onclick="switchTab('base', this)">
+                ⛓ BASE
+            </button>
+            <button class="tab-btn" onclick="switchTab('rss', this)">
+                📰 ART_NEWS
+            </button>
+            <button class="tab-btn" onclick="switchTab('nft', this)">
+                🎨 NFT_DROPS
+            </button>
+            <button class="tab-btn" onclick="switchTab('onchain', this)">
+                🔍 ONCHAIN
             </button>
         </nav>
 
-        <!-- Content Area -->
         <section class="content">
-            <!-- Paragraph Feed -->
+            <!-- Paragraph -->
             <div id="paragraph" class="tab-content active">
                 <div class="section-header">
-                    <h2>📄 LATEST_PUBLICATIONS</h2>
-                    <span class="source">SOURCE: PARAGRAPH.XYZ</span>
+                    <h2>📄 PARAGRAPH_PUBLICATIONS</h2>
+                    <span class="source">paragraph.xyz</span>
                 </div>
-                <div id="paragraph-feed" class="feed">
-                    <!-- Content loaded by JS -->
-                </div>
+                <div id="paragraph-feed" class="feed"></div>
             </div>
 
-            <!-- Base Feed -->
+            <!-- Base -->
             <div id="base" class="tab-content">
                 <div class="section-header">
-                    <h2>⛓ ONCHAIN_ACTIVITY</h2>
-                    <span class="source">SOURCE: BASE_MAINNET</span>
+                    <h2>⛓ BASE_ONCHAIN</h2>
+                    <span class="source">base.org</span>
                 </div>
-                
-                <!-- Stats -->
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-value" id="stat-sales">0</div>
@@ -612,22 +584,59 @@
                     </div>
                     <div class="stat-card">
                         <div class="stat-value" id="stat-volume">0</div>
-                        <div class="stat-label">⧫ ETH_VOL</div>
+                        <div class="stat-label">⧫ VOLUME</div>
                     </div>
                 </div>
+                <div id="base-feed" class="feed"></div>
+            </div>
 
-                <div id="base-feed" class="feed">
-                    <!-- Content loaded by JS -->
+            <!-- RSS Art News -->
+            <div id="rss" class="tab-content">
+                <div class="section-header">
+                    <h2>📰 ART_NEWS_AGGREGATOR</h2>
+                    <span class="source">multiple_sources</span>
                 </div>
+                <div id="rss-feed" class="feed"></div>
+            </div>
+
+            <!-- NFT Drops -->
+            <div id="nft" class="tab-content">
+                <div class="section-header">
+                    <h2>🎨 NFT_DROP_CALENDAR</h2>
+                    <span class="source">community_curated</span>
+                </div>
+                <div id="nft-feed" class="feed"></div>
+            </div>
+
+            <!-- On-chain Analytics -->
+            <div id="onchain" class="tab-content">
+                <div class="section-header">
+                    <h2>🔍 ONCHAIN_ANALYTICS</h2>
+                    <span class="source">public_data</span>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-gas">0.5</div>
+                        <div class="stat-label">⛽ GWEI</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-tx">1.2M</div>
+                        <div class="stat-label">📊 TX/DAY</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-contracts">45K</div>
+                        <div class="stat-label">📜 CONTRACTS</div>
+                    </div>
+                </div>
+                <div id="onchain-feed" class="feed"></div>
             </div>
         </section>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
             <div>
-                <strong>ARTHOUSE</strong> // Paragraph + Base Intelligence
+                <strong>ARTHOUSE</strong> // Open Art Intelligence
             </div>
             <div class="links">
                 <a href="https://paragraph.xyz" target="_blank">PARAGRAPH</a>
@@ -638,51 +647,38 @@
     </footer>
 
     <script>
-        // ===== JAVASCRIPT START =====
+        // ===== DATA =====
         
-        // Demo Data - Replace with real API calls
         const PARAGRAPH_DATA = [
             {
                 id: 1,
-                title: "The Algorithmic Curator: AI in Art Discovery",
-                excerpt: "How machine learning systems are being trained to identify emerging patterns in contemporary art markets, and what this means for human curators.",
+                title: "The Algorithmic Curator",
+                excerpt: "How machine learning systems identify patterns in contemporary art markets.",
                 author: "curator_ai",
                 date: "2024-02-20",
-                platform: "Paragraph",
                 url: "https://paragraph.xyz/@arthouse/algorithmic-curator"
             },
             {
                 id: 2,
-                title: "Base Chain: New Canvas for Digital Artists",
-                excerpt: "Exploring why Layer 2 solutions like Base are becoming the preferred infrastructure for generative art and on-chain creative experiments.",
+                title: "Base Chain for Digital Artists",
+                excerpt: "Why Layer 2 solutions are becoming preferred for generative art.",
                 author: "blockchain_lab",
                 date: "2024-02-19",
-                platform: "Paragraph",
                 url: "https://paragraph.xyz/@arthouse/base-canvas"
             },
             {
                 id: 3,
                 title: "Minimalism as Resistance",
-                excerpt: "In an age of maximalist digital noise, the return to brutalist web design represents a philosophical stance as much as an aesthetic choice.",
+                excerpt: "Brutalist web design as philosophical stance in digital age.",
                 author: "design_theory",
                 date: "2024-02-18",
-                platform: "Paragraph",
-                url: "https://paragraph.xyz/@arthouse/minimalism-resistance"
-            },
-            {
-                id: 4,
-                title: "On-Chain Provenance: A Primer",
-                excerpt: "Understanding the technical and philosophical implications of permanent art records on public blockchains.",
-                author: "tech_curator",
-                date: "2024-02-17",
-                platform: "Paragraph",
-                url: "https://paragraph.xyz/@arthouse/onchain-provenance"
+                url: "https://paragraph.xyz/@arthouse/minimalism"
             }
         ];
 
         const BASE_DATA = [
             {
-                id: 'base-1',
+                id: 'b1',
                 type: 'sale',
                 platform: 'ZORA',
                 tokenId: '042',
@@ -693,7 +689,7 @@
                 tx: '0xabc123def456'
             },
             {
-                id: 'base-2',
+                id: 'b2',
                 type: 'mint',
                 platform: 'BASEPAINT',
                 tokenId: '1337',
@@ -703,17 +699,7 @@
                 tx: '0xdef456ghi789'
             },
             {
-                id: 'base-3',
-                type: 'transfer',
-                platform: 'ZORA',
-                tokenId: '069',
-                from: '0x3333444455556666777788889999000011112222',
-                to: '0x5555666677778888999900001111222233334444',
-                time: '1h ago',
-                tx: '0xghi789jkl012'
-            },
-            {
-                id: 'base-4',
+                id: 'b3',
                 type: 'sale',
                 platform: 'FOUNDATION',
                 tokenId: '007',
@@ -722,118 +708,192 @@
                 value: '0.1200',
                 time: '2h ago',
                 tx: '0xjkl012mno345'
-            },
-            {
-                id: 'base-5',
-                type: 'mint',
-                platform: 'ZORA',
-                tokenId: '2049',
-                from: '0x0000000000000000000000000000000000000000',
-                to: '0xaaaabbbbccccddddeeeeffff0000111122223333',
-                time: '3h ago',
-                tx: '0xmno345pqr678'
             }
         ];
 
-        // Utilities
-        const formatAddress = (addr) => addr.slice(0, 6) + '...' + addr.slice(-4);
+        const RSS_DATA = [
+            {
+                id: 'r1',
+                source: 'Hyperallergic',
+                title: 'Venice Biennale 2024: Key Exhibitions',
+                excerpt: 'A guide to the most significant national pavilions and collateral events.',
+                time: '2h ago',
+                url: 'https://hyperallergic.com',
+                category: 'exhibition'
+            },
+            {
+                id: 'r2',
+                source: 'Artnet News',
+                title: 'Digital Art Market Report Q1 2024',
+                excerpt: 'Analysis of NFT sales trends and emerging generative art platforms.',
+                time: '4h ago',
+                url: 'https://news.artnet.com',
+                category: 'market'
+            },
+            {
+                id: 'r3',
+                source: 'Frieze',
+                title: 'Artist Studio: Refik Anadol',
+                excerpt: 'Inside the AI art pioneer\'s Los Angeles studio and creative process.',
+                time: '6h ago',
+                url: 'https://frieze.com',
+                category: 'studio'
+            },
+            {
+                id: 'r4',
+                source: 'The Art Newspaper',
+                title: 'Museum Blockchain Initiative Launches',
+                excerpt: 'Major institutions pilot on-chain provenance tracking system.',
+                time: '8h ago',
+                url: 'https://theartnewspaper.com',
+                category: 'technology'
+            }
+        ];
+
+        const NFT_DATA = [
+            {
+                id: 'n1',
+                type: 'drop',
+                artist: 'XCOPY',
+                title: 'TRAITORS',
+                platform: 'SuperRare',
+                price: '5.0 ETH',
+                time: 'LIVE',
+                supply: '1/1',
+                url: 'https://superrare.com'
+            },
+            {
+                id: 'n2',
+                type: 'auction',
+                artist: 'Pak',
+                title: 'Merge [m]',
+                platform: 'Foundation',
+                price: '12.5 ETH',
+                time: '4h left',
+                supply: 'Dynamic',
+                url: 'https://foundation.app'
+            },
+            {
+                id: 'n3',
+                type: 'mint',
+                artist: 'Tyler Hobbs',
+                title: 'Fidenza #',
+                platform: 'Art Blocks',
+                price: '0.5 ETH',
+                time: 'Opens 20:00 UTC',
+                supply: '500',
+                url: 'https://artblocks.io'
+            },
+            {
+                id: 'n4',
+                type: 'listing',
+                artist: 'Dmitri Cherniak',
+                title: 'Ringers #',
+                platform: 'OpenSea',
+                price: '45.0 ETH',
+                time: 'New listing',
+                supply: '1/1',
+                url: 'https://opensea.io'
+            }
+        ];
+
+        const ONCHAIN_DATA = [
+            {
+                id: 'o1',
+                type: 'whale',
+                title: 'Whale Movement Detected',
+                desc: '0x7a2...9f1 moved 150 ETH to Base',
+                value: '150 ETH',
+                time: '15m ago',
+                impact: 'high'
+            },
+            {
+                id: 'o2',
+                type: 'trend',
+                title: 'Gas Spike Alert',
+                desc: 'Network congestion due to popular mint',
+                value: '45 gwei',
+                time: '32m ago',
+                impact: 'medium'
+            },
+            {
+                id: 'o3',
+                type: 'contract',
+                title: 'New Contract Deployed',
+                desc: 'Generative art contract verified on Base',
+                value: '0x3f2...a1b',
+                time: '1h ago',
+                impact: 'low'
+            },
+            {
+                id: 'o4',
+                type: 'bridge',
+                title: 'Bridge Inflow',
+                desc: 'Significant ETH bridging from Mainnet',
+                value: '2.3K ETH',
+                time: '2h ago',
+                impact: 'high'
+            }
+        ];
+
+        // ===== UTILITIES =====
         
-        const getTypeIcon = (type) => {
-            const icons = { sale: '💰', mint: '✨', transfer: '↗️' };
+        const formatAddr = (addr) => addr.slice(0, 6) + '...' + addr.slice(-4);
+        
+        const getIcon = (type) => {
+            const icons = {
+                sale: '💰', mint: '✨', transfer: '↗️',
+                drop: '🎨', auction: '🔨', listing: '📌',
+                whale: '🐋', trend: '📈', contract: '📜', bridge: '🌉',
+                exhibition: '🏛️', market: '📊', studio: '🎭', technology: '💻'
+            };
             return icons[type] || '●';
         };
 
-        // Typewriter Effect
-        function typeWriter(text, element, speed = 50) {
-            let i = 0;
-            element.textContent = '';
-            
-            function type() {
-                if (i < text.length) {
-                    element.textContent += text.charAt(i);
-                    i++;
-                    setTimeout(type, speed);
-                }
-            }
-            type();
-        }
+        // ===== RENDERERS =====
 
-        // Clock
-        function updateClock() {
-            const now = new Date();
-            const time = now.toISOString().replace('T', ' ').slice(0, 19);
-            document.getElementById('clock').textContent = time;
-        }
-
-        // Tab Switching
-        function switchTab(tabName) {
-            // Update buttons
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            // Update content
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            document.getElementById(tabName).classList.add('active');
-        }
-
-        // Render Paragraph Feed
-        function renderParagraphFeed() {
-            const container = document.getElementById('paragraph-feed');
-            
-            container.innerHTML = PARAGRAPH_DATA.map((item, idx) => `
+        function renderParagraph() {
+            const el = document.getElementById('paragraph-feed');
+            el.innerHTML = PARAGRAPH_DATA.map((item, idx) => `
                 <article class="feed-item">
                     <div class="feed-header">
-                        <span class="feed-type">📝 ARTICLE</span>
-                        <span class="feed-platform">${item.platform}</span>
+                        <span class="feed-type">📝 ${item.platform}</span>
                         <span class="feed-time">${item.date}</span>
                     </div>
                     <h3 class="feed-title">${item.title}</h3>
                     <p class="feed-excerpt">${item.excerpt}</p>
-                    <div class="feed-meta">
-                        <span>By ${item.author}</span>
-                    </div>
+                    <div class="feed-meta">By ${item.author}</div>
                     <a href="${item.url}" target="_blank" class="feed-link">↗</a>
                     <div class="feed-index">${String(idx + 1).padStart(2, '0')}/${String(PARAGRAPH_DATA.length).padStart(2, '0')}</div>
                 </article>
             `).join('');
         }
 
-        // Render Base Feed
-        function renderBaseFeed() {
-            const container = document.getElementById('base-feed');
+        function renderBase() {
+            const el = document.getElementById('base-feed');
             
-            // Calculate stats
             const sales = BASE_DATA.filter(i => i.type === 'sale').length;
             const mints = BASE_DATA.filter(i => i.type === 'mint').length;
-            const volume = BASE_DATA
-                .filter(i => i.value)
-                .reduce((acc, i) => acc + parseFloat(i.value), 0)
-                .toFixed(3);
+            const vol = BASE_DATA.filter(i => i.value).reduce((a, i) => a + parseFloat(i.value), 0).toFixed(3);
             
-            // Update stats
             document.getElementById('stat-sales').textContent = sales;
             document.getElementById('stat-mints').textContent = mints;
-            document.getElementById('stat-volume').textContent = volume;
-            
-            // Render items
-            container.innerHTML = BASE_DATA.map((item, idx) => `
+            document.getElementById('stat-volume').textContent = vol;
+
+            el.innerHTML = BASE_DATA.map((item, idx) => `
                 <div class="feed-item ${item.type}">
                     <div class="feed-header">
-                        <span class="feed-type">${getTypeIcon(item.type)} ${item.type.toUpperCase()}</span>
+                        <span class="feed-type">${getIcon(item.type)} ${item.type}</span>
                         <span class="feed-platform">${item.platform}</span>
                         <span class="feed-time">${item.time}</span>
                     </div>
-                    <div class="feed-title" style="font-family: monospace; font-size: 0.9rem;">
-                        TOKEN_ID: <strong>${item.tokenId}</strong>
+                    <div class="feed-title" style="font-family: monospace; font-size: 0.8rem;">
+                        TOKEN: <strong>${item.tokenId}</strong>
                     </div>
-                    <div class="feed-meta" style="margin-bottom: ${item.value ? '0.5rem' : '0'}">
-                        <span>${formatAddress(item.from)}</span>
+                    <div class="feed-meta">
+                        <span>${formatAddr(item.from)}</span>
                         <span>→</span>
-                        <span>${formatAddress(item.to)}</span>
+                        <span>${formatAddr(item.to)}</span>
                     </div>
                     ${item.value ? `<div class="feed-value">${item.value} ETH</div>` : ''}
                     <a href="https://basescan.org/tx/${item.tx}" target="_blank" class="feed-link">↗</a>
@@ -842,102 +902,165 @@
             `).join('');
         }
 
-        // Background Animation (Canvas)
+        function renderRSS() {
+            const el = document.getElementById('rss-feed');
+            el.innerHTML = RSS_DATA.map((item, idx) => `
+                <article class="feed-item ${item.category}">
+                    <div class="feed-header">
+                        <span class="feed-type">${getIcon(item.category)} ${item.source}</span>
+                        <span class="feed-time">${item.time}</span>
+                    </div>
+                    <h3 class="feed-title">${item.title}</h3>
+                    <p class="feed-excerpt">${item.excerpt}</p>
+                    <div class="feed-meta">Category: ${item.category}</div>
+                    <a href="${item.url}" target="_blank" class="feed-link">↗</a>
+                    <div class="feed-index">${String(idx + 1).padStart(2, '0')}/${String(RSS_DATA.length).padStart(2, '0')}</div>
+                </article>
+            `).join('');
+        }
+
+        function renderNFT() {
+            const el = document.getElementById('nft-feed');
+            el.innerHTML = NFT_DATA.map((item, idx) => `
+                <div class="feed-item ${item.type}">
+                    <div class="feed-header">
+                        <span class="feed-type">${getIcon(item.type)} ${item.type}</span>
+                        <span class="feed-platform">${item.platform}</span>
+                        <span class="feed-time">${item.time}</span>
+                    </div>
+                    <h3 class="feed-title">${item.artist}: ${item.title}</h3>
+                    <div class="feed-meta">
+                        <span>Supply: ${item.supply}</span>
+                    </div>
+                    <div class="feed-value">${item.price}</div>
+                    <a href="${item.url}" target="_blank" class="feed-link">↗</a>
+                    <div class="feed-index">${String(idx + 1).padStart(2, '0')}/${String(NFT_DATA.length).padStart(2, '0')}</div>
+                </div>
+            `).join('');
+        }
+
+        function renderOnchain() {
+            const el = document.getElementById('onchain-feed');
+            el.innerHTML = ONCHAIN_DATA.map((item, idx) => `
+                <div class="feed-item ${item.impact === 'high' ? 'sale' : item.impact === 'medium' ? 'mint' : ''}">
+                    <div class="feed-header">
+                        <span class="feed-type">${getIcon(item.type)} ${item.type}</span>
+                        <span class="feed-time">${item.time}</span>
+                    </div>
+                    <h3 class="feed-title">${item.title}</h3>
+                    <p class="feed-excerpt">${item.desc}</p>
+                    <div class="feed-value">${item.value}</div>
+                    <div class="feed-index">${String(idx + 1).padStart(2, '0')}/${String(ONCHAIN_DATA.length).padStart(2, '0')}</div>
+                </div>
+            `).join('');
+        }
+
+        // ===== INTERACTION =====
+
+        function switchTab(tabName, btn) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        function typeWriter(text, el, speed = 40) {
+            let i = 0;
+            el.textContent = '';
+            const type = () => {
+                if (i < text.length) {
+                    el.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            };
+            type();
+        }
+
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').textContent = now.toISOString().replace('T', ' ').slice(0, 19);
+        }
+
         function initCanvas() {
             const canvas = document.getElementById('bg-canvas');
             const ctx = canvas.getContext('2d');
+            let w, h, dots = [];
             
-            let width, height;
-            const dots = [];
-            const numDots = 25;
+            const resize = () => {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+            };
             
-            function resize() {
-                width = canvas.width = window.innerWidth;
-                height = canvas.height = window.innerHeight;
-            }
-            
-            function initDots() {
-                for (let i = 0; i < numDots; i++) {
+            const initDots = () => {
+                dots = [];
+                for (let i = 0; i < 20; i++) {
                     dots.push({
-                        x: Math.random() * width,
-                        y: Math.random() * height,
+                        x: Math.random() * w,
+                        y: Math.random() * h,
                         vx: (Math.random() - 0.5) * 0.3,
                         vy: (Math.random() - 0.5) * 0.3,
-                        radius: Math.random() * 2 + 1
+                        r: Math.random() * 2 + 1
                     });
                 }
-            }
+            };
             
-            function animate() {
-                ctx.clearRect(0, 0, width, height);
+            const animate = () => {
+                ctx.clearRect(0, 0, w, h);
                 
-                // Update and draw dots
-                dots.forEach(dot => {
-                    dot.x += dot.vx;
-                    dot.y += dot.vy;
-                    
-                    if (dot.x < 0 || dot.x > width) dot.vx *= -1;
-                    if (dot.y < 0 || dot.y > height) dot.vy *= -1;
+                dots.forEach(d => {
+                    d.x += d.vx;
+                    d.y += d.vy;
+                    if (d.x < 0 || d.x > w) d.vx *= -1;
+                    if (d.y < 0 || d.y > h) d.vy *= -1;
                     
                     ctx.beginPath();
-                    ctx.arc(dot.x, dot.y, dot.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+                    ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(0,0,0,0.1)';
                     ctx.fill();
                 });
                 
-                // Draw connections
                 for (let i = 0; i < dots.length; i++) {
                     for (let j = i + 1; j < dots.length; j++) {
                         const dx = dots[i].x - dots[j].x;
                         const dy = dots[i].y - dots[j].y;
-                        const dist = Math.sqrt(dx * dx + dy * dy);
-                        
-                        if (dist < 120) {
+                        const dist = Math.sqrt(dx*dx + dy*dy);
+                        if (dist < 100) {
                             ctx.beginPath();
                             ctx.moveTo(dots[i].x, dots[i].y);
                             ctx.lineTo(dots[j].x, dots[j].y);
-                            ctx.strokeStyle = `rgba(0, 0, 0, ${0.1 * (1 - dist / 120)})`;
-                            ctx.lineWidth = 0.5;
+                            ctx.strokeStyle = `rgba(0,0,0,${0.08 * (1 - dist/100)})`;
                             ctx.stroke();
                         }
                     }
                 }
                 
                 requestAnimationFrame(animate);
-            }
+            };
             
             resize();
             initDots();
             animate();
-            
-            window.addEventListener('resize', () => {
-                resize();
-                dots.length = 0;
-                initDots();
-            });
+            window.addEventListener('resize', () => { resize(); initDots(); });
         }
 
-        // Initialize
+        // ===== INIT =====
+        
         document.addEventListener('DOMContentLoaded', () => {
-            // Typewriter
-            typeWriter('CONTEMPORARY_ART_INTELLIGENCE', document.getElementById('typewriter'), 40);
-            
-            // Clock
+            typeWriter('ART_INTELLIGENCE', document.getElementById('typewriter'), 50);
             updateClock();
             setInterval(updateClock, 1000);
-            
-            // Canvas
             initCanvas();
             
-            // Render feeds
-            renderParagraphFeed();
-            renderBaseFeed();
+            renderParagraph();
+            renderBase();
+            renderRSS();
+            renderNFT();
+            renderOnchain();
             
-            console.log('ARTHOUSE v1.0 // Initialized');
-            console.log('Ready for GitHub Pages deployment');
+            console.log('ARTHOUSE v1.2 // Ready');
         });
-        
-        // ===== JAVASCRIPT END =====
     </script>
 </body>
 </html>
