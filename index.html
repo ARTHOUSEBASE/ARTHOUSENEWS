@@ -2,2114 +2,607 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- Farcaster Frame Meta -->
+    <meta property="fc:frame" content="vNext">
+    <meta property="fc:frame:image" content="https://arthouse.vercel.app/og.png">
+    <meta property="fc:frame:button:1" content="🎨 View App">
+    <meta property="fc:frame:button:1:action" content="link">
+    <meta property="fc:frame:button:1:target" content="https://arthouse.vercel.app">
+    <meta property="fc:frame:post_url" content="https://arthouse.vercel.app">
+    
     <title>ARTHOUSE // Art Intelligence</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --bg: #ffffff;
-            --text: #0a0a0a;
-            --gray: #666666;
-            --light-gray: #e5e5e5;
-            --base-blue: #0000ff;
-            --green: #10b981;
-            --blue: #3b82f6;
-            --purple: #8b5cf6;
-            --orange: #f97316;
-            --red: #ef4444;
-            --yellow: #f59e0b;
-            --farcaster-purple: #8b5cf6;
-        }
-
-        body {
-            font-family: 'Fira Code', monospace;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
-
-        #bg-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-            opacity: 0.2;
-        }
-
-        .grain {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            pointer-events: none;
-            opacity: 0.03;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-        }
-
-        .header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--light-gray);
-        }
-
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0.75rem 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .logo-text {
-            font-weight: 600;
-            letter-spacing: 0.05em;
-            font-size: 0.8rem;
-        }
-
-        .version {
-            font-size: 0.6rem;
-            padding: 0.1rem 0.4rem;
-            border: 1px solid var(--light-gray);
-            border-radius: 2px;
-            color: var(--gray);
-        }
-
-        .status {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-size: 0.65rem;
-            color: var(--gray);
-        }
-
-        .live-indicator {
-            color: var(--base-blue);
-            animation: pulse 2s infinite;
-        }
-
-        /* Disclaimer Banner */
-        .disclaimer-banner {
-            position: fixed;
-            top: 48px;
-            left: 0;
-            right: 0;
-            z-index: 98;
-            background: #fef3c7;
-            border-bottom: 1px solid #f59e0b;
-            padding: 0.5rem 1rem;
-            text-align: center;
-            font-size: 0.65rem;
-            color: #92400e;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .disclaimer-banner strong {
-            color: #b45309;
-        }
-
-        /* Ticker Styles - Slow & Clickable */
-        .ticker-wrap {
-            position: fixed;
-            top: 76px;
-            left: 0;
-            right: 0;
-            z-index: 99;
-            background: var(--base-blue);
-            color: white;
-            overflow: hidden;
-            height: 32px;
-            display: flex;
-            align-items: center;
-        }
-
-        .ticker-label {
-            background: rgba(0,0,0,0.2);
-            padding: 0 1rem;
-            font-size: 0.6rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            z-index: 2;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-
-        .ticker-container {
-            flex: 1;
-            overflow: hidden;
-            position: relative;
-            height: 100%;
-        }
-
-        .ticker-track {
-            display: flex;
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            align-items: center;
-            animation: ticker 60s linear infinite;
-            will-change: transform;
-        }
-
-        .ticker-track:hover {
-            animation-play-state: paused;
-        }
-
-        .ticker-item {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0 2rem;
-            font-size: 0.75rem;
-            border-right: 1px solid rgba(255,255,255,0.2);
-            height: 100%;
-            white-space: nowrap;
-            cursor: pointer;
-            transition: background 0.3s;
-            text-decoration: none;
-            color: white;
-        }
-
-        .ticker-item:hover {
-            background: rgba(255,255,255,0.1);
-        }
-
-        .ticker-tag {
-            background: rgba(255,255,255,0.2);
-            padding: 0.15rem 0.5rem;
-            border-radius: 3px;
-            font-size: 0.6rem;
-            text-transform: uppercase;
-            font-weight: 600;
-            letter-spacing: 0.05em;
-        }
-
-        .ticker-tag.early { background: var(--green); color: white; }
-        .ticker-tag.agent { background: var(--purple); color: white; }
-        .ticker-tag.farcaster { background: #855DCD; color: white; }
-
-        @keyframes ticker {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
-        .main {
-            position: relative;
-            z-index: 10;
-            padding-top: 120px;
-        }
-
-        .hero {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 2rem 1rem 1.5rem;
-            text-align: center;
-        }
-
-        .title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-            line-height: 1.3;
-        }
-
-        @media (min-width: 768px) {
-            .title {
-                font-size: 2rem;
-            }
-        }
-
-        .cursor {
-            display: inline-block;
-            width: 2px;
-            height: 1em;
-            background: var(--base-blue);
-            margin-left: 0.15rem;
-            animation: blink 1s step-end infinite;
-            vertical-align: text-bottom;
-        }
-
-        .subtitle {
-            font-size: 0.8rem;
-            color: var(--gray);
-            max-width: 500px;
-            margin: 0 auto 1rem;
-            line-height: 1.6;
-        }
-
-        @media (min-width: 768px) {
-            .subtitle {
-                font-size: 0.9rem;
-            }
-        }
-
-        .badges {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            justify-content: center;
-        }
-
-        .badge {
-            font-size: 0.6rem;
-            padding: 0.35rem 0.6rem;
-            border: 1px solid var(--light-gray);
-            border-radius: 2px;
-            color: var(--gray);
-        }
-
-        .badge.live {
-            border-color: var(--base-blue);
-            color: var(--base-blue);
-            background: rgba(0, 0, 255, 0.05);
-        }
-
-        .badge.verified {
-            border-color: var(--blue);
-            color: var(--blue);
-            background: rgba(59, 130, 246, 0.05);
-        }
-
-        .badge.scam-warning {
-            border-color: var(--red);
-            color: var(--red);
-            background: rgba(239, 68, 68, 0.05);
-        }
-
-        .category-nav {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
-
-        .category-title {
-            font-size: 0.65rem;
-            color: var(--gray);
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        .tabs {
-            display: flex;
-            gap: 0.25rem;
-            border-bottom: 1px solid var(--light-gray);
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            padding-bottom: 1px;
-        }
-
-        .tab-btn {
-            padding: 0.6rem 0.8rem;
-            background: none;
-            border: none;
-            font-family: inherit;
-            font-size: 0.65rem;
-            font-weight: 500;
-            color: var(--gray);
-            cursor: pointer;
-            transition: all 0.3s;
-            border-bottom: 2px solid transparent;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-
-        .tab-btn:hover {
-            color: var(--base-blue);
-        }
-
-        .tab-btn.active {
-            color: var(--base-blue);
-            border-bottom-color: var(--base-blue);
-        }
-
-        .content {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 1rem;
-            min-height: 400px;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 1px solid var(--light-gray);
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .section-header h2 {
-            font-size: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 0.05em;
-            color: var(--base-blue);
-        }
-
-        .source {
-            font-size: 0.6rem;
-            color: var(--gray);
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .stat-card {
-            border: 1px solid var(--light-gray);
-            padding: 0.75rem;
-            text-align: center;
-            transition: all 0.3s;
-        }
-
-        .stat-card:hover {
-            border-color: var(--base-blue);
-        }
-
-        .stat-value {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-            color: var(--base-blue);
-        }
-
-        .stat-label {
-            font-size: 0.55rem;
-            color: var(--gray);
-            letter-spacing: 0.05em;
-        }
-
-        .feed {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .feed-item {
-            border: 1px solid var(--light-gray);
-            padding: 1rem;
-            transition: all 0.3s;
-            position: relative;
-            background: var(--bg);
-        }
-
-        .feed-item:hover {
-            border-color: var(--base-blue);
-        }
-
-        .feed-item.sale { border-left: 3px solid var(--green); }
-        .feed-item.mint { border-left: 3px solid var(--blue); }
-        .feed-item.listing { border-left: 3px solid var(--purple); }
-        .feed-item.auction { border-left: 3px solid var(--orange); }
-        .feed-item.tweet { border-left: 3px solid var(--base-blue); }
-        .feed-item.article { border-left: 3px solid var(--red); }
-        .feed-item.publication { border-left: 3px solid #ec4899; }
-        .feed-item.cast { border-left: 3px solid #855DCD; }
-        .feed-item.baseapp { border-left: 3px solid #0052FF; }
-        .feed-item.verified { border-left: 3px solid var(--blue); }
-        .feed-item.scam { border-left: 3px solid var(--red); background: #fef2f2; }
-
-        .feed-header {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 0.5rem;
-            font-size: 0.6rem;
-        }
-
-        .feed-type {
-            font-weight: 600;
-            text-transform: uppercase;
-            color: var(--base-blue);
-        }
-
-        .feed-platform {
-            color: var(--gray);
-        }
-
-        .feed-time {
-            color: var(--gray);
-            margin-left: auto;
-        }
-
-        .verified-badge {
-            color: var(--blue);
-            font-size: 0.7rem;
-        }
-
-        .scam-warning {
-            background: var(--red);
-            color: white;
-            padding: 0.1rem 0.4rem;
-            border-radius: 2px;
-            font-size: 0.55rem;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .feed-title {
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 0.4rem;
-            line-height: 1.3;
-        }
-
-        .feed-excerpt {
-            font-size: 0.8rem;
-            color: var(--gray);
-            line-height: 1.5;
-            margin-bottom: 0.5rem;
-        }
-
-        .tweet-text, .cast-text {
-            font-size: 0.85rem;
-            line-height: 1.5;
-            margin-bottom: 0.5rem;
-        }
-
-        .cast-stats, .tweet-stats {
-            display: flex;
-            gap: 1rem;
-            font-size: 0.7rem;
-            color: var(--gray);
-        }
-
-        .feed-meta {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-size: 0.65rem;
-            color: var(--gray);
-            font-family: monospace;
-            flex-wrap: wrap;
-        }
-
-        .feed-value {
-            color: var(--green);
-            font-weight: 600;
-        }
-
-        .source-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-            padding: 0.4rem 0.8rem;
-            background: var(--bg);
-            border: 1px solid var(--light-gray);
-            color: var(--gray);
-            font-family: inherit;
-            font-size: 0.65rem;
-            text-decoration: none;
-            border-radius: 3px;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
-        .source-btn:hover {
-            border-color: var(--base-blue);
-            color: var(--base-blue);
-            background: rgba(0, 0, 255, 0.03);
-        }
-
-        .source-btn::after {
-            content: '↗';
-            font-size: 0.8rem;
-            opacity: 0.7;
-        }
-
-        .feed-link {
-            position: absolute;
-            top: 0.75rem;
-            right: 0.75rem;
-            opacity: 0;
-            transition: opacity 0.3s;
-            text-decoration: none;
-            color: var(--base-blue);
-            font-size: 1rem;
-        }
-
-        .feed-item:hover .feed-link {
-            opacity: 1;
-        }
-
-        .feed-index {
-            position: absolute;
-            bottom: 0.35rem;
-            right: 0.35rem;
-            font-size: 0.55rem;
-            color: #ccc;
-        }
-
-        /* Scam Alert Section */
-        .scam-alert {
-            max-width: 900px;
-            margin: 0 auto 1rem;
-            padding: 0 1rem;
-        }
-
-        .scam-alert-box {
-            background: #fef2f2;
-            border: 1px solid var(--red);
-            border-radius: 4px;
-            padding: 1rem;
-        }
-
-        .scam-alert-title {
-            font-size: 0.75rem;
-            color: var(--red);
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .scam-list {
-            font-size: 0.7rem;
-            color: var(--gray);
-            list-style: none;
-        }
-
-        .scam-list li {
-            padding: 0.25rem 0;
-            border-bottom: 1px solid #fee2e2;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .scam-list li:last-child {
-            border-bottom: none;
-        }
-
-        .scam-risk {
-            color: var(--red);
-            font-weight: 600;
-        }
-
-        /* Footer Docs */
-        .footer-docs {
-            background: #f9fafb;
-            border-top: 1px solid var(--light-gray);
-            padding: 2rem 1rem;
-        }
-
-        .footer-docs-content {
-            max-width: 900px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-        }
-
-        @media (min-width: 768px) {
-            .footer-docs-content {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        .doc-section h4 {
-            font-size: 0.7rem;
-            color: var(--text);
-            margin-bottom: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        .doc-section ul {
-            list-style: none;
-            font-size: 0.7rem;
-        }
-
-        .doc-section li {
-            margin-bottom: 0.5rem;
-        }
-
-        .doc-section a {
-            color: var(--gray);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .doc-section a:hover {
-            color: var(--base-blue);
-        }
-
-        .doc-section p {
-            font-size: 0.7rem;
-            color: var(--gray);
-            line-height: 1.6;
-        }
-
-        .footer {
-            border-top: 1px solid var(--light-gray);
-            padding: 1.5rem 1rem;
-            background: var(--bg);
-        }
-
-        .footer-content {
-            max-width: 900px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            font-size: 0.7rem;
-            color: var(--gray);
-            text-align: center;
-        }
-
-        @media (min-width: 768px) {
-            .footer-content {
-                flex-direction: row;
-                justify-content: space-between;
-                text-align: left;
-            }
-        }
-
-        .links {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .links a {
-            color: var(--gray);
-            text-decoration: none;
-            position: relative;
-        }
-
-        .links a:hover {
-            color: var(--base-blue);
-        }
-
-        .copyright {
-            font-size: 0.65rem;
-            color: #999;
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--light-gray);
-            text-align: center;
-        }
-
-        /* Modal Styles */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            padding: 1rem;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        .modal {
-            background: white;
-            max-width: 600px;
-            width: 100%;
-            max-height: 80vh;
-            overflow-y: auto;
-            border-radius: 4px;
-            border: 1px solid var(--light-gray);
-        }
-
-        .modal-header {
-            padding: 1rem;
-            border-bottom: 1px solid var(--light-gray);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .modal-header h3 {
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 1.2rem;
-            cursor: pointer;
-            color: var(--gray);
-        }
-
-        .modal-body {
-            padding: 1.5rem;
-            font-size: 0.75rem;
-            line-height: 1.8;
-            color: var(--text);
-        }
-
-        .modal-body h4 {
-            margin-top: 1rem;
-            margin-bottom: 0.5rem;
-            color: var(--base-blue);
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{--bg:#ffffff;--text:#0a0a0a;--gray:#666666;--light-gray:#e5e5e5;--base-blue:#0000ff;--green:#10b981;--blue:#3b82f6;--purple:#8b5cf6;--orange:#f97316;--red:#ef4444;--farcaster:#855DCD}
+        body{font-family:'Fira Code',monospace;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;min-height:100vh}
+        
+        /* Environment Badge */
+        .env-badge{position:fixed;top:10px;right:10px;padding:0.4rem 0.8rem;border-radius:20px;font-size:0.65rem;font-weight:600;z-index:10000;text-transform:uppercase;letter-spacing:0.05em;background:var(--gray);color:white}
+        .env-badge.base{background:#0052FF}
+        .env-badge.farcaster{background:#855DCD}
+        
+        /* Base Wallet Button */
+        .base-wallet-btn{background:#0052FF;color:white;border:none;padding:0.6rem 1.2rem;border-radius:8px;font-family:inherit;font-size:0.75rem;cursor:pointer;display:flex;align-items:center;gap:0.5rem;transition:all 0.3s}
+        .base-wallet-btn:hover{background:#0043d1;transform:translateY(-1px)}
+        .base-wallet-btn.connected{background:#10b981}
+        
+        /* Cast Button */
+        .cast-btn{background:#855DCD;color:white;border:none;padding:0.6rem 1.2rem;border-radius:8px;font-family:inherit;font-size:0.75rem;cursor:pointer;display:flex;align-items:center;gap:0.5rem}
+        
+        /* Background */
+        #bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.15}
+        .grain{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;opacity:0.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")}
+        
+        /* Header */
+        .header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--light-gray)}
+        .header-content{max-width:1200px;margin:0 auto;padding:0.75rem 1rem;display:flex;justify-content:space-between;align-items:center}
+        .logo{display:flex;align-items:center;gap:0.5rem}
+        .logo-text{font-weight:600;letter-spacing:0.05em;font-size:0.85rem}
+        .version{font-size:0.6rem;padding:0.15rem 0.4rem;border:1px solid var(--light-gray);border-radius:2px;color:var(--gray)}
+        .header-actions{display:flex;align-items:center;gap:0.75rem}
+        .status{display:flex;align-items:center;gap:0.5rem;font-size:0.65rem;color:var(--gray)}
+        .live-indicator{color:var(--base-blue);animation:pulse 2s infinite}
+        
+        /* Disclaimer */
+        .disclaimer{position:fixed;top:50px;left:0;right:0;z-index:99;background:#fef3c7;border-bottom:1px solid #f59e0b;padding:0.4rem 1rem;text-align:center;font-size:0.6rem;color:#92400e}
+        .disclaimer strong{color:#b45309}
+        .disclaimer a{color:#b45309;text-decoration:underline}
+        
+        /* Ticker */
+        .ticker-wrap{position:fixed;top:78px;left:0;right:0;z-index:98;background:var(--base-blue);color:white;height:30px;display:flex;align-items:center;overflow:hidden}
+        .ticker-label{background:rgba(0,0,0,0.2);padding:0 1rem;font-size:0.6rem;font-weight:600;text-transform:uppercase;height:100%;display:flex;align-items:center;flex-shrink:0;z-index:2}
+        .ticker-container{flex:1;overflow:hidden;position:relative;height:100%}
+        .ticker-track{display:flex;position:absolute;left:0;top:0;height:100%;align-items:center;animation:ticker 50s linear infinite;will-change:transform}
+        .ticker-track:hover{animation-play-state:paused}
+        .ticker-item{display:inline-flex;align-items:center;gap:0.5rem;padding:0 2rem;font-size:0.75rem;border-right:1px solid rgba(255,255,255,0.2);height:100%;white-space:nowrap;cursor:pointer;transition:background 0.3s;text-decoration:none;color:white}
+        .ticker-item:hover{background:rgba(255,255,255,0.1)}
+        .ticker-tag{background:rgba(255,255,255,0.2);padding:0.1rem 0.4rem;border-radius:3px;font-size:0.55rem;text-transform:uppercase;font-weight:600}
+        .ticker-tag.early{background:var(--green)}
+        .ticker-tag.agent{background:var(--purple)}
+        .ticker-tag.farcaster{background:#855DCD}
+        
+        @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+        @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+        
+        /* Main */
+        .main{position:relative;z-index:10;padding-top:120px}
+        .hero{max-width:900px;margin:0 auto;padding:2rem 1rem 1rem;text-align:center}
+        .title{font-size:1.6rem;font-weight:600;margin-bottom:0.5rem}
+        .cursor{display:inline-block;width:2px;height:1em;background:var(--base-blue);margin-left:0.15rem;animation:blink 1s step-end infinite;vertical-align:text-bottom}
+        @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+        .subtitle{font-size:0.8rem;color:var(--gray);max-width:500px;margin:0 auto 1rem}
+        
+        .badges{display:flex;flex-wrap:wrap;gap:0.4rem;justify-content:center;margin-bottom:1rem}
+        .badge{font-size:0.6rem;padding:0.3rem 0.6rem;border:1px solid var(--light-gray);border-radius:2px;color:var(--gray);background:white}
+        .badge.verified{border-color:var(--blue);color:var(--blue);background:rgba(59,130,246,0.05)}
+        .badge.scam{border-color:var(--red);color:var(--red);background:rgba(239,68,68,0.05)}
+        .badge.live{border-color:var(--base-blue);color:var(--base-blue);background:rgba(0,0,255,0.05)}
+        
+        /* Scam Alert */
+        .scam-alert{max-width:900px;margin:0 auto 1rem;padding:0 1rem}
+        .scam-box{background:#fef2f2;border:1px solid var(--red);border-radius:4px;padding:0.75rem 1rem}
+        .scam-title{font-size:0.7rem;color:var(--red);font-weight:600;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.4rem}
+        .scam-list{font-size:0.65rem;color:var(--gray);list-style:none}
+        .scam-list li{padding:0.2rem 0;border-bottom:1px solid #fee2e2;display:flex;justify-content:space-between}
+        .scam-list li:last-child{border-bottom:none}
+        .risk-high{color:var(--red);font-weight:600}
+        .risk-med{color:var(--orange);font-weight:600}
+        
+        /* Navigation */
+        .category-nav{max-width:900px;margin:0 auto;padding:0 1rem}
+        .category-title{font-size:0.6rem;color:var(--gray);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.1em}
+        .tabs{display:flex;gap:0.25rem;border-bottom:1px solid var(--light-gray);overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:1px;scrollbar-width:none}
+        .tabs::-webkit-scrollbar{display:none}
+        .tab-btn{padding:0.6rem 0.8rem;background:none;border:none;font-family:inherit;font-size:0.65rem;font-weight:500;color:var(--gray);cursor:pointer;transition:all 0.3s;border-bottom:2px solid transparent;white-space:nowrap;flex-shrink:0}
+        .tab-btn:hover{color:var(--base-blue)}
+        .tab-btn.active{color:var(--base-blue);border-bottom-color:var(--base-blue)}
+        
+        /* Content */
+        .content{max-width:900px;margin:0 auto;padding:1rem;min-height:400px}
+        .tab-content{display:none}
+        .tab-content.active{display:block;animation:fadeIn 0.3s ease}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+        
+        .section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;padding-bottom:0.75rem;border-bottom:1px solid var(--light-gray);flex-wrap:wrap;gap:0.5rem}
+        .section-header h2{font-size:0.75rem;font-weight:600;letter-spacing:0.05em;color:var(--base-blue)}
+        
+        .source-btn{display:inline-flex;align-items:center;gap:0.3rem;padding:0.4rem 0.8rem;background:white;border:1px solid var(--light-gray);color:var(--gray);font-family:inherit;font-size:0.65rem;text-decoration:none;border-radius:3px;transition:all 0.3s;cursor:pointer}
+        .source-btn:hover{border-color:var(--base-blue);color:var(--base-blue);background:rgba(0,0,255,0.03)}
+        .source-btn::after{content:'↗';font-size:0.8rem;opacity:0.7}
+        
+        /* Stats */
+        .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;margin-bottom:1rem}
+        .stat-card{border:1px solid var(--light-gray);padding:0.75rem;text-align:center;transition:all 0.3s;background:white}
+        .stat-card:hover{border-color:var(--base-blue)}
+        .stat-value{font-size:1.1rem;font-weight:600;color:var(--base-blue);margin-bottom:0.25rem}
+        .stat-label{font-size:0.55rem;color:var(--gray);letter-spacing:0.05em}
+        
+        /* Feed */
+        .feed{display:flex;flex-direction:column;gap:0.75rem}
+        .feed-item{border:1px solid var(--light-gray);padding:1rem;transition:all 0.3s;position:relative;background:white;border-radius:2px}
+        .feed-item:hover{border-color:var(--base-blue);transform:translateY(-1px);box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+        
+        .feed-item.sale{border-left:3px solid var(--green)}
+        .feed-item.mint{border-left:3px solid var(--blue)}
+        .feed-item.tweet{border-left:3px solid var(--base-blue)}
+        .feed-item.cast{border-left:3px solid #855DCD}
+        .feed-item.baseapp{border-left:3px solid #0052FF}
+        .feed-item.article{border-left:3px solid var(--red)}
+        .feed-item.publication{border-left:3px solid #ec4899}
+        .feed-item.verified{border-left:3px solid var(--blue)}
+        
+        .feed-header{display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem;font-size:0.6rem}
+        .feed-type{font-weight:600;text-transform:uppercase;color:var(--base-blue)}
+        .feed-platform{color:var(--gray)}
+        .feed-time{color:var(--gray);margin-left:auto;font-size:0.55rem}
+        .verified-badge{color:var(--blue);font-size:0.7rem;margin-left:0.2rem}
+        
+        .feed-title{font-size:0.9rem;font-weight:600;margin-bottom:0.4rem;line-height:1.3}
+        .feed-excerpt{font-size:0.8rem;color:var(--gray);line-height:1.5;margin-bottom:0.5rem}
+        .tweet-text,.cast-text{font-size:0.85rem;line-height:1.5;margin-bottom:0.5rem}
+        
+        .tweet-stats,.cast-stats{display:flex;gap:1rem;font-size:0.7rem;color:var(--gray)}
+        .feed-meta{display:flex;align-items:center;gap:0.75rem;font-size:0.65rem;color:var(--gray);font-family:monospace;flex-wrap:wrap}
+        .feed-value{color:var(--green);font-weight:600}
+        
+        .feed-link{position:absolute;top:0.75rem;right:0.75rem;opacity:0;transition:opacity 0.3s;text-decoration:none;color:var(--base-blue);font-size:1rem}
+        .feed-item:hover .feed-link{opacity:1}
+        .feed-index{position:absolute;bottom:0.35rem;right:0.35rem;font-size:0.55rem;color:#ccc}
+        
+        /* Footer */
+        .footer-docs{background:#f9fafb;border-top:1px solid var(--light-gray);padding:2rem 1rem;margin-top:2rem}
+        .docs-content{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:1.5rem}
+        @media(min-width:768px){.docs-content{grid-template-columns:repeat(3,1fr)}}
+        .doc-section h4{font-size:0.7rem;color:var(--text);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.1em}
+        .doc-section ul{list-style:none;font-size:0.7rem}
+        .doc-section li{margin-bottom:0.5rem}
+        .doc-section a{color:var(--gray);text-decoration:none;transition:color 0.3s}
+        .doc-section a:hover{color:var(--base-blue)}
+        .doc-section p{font-size:0.7rem;color:var(--gray);line-height:1.6}
+        
+        .footer{border-top:1px solid var(--light-gray);padding:1.5rem 1rem;background:white}
+        .footer-content{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:0.75rem;font-size:0.7rem;color:var(--gray);text-align:center}
+        @media(min-width:768px){.footer-content{flex-direction:row;justify-content:space-between;text-align:left}}
+        .links{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap}
+        .links a{color:var(--gray);text-decoration:none}
+        .links a:hover{color:var(--base-blue)}
+        .copyright{font-size:0.65rem;color:#999;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--light-gray);text-align:center}
+        
+        /* Modal */
+        .modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:10000;justify-content:center;align-items:center;padding:1rem;backdrop-filter:blur(4px)}
+        .modal-overlay.active{display:flex}
+        .modal{background:white;max-width:600px;width:100%;max-height:85vh;overflow-y:auto;border-radius:4px;border:1px solid var(--light-gray);box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+        .modal-header{padding:1rem;border-bottom:1px solid var(--light-gray);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:white;z-index:10}
+        .modal-header h3{font-size:0.9rem;font-weight:600}
+        .modal-close{background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--gray);line-height:1}
+        .modal-close:hover{color:var(--text)}
+        .modal-body{padding:1.5rem;font-size:0.75rem;line-height:1.8;color:var(--text)}
+        .modal-body h4{margin-top:1.25rem;margin-bottom:0.5rem;color:var(--base-blue);font-size:0.8rem}
+        .modal-body p{margin-bottom:0.75rem}
+        .modal-body ul{margin-left:1rem;margin-bottom:0.75rem}
+        .modal-body li{margin-bottom:0.25rem}
+        
+        /* Mobile */
+        @media(max-width:640px){
+            .title{font-size:1.2rem}
+            .ticker-wrap{top:70px;height:28px}
+            .ticker-item{font-size:0.7rem;padding:0 1rem}
+            .disclaimer{top:45px;font-size:0.55rem;padding:0.3rem}
+            .main{padding-top:105px}
+            .stats-grid{grid-template-columns:1fr}
+            .env-badge{font-size:0.55rem;padding:0.3rem 0.6rem}
+        }
+        
+        /* Frame Mode */
+        body.frame-mode .header,
+        body.frame-mode .disclaimer,
+        body.frame-mode .ticker-wrap,
+        body.frame-mode .footer-docs,
+        body.frame-mode .footer,
+        body.frame-mode .category-nav,
+        body.frame-mode .scam-alert{display:none!important}
+        body.frame-mode .main{padding-top:20px}
+        body.frame-mode .hero{padding:1rem}
     </style>
 </head>
 <body>
     <canvas id="bg-canvas"></canvas>
     <div class="grain"></div>
-
+    
+    <div class="env-badge web" id="env-badge">Web</div>
+    
     <header class="header">
         <div class="header-content">
             <div class="logo">
                 <span class="logo-text">ARTHOUSE</span>
-                <span class="version">v1.9</span>
+                <span class="version">v2.0</span>
             </div>
-            <div class="status">
-                <span id="clock">00:00:00</span>
-                <span class="live-indicator">●</span>
+            <div class="header-actions">
+                <div class="status">
+                    <span id="clock">00:00:00</span>
+                    <span class="live-indicator">●</span>
+                </div>
+                <button id="wallet-btn" class="base-wallet-btn" style="display:none">
+                    <span>🅱</span> <span id="wallet-text">Connect</span>
+                </button>
+                <button id="cast-btn" class="cast-btn" style="display:none" onclick="cast()">
+                    <span>🟣</span> Cast
+                </button>
             </div>
         </div>
     </header>
-
-    <!-- Disclaimer Banner -->
-    <div class="disclaimer-banner">
-        <span>⚠️</span>
-        <span><strong>NOT FINANCIAL ADVICE</strong> — DYOR (Do Your Own Research). All data for informational purposes only. <a href="#" onclick="openModal('terms')" style="color: #b45309; text-decoration: underline;">Read Terms</a></span>
+    
+    <div class="disclaimer">
+        <strong>NOT FINANCIAL ADVICE</strong> — DYOR. All data for informational purposes only. 
+        <a href="#" onclick="openModal('terms');return false">Read Terms</a>
     </div>
-
-    <!-- Live Ticker - Slow & Clickable -->
+    
     <div class="ticker-wrap">
         <div class="ticker-label">🔥 BASE ALPHA</div>
         <div class="ticker-container">
-            <div class="ticker-track" id="ticker-track">
-                <!-- Populated by JS -->
-            </div>
+            <div class="ticker-track" id="ticker-track"></div>
         </div>
     </div>
-
+    
     <main class="main">
         <section class="hero">
-            <h1 class="title">
-                <span id="typewriter"></span><span class="cursor">_</span>
-            </h1>
-            
-            <p class="subtitle">
-                Art intelligence from social, on-chain, and decentralized sources. <strong>Verified accounts only.</strong>
-            </p>
-
+            <h1 class="title"><span id="typewriter"></span><span class="cursor">_</span></h1>
+            <p class="subtitle">Verified art intelligence for Base ecosystem. <strong>Blue checks only.</strong></p>
             <div class="badges">
-                <span class="badge verified">✓ VERIFIED ONLY</span>
-                <span class="badge">𝕏 SOCIAL</span>
-                <span class="badge">🟣 FARCASTER</span>
-                <span class="badge">🅱 BASE</span>
-                <span class="badge">📝 PARAGRAPH</span>
-                <span class="badge scam-warning">🛡️ SCAM FILTER</span>
+                <span class="badge verified">✓ VERIFIED</span>
+                <span class="badge">𝕏</span>
+                <span class="badge">🟣 Farcaster</span>
+                <span class="badge">🅱 Base</span>
+                <span class="badge scam">🛡️ SCAM FILTER</span>
                 <span class="badge live">● LIVE</span>
             </div>
         </section>
-
-        <!-- Scam Alert Section -->
+        
         <div class="scam-alert">
-            <div class="scam-alert-box">
-                <div class="scam-alert-title">
-                    <span>🛡️</span>
-                    <span>POTENTIAL SCAM ALERTS — LAST 24H</span>
-                </div>
-                <ul class="scam-list" id="scam-list">
-                    <!-- Populated by JS -->
-                </ul>
+            <div class="scam-box">
+                <div class="scam-title">🛡️ POTENTIAL SCAM ALERTS — LAST 24H</div>
+                <ul class="scam-list" id="scam-list"></ul>
             </div>
         </div>
-
+        
         <nav class="category-nav">
-            <div class="category-title">Select Category</div>
+            <div class="category-title">Select Feed</div>
             <div class="tabs">
-                <button class="tab-btn active" onclick="switchTab('xfeed', this)">
-                    𝕏 SOCIAL
-                </button>
-                <button class="tab-btn" onclick="switchTab('farcaster', this)">
-                    🟣 FARCASTER
-                </button>
-                <button class="tab-btn" onclick="switchTab('baseapp', this)">
-                    🅱 BASE.APP
-                </button>
-                <button class="tab-btn" onclick="switchTab('paragraph', this)">
-                    📝 PARAGRAPH
-                </button>
-                <button class="tab-btn" onclick="switchTab('onchain', this)">
-                    ⛓ ONCHAIN
-                </button>
-                <button class="tab-btn" onclick="switchTab('market', this)">
-                    📊 MARKET
-                </button>
-                <button class="tab-btn" onclick="switchTab('drops', this)">
-                    🎨 DROPS
-                </button>
-                <button class="tab-btn" onclick="switchTab('news', this)">
-                    📰 NEWS
-                </button>
+                <button class="tab-btn active" onclick="switchTab('xfeed',this)">𝕏 SOCIAL</button>
+                <button class="tab-btn" onclick="switchTab('farcaster',this)">🟣 FARCASTER</button>
+                <button class="tab-btn" onclick="switchTab('baseapp',this)">🅱 BASE.APP</button>
+                <button class="tab-btn" onclick="switchTab('paragraph',this)">📝 PARAGRAPH</button>
+                <button class="tab-btn" onclick="switchTab('onchain',this)">⛓ ONCHAIN</button>
+                <button class="tab-btn" onclick="switchTab('market',this)">📊 MARKET</button>
+                <button class="tab-btn" onclick="switchTab('drops',this)">🎨 DROPS</button>
             </div>
         </nav>
-
+        
         <section class="content">
-            <!-- X SOCIAL FEED -->
             <div id="xfeed" class="tab-content active">
-                <div class="section-header">
-                    <h2>𝕏 VERIFIED ART COMMUNITY</h2>
-                    <a href="https://x.com/search?q=base%20nft%20art&src=typed_query&f=live" target="_blank" class="source-btn">View on X</a>
-                </div>
+                <div class="section-header"><h2>𝕏 VERIFIED ARTISTS</h2><a href="https://x.com/search?q=base%20nft%20art&f=live" target="_blank" class="source-btn">Open X</a></div>
                 <div id="x-feed" class="feed"></div>
             </div>
-
-            <!-- Farcaster Feed -->
+            
             <div id="farcaster" class="tab-content">
-                <div class="section-header">
-                    <h2>🟣 VERIFIED FARCASTER CASTS</h2>
-                    <a href="https://warpcast.com/~/search?q=base%20nft" target="_blank" class="source-btn">View on Warpcast</a>
-                </div>
+                <div class="section-header"><h2>🟣 VERIFIED CASTS</h2><a href="https://warpcast.com/~/search?q=base%20nft" target="_blank" class="source-btn">Open Warpcast</a></div>
                 <div id="farcaster-feed" class="feed"></div>
             </div>
-
-            <!-- Base.app Feed -->
+            
             <div id="baseapp" class="tab-content">
-                <div class="section-header">
-                    <h2>🅱 BASE.APP VERIFIED ACTIVITY</h2>
-                    <a href="https://base.app" target="_blank" class="source-btn">View on Base.app</a>
-                </div>
+                <div class="section-header"><h2>🅱 BASE.APP TRENDING</h2><a href="https://base.app" target="_blank" class="source-btn">Open Base.app</a></div>
                 <div id="baseapp-feed" class="feed"></div>
             </div>
-
-            <!-- Paragraph.xyz Feed -->
+            
             <div id="paragraph" class="tab-content">
-                <div class="section-header">
-                    <h2>📝 VERIFIED PARAGRAPH PUBLICATIONS</h2>
-                    <a href="https://paragraph.xyz" target="_blank" class="source-btn">View on Paragraph</a>
-                </div>
+                <div class="section-header"><h2>📝 VERIFIED PUBLICATIONS</h2><a href="https://paragraph.xyz" target="_blank" class="source-btn">Open Paragraph</a></div>
                 <div id="paragraph-feed" class="feed"></div>
             </div>
-
-            <!-- On-chain Activity -->
+            
             <div id="onchain" class="tab-content">
-                <div class="section-header">
-                    <h2>⛓ BASE ONCHAIN ACTIVITY</h2>
-                    <a href="https://basescan.org" target="_blank" class="source-btn">View on Basescan</a>
-                </div>
+                <div class="section-header"><h2>⛓ BASE ACTIVITY</h2><a href="https://basescan.org" target="_blank" class="source-btn">Open Basescan</a></div>
                 <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-value" id="stat-sales">0</div>
-                        <div class="stat-label">💰 SALES</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="stat-mints">0</div>
-                        <div class="stat-label">✨ MINTS</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="stat-volume">0</div>
-                        <div class="stat-label">⧫ VOLUME</div>
-                    </div>
+                    <div class="stat-card"><div class="stat-value" id="stat-sales">0</div><div class="stat-label">💰 SALES</div></div>
+                    <div class="stat-card"><div class="stat-value" id="stat-mints">0</div><div class="stat-label">✨ MINTS</div></div>
+                    <div class="stat-card"><div class="stat-value" id="stat-volume">0</div><div class="stat-label">⧫ VOLUME</div></div>
                 </div>
                 <div id="onchain-feed" class="feed"></div>
             </div>
-
-            <!-- Market Data -->
+            
             <div id="market" class="tab-content">
-                <div class="section-header">
-                    <h2>📊 MARKET ANALYTICS</h2>
-                    <a href="https://opensea.io/rankings?chain=base" target="_blank" class="source-btn">View on OpenSea</a>
-                </div>
+                <div class="section-header"><h2>📊 MARKET DATA</h2><a href="https://opensea.io/rankings?chain=base" target="_blank" class="source-btn">Open OpenSea</a></div>
                 <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-value" id="stat-floor">12.5</div>
-                        <div class="stat-label">📈 FLOOR_ETH</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="stat-vol-24h">245</div>
-                        <div class="stat-label">📊 VOL_24H</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="stat-holders">8.2K</div>
-                        <div class="stat-label">👥 HOLDERS</div>
-                    </div>
+                    <div class="stat-card"><div class="stat-value">12.5</div><div class="stat-label">📈 FLOOR ETH</div></div>
+                    <div class="stat-card"><div class="stat-value">245</div><div class="stat-label">📊 VOL 24H</div></div>
+                    <div class="stat-card"><div class="stat-value">8.2K</div><div class="stat-label">👥 HOLDERS</div></div>
                 </div>
                 <div id="market-feed" class="feed"></div>
             </div>
-
-            <!-- NFT Drops -->
+            
             <div id="drops" class="tab-content">
-                <div class="section-header">
-                    <h2>🎨 VERIFIED UPCOMING DROPS</h2>
-                    <a href="https://paragraph.xyz/@basednfts" target="_blank" class="source-btn">View Calendar</a>
-                </div>
+                <div class="section-header"><h2>🎨 VERIFIED DROPS</h2><a href="https://paragraph.xyz/@basednfts" target="_blank" class="source-btn">View Calendar</a></div>
                 <div id="drops-feed" class="feed"></div>
-            </div>
-
-            <!-- Art News -->
-            <div id="news" class="tab-content">
-                <div class="section-header">
-                    <h2>📰 VERIFIED ART NEWS</h2>
-                    <a href="https://rss.app" target="_blank" class="source-btn">View Sources</a>
-                </div>
-                <div id="news-feed" class="feed"></div>
             </div>
         </section>
     </main>
-
-    <!-- Footer Documentation -->
+    
     <div class="footer-docs">
-        <div class="footer-docs-content">
+        <div class="docs-content">
             <div class="doc-section">
                 <h4>Documentation</h4>
                 <ul>
-                    <li><a href="#" onclick="openModal('about')">About ARTHOUSE</a></li>
-                    <li><a href="#" onclick="openModal('methodology')">Data Methodology</a></li>
-                    <li><a href="#" onclick="openModal('verified')">Verification Standards</a></li>
-                    <li><a href="#" onclick="openModal('api')">API Access</a></li>
+                    <li><a href="#" onclick="openModal('about');return false">About ARTHOUSE</a></li>
+                    <li><a href="#" onclick="openModal('methodology');return false">Data Methodology</a></li>
+                    <li><a href="#" onclick="openModal('verified');return false">Verification Standards</a></li>
                 </ul>
             </div>
             <div class="doc-section">
                 <h4>Legal & Safety</h4>
                 <ul>
-                    <li><a href="#" onclick="openModal('terms')">Terms of Service</a></li>
-                    <li><a href="#" onclick="openModal('privacy')">Privacy Policy</a></li>
-                    <li><a href="#" onclick="openModal('cookies')">Cookie Policy</a></li>
-                    <li><a href="#" onclick="openModal('disclaimer')">Financial Disclaimer</a></li>
-                    <li><a href="#" onclick="openModal('scam')">Scam Reporting</a></li>
+                    <li><a href="#" onclick="openModal('terms');return false">Terms of Service</a></li>
+                    <li><a href="#" onclick="openModal('privacy');return false">Privacy Policy</a></li>
+                    <li><a href="#" onclick="openModal('cookies');return false">Cookie Policy</a></li>
+                    <li><a href="#" onclick="openModal('disclaimer');return false">Financial Disclaimer</a></li>
+                    <li><a href="#" onclick="openModal('scam');return false">Report Scam</a></li>
                 </ul>
             </div>
             <div class="doc-section">
-                <h4>Verification & Safety</h4>
-                <p style="margin-bottom: 0.5rem;">
-                    <strong>✓ Blue Check:</strong> Only verified accounts with established reputation.
-                </p>
-                <p style="margin-bottom: 0.5rem;">
-                    <strong>🛡️ Scam Filter:</strong> Automated + community-reported scam detection.
-                </p>
-                <p>
-                    <strong>⚠️ DYOR:</strong> Always verify independently before transacting.
-                </p>
+                <h4>Verification</h4>
+                <p><strong>✓ Blue Check:</strong> Platform-verified accounts only.</p>
+                <p style="margin-top:0.5rem"><strong>🛡️ Scam Filter:</strong> Community + AI detection.</p>
+                <p style="margin-top:0.5rem"><strong>⚠️ DYOR:</strong> Always verify independently.</p>
             </div>
         </div>
     </div>
-
+    
     <footer class="footer">
         <div class="footer-content">
-            <div>
-                <strong>ARTHOUSE</strong> // Verified Multi-Source Intelligence
-            </div>
+            <div><strong>ARTHOUSE</strong> // Verified Intelligence</div>
             <div class="links">
                 <a href="https://x.com" target="_blank">𝕏</a>
-                <a href="https://warpcast.com" target="_blank">FARCASTER</a>
-                <a href="https://base.app" target="_blank">BASE.APP</a>
-                <a href="https://paragraph.xyz" target="_blank">PARAGRAPH</a>
-                <a href="https://github.com" target="_blank">GITHUB</a>
-                <a href="#" onclick="openModal('contact')">CONTACT</a>
+                <a href="https://warpcast.com" target="_blank">Farcaster</a>
+                <a href="https://base.app" target="_blank">Base</a>
+                <a href="https://paragraph.xyz" target="_blank">Paragraph</a>
             </div>
         </div>
         <div class="copyright">
-            © 2024 ARTHOUSE. Not financial advice. DYOR. All rights reserved. | 
-            <a href="#" onclick="openModal('cookies')" style="color: #999;">Manage Cookies</a>
+            © 2024 ARTHOUSE. Not financial advice. DYOR. | 
+            <a href="#" onclick="openModal('cookies');return false" style="color:#999">Manage Cookies</a>
         </div>
     </footer>
-
-    <!-- Modals -->
+    
     <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
         <div class="modal" onclick="event.stopPropagation()">
             <div class="modal-header">
                 <h3 id="modal-title">Title</h3>
                 <button class="modal-close" onclick="closeModal()">×</button>
             </div>
-            <div class="modal-body" id="modal-body">
-                <!-- Content populated by JS -->
-            </div>
+            <div class="modal-body" id="modal-body"></div>
         </div>
     </div>
-
+    
     <script>
-        // ===== DATA =====
-        
-        const TICKER_DATA = [
-            { text: "Blooze AI launching autonomous art curator on Base", tag: "agent", type: "agent", url: "https://x.com/search?q=Blooze+AI+Base" },
-            { text: "Based Fellas NFT collection hits 1M volume", tag: "early", type: "early", url: "https://x.com/search?q=Based+Fellas+1M" },
-            { text: "Agent XYZ announces on-chain gallery protocol", tag: "agent", type: "agent", url: "https://x.com/search?q=Agent+XYZ+gallery" },
-            { text: "Early Birds mint sold out in 4 minutes", tag: "early", type: "early", url: "https://x.com/search?q=Early+Birds+mint" },
-            { text: "BasePaint daily auction reaches 2.5 ETH", tag: "early", type: "early", url: "https://x.com/search?q=BasePaint+auction" },
-            { text: "ArtBot v2.0 live with generative minting", tag: "agent", type: "agent", url: "https://x.com/search?q=ArtBot+v2" },
-            { text: "Based Ghouls reveal delayed 24h", tag: "early", type: "early", url: "https://x.com/search?q=Based+Ghouls" },
-            { text: "AI curator 'Muse' acquires first NFT", tag: "agent", type: "agent", url: "https://x.com/search?q=Muse+AI+NFT" },
-            { text: "Base Colors free mint trending", tag: "early", type: "early", url: "https://x.com/search?q=Base+Colors+mint" },
-            { text: "Agent Smith proposes DAO for digital art", tag: "agent", type: "agent", url: "https://x.com/search?q=Agent+Smith+DAO" },
-            { text: "Pixelmon Base migration complete", tag: "early", type: "early", url: "https://x.com/search?q=Pixelmon+Base" },
-            { text: "Neural Canvas AI drop incoming", tag: "agent", type: "agent", url: "https://x.com/search?q=Neural+Canvas" },
-            { text: "Farcaster Frames enable instant minting", tag: "farcaster", type: "farcaster", url: "https://warpcast.com/~/search?q=frames+mint" },
-            { text: "Base.app launches native NFT viewer", tag: "early", type: "early", url: "https://base.app" }
-        ];
-
-        const SCAM_DATA = [
-            { name: "fake-basepaint.eth", risk: "HIGH", type: "Impersonation", reported: "2h ago" },
-            { name: "based-fellas-copy.xyz", risk: "HIGH", type: "Phishing", reported: "4h ago" },
-            { name: "@BaseNFT_Official (fake)", risk: "MEDIUM", type: "Fake Account", reported: "6h ago" },
-            { name: "early-birds-premint.xyz", risk: "HIGH", type: "Drainer", reported: "8h ago" },
-            { name: "artblocks-base.io", risk: "MEDIUM", type: "Counterfeit", reported: "12h ago" }
-        ];
-
-        const X_DATA = [
-            {
-                id: 'x1',
-                handle: '@digital_art_daily',
-                name: 'Digital Art Daily ✓',
-                verified: true,
-                text: 'Just discovered an incredible generative art collection on Base. The intersection of code and creativity continues to evolve. Thread below 👇',
-                likes: 234,
-                retweets: 45,
-                time: '15m ago',
-                url: 'https://x.com/digital_art_daily/status/1'
-            },
-            {
-                id: 'x2',
-                handle: '@nftcollector',
-                name: 'NFT Collector ✓',
-                verified: true,
-                text: 'Floor prices on Base NFTs showing steady growth this week. Blue-chip collections holding strong despite market volatility. #BaseNFT',
-                likes: 567,
-                retweets: 89,
-                time: '42m ago',
-                url: 'https://x.com/nftcollector/status/2'
-            },
-            {
-                id: 'x3',
-                handle: '@artblocks',
-                name: 'Art Blocks ✓',
-                verified: true,
-                text: 'New Curated drop announcement: Tyler Hobbs returns with Fidenza-inspired collection. Minting exclusively on Base next week.',
-                likes: 1203,
-                retweets: 234,
-                time: '1h ago',
-                url: 'https://x.com/artblocks/status/3'
-            },
-            {
-                id: 'x4',
-                handle: '@basenft',
-                name: 'Base NFTs ✓',
-                verified: true,
-                text: 'Weekly recap: 12K new wallets, $2.4M volume, 45 new collections. The Base art ecosystem is thriving. Data below 📊',
-                likes: 892,
-                retweets: 156,
-                time: '3h ago',
-                url: 'https://x.com/basenft/status/4'
-            },
-            {
-                id: 'x5',
-                handle: '@generative_art',
-                name: 'Generative Art ✓',
-                verified: true,
-                text: 'Long-form generative art is finding its home on Base. Lower gas fees = more experimentation. Artists are noticing.',
-                likes: 445,
-                retweets: 67,
-                time: '5h ago',
-                url: 'https://x.com/generative_art/status/5'
-            },
-            {
-                id: 'x6',
-                handle: '@crypto_sarah',
-                name: 'Crypto Sarah ✓',
-                verified: true,
-                text: 'Why I moved my art collecting to Base: 1) Speed 2) Cost 3) Community. The trifecta is complete.',
-                likes: 2341,
-                retweets: 445,
-                time: '6h ago',
-                url: 'https://x.com/crypto_sarah/status/6'
-            }
-        ];
-
-        const FARCASTER_DATA = [
-            {
-                id: 'f1',
-                username: 'jesse',
-                displayName: 'Jesse Pollak ✓',
-                verified: true,
-                text: 'Base is for the artists. Every day we see incredible creativity onchain. Keep building, keep creating. 🎨',
-                likes: 342,
-                recasts: 56,
-                time: '12m ago',
-                url: 'https://warpcast.com/jesse/1',
-                channel: '/base'
-            },
-            {
-                id: 'f2',
-                username: 'artcollector',
-                displayName: 'Art Collector ✓',
-                verified: true,
-                text: 'Just minted my first Farcaster Frame NFT. The seamless experience from social to ownership is the future.',
-                likes: 128,
-                recasts: 23,
-                time: '34m ago',
-                url: 'https://warpcast.com/artcollector/2',
-                channel: '/nft'
-            },
-            {
-                id: 'f3',
-                username: 'generative',
-                displayName: 'Generative Art ✓',
-                verified: true,
-                text: 'New drop: Algorithmic Dreams #47 now live on Zora Base. 0.01 ETH, open edition for 24 hours. Link in comments.',
-                likes: 567,
-                recasts: 89,
-                time: '1h ago',
-                url: 'https://warpcast.com/generative/3',
-                channel: '/art'
-            },
-            {
-                id: 'f4',
-                username: 'basedartist',
-                displayName: 'Based Artist ✓',
-                verified: true,
-                text: 'The Base community hits different. Builders actually support each other here. Rare in this space.',
-                likes: 892,
-                recasts: 134,
-                time: '2h ago',
-                url: 'https://warpcast.com/basedartist/4',
-                channel: '/base'
-            },
-            {
-                id: 'f5',
-                username: 'nftcurator',
-                displayName: 'NFT Curator ✓',
-                verified: true,
-                text: 'Curating a new gallery of Base generative art. DM if you want your work featured. Quality only.',
-                likes: 234,
-                recasts: 45,
-                time: '4h ago',
-                url: 'https://warpcast.com/nftcurator/5',
-                channel: '/art'
-            }
-        ];
-
-        const BASEAPP_DATA = [
-            {
-                id: 'ba1',
-                type: 'trending',
-                title: 'Based Fellas',
-                subtitle: 'Trending Collection',
-                stat: '+24%',
-                desc: '24h volume up 24% with 156 new holders',
-                time: 'Live',
-                verified: true,
-                url: 'https://base.app/nft/based-fellas'
-            },
-            {
-                id: 'ba2',
-                type: 'new',
-                title: 'BasePaint #892',
-                subtitle: 'New Mint',
-                stat: '0.01 ETH',
-                desc: 'Daily collaborative canvas now live',
-                time: 'Just now',
-                verified: true,
-                url: 'https://base.app/nft/basepaint-892'
-            },
-            {
-                id: 'ba3',
-                type: 'top',
-                title: 'Fidenza #780',
-                subtitle: 'Top Sale',
-                stat: '12.5 ETH',
-                desc: 'Rare trait combination sold to 0x742d...',
-                time: '5m ago',
-                verified: true,
-                url: 'https://base.app/nft/fidenza-780'
-            },
-            {
-                id: 'ba4',
-                type: 'trending',
-                title: 'Early Birds',
-                subtitle: 'Minting Now',
-                stat: '78%',
-                desc: '78% minted, 0.005 ETH per mint',
-                time: 'Live',
-                verified: true,
-                url: 'https://base.app/nft/early-birds'
-            },
-            {
-                id: 'ba5',
-                type: 'new',
-                title: 'Base Colors',
-                subtitle: 'Free Mint',
-                stat: 'FREE',
-                desc: 'Generative color palettes by @colorist',
-                time: '1h ago',
-                verified: true,
-                url: 'https://base.app/nft/base-colors'
-            }
-        ];
-
-        const PARAGRAPH_DATA = [
-            {
-                id: 'p1',
-                author: '0xArt ✓',
-                title: 'The Future of On-Chain Publishing',
-                verified: true,
-                excerpt: 'How Paragraph.xyz is revolutionizing long-form content for crypto-native writers and artists. A deep dive into decentralized media.',
-                readTime: '5 min',
-                time: '2h ago',
-                url: 'https://paragraph.xyz/@0xart/future-publishing',
-                category: 'article'
-            },
-            {
-                id: 'p2',
-                author: 'Base Daily ✓',
-                title: 'Weekly On-Chain Art Review',
-                verified: true,
-                excerpt: 'Curated selection of the best generative art mints this week. Featuring works from emerging artists on Base.',
-                readTime: '8 min',
-                time: '5h ago',
-                url: 'https://paragraph.xyz/@basedaily/weekly-review',
-                category: 'publication'
-            },
-            {
-                id: 'p3',
-                author: 'AI Art Labs ✓',
-                title: 'Training Models on NFT Metadata',
-                verified: true,
-                excerpt: 'Technical exploration of using on-chain art metadata to train generative AI models. Ethics and opportunities.',
-                readTime: '12 min',
-                time: '1d ago',
-                url: 'https://paragraph.xyz/@aiartlabs/training-models',
-                category: 'article'
-            },
-            {
-                id: 'p4',
-                author: 'Curator DAO ✓',
-                title: 'Curation in the Age of Abundance',
-                verified: true,
-                excerpt: 'When everyone can mint, who decides what matters? The role of decentralized curation in digital art markets.',
-                readTime: '6 min',
-                time: '2d ago',
-                url: 'https://paragraph.xyz/@curatordao/curation-age',
-                category: 'article'
-            },
-            {
-                id: 'p5',
-                author: 'Base Paint ✓',
-                title: 'Community Canvas: Month 3',
-                verified: true,
-                excerpt: 'Recap of three months of collaborative on-chain painting. Statistics, highlights, and upcoming features.',
-                readTime: '4 min',
-                time: '3d ago',
-                url: 'https://paragraph.xyz/@basepaint/community-canvas',
-                category: 'publication'
-            }
-        ];
-
-        const ONCHAIN_DATA = [
-            {
-                id: 'oc1',
-                type: 'sale',
-                platform: 'ZORA',
-                tokenId: '042',
-                from: '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb',
-                to: '0x8ba1f109551bD432803012645Hac136c82C3e3',
-                value: '0.0500',
-                time: '12m ago',
-                tx: '0xabc123def456',
-                verified: true
-            },
-            {
-                id: 'oc2',
-                type: 'mint',
-                platform: 'BASEPAINT',
-                tokenId: '1337',
-                from: '0x0000000000000000000000000000000000000000',
-                to: '0x1111222233334444555566667777888899990000',
-                time: '45m ago',
-                tx: '0xdef456ghi789',
-                verified: true
-            },
-            {
-                id: 'oc3',
-                type: 'sale',
-                platform: 'FOUNDATION',
-                tokenId: '007',
-                from: '0x7777888899990000111122223333444455556666',
-                to: '0x9999000011112222333344445555666677778888',
-                value: '0.1200',
-                time: '2h ago',
-                tx: '0xjkl012mno345',
-                verified: true
-            },
-            {
-                id: 'oc4',
-                type: 'transfer',
-                platform: 'ZORA',
-                tokenId: '999',
-                from: '0xaaaaaaaabbbbbbbbccccccccddddddddeeeeeeee',
-                to: '0xffffffffeeeeeeeeddddddddcccccccbbbbbbbbb',
-                time: '3h ago',
-                tx: '0xpqr678stu901',
-                verified: true
-            },
-            {
-                id: 'oc5',
-                type: 'mint',
-                platform: 'MINT.FUN',
-                tokenId: '0001',
-                from: '0x0000000000000000000000000000000000000000',
-                to: '0x1234567890123456789012345678901234567890',
-                time: '4h ago',
-                tx: '0xzyx987wvu654',
-                verified: true
-            }
-        ];
-
-        const MARKET_DATA = [
-            {
-                id: 'm1',
-                collection: 'Fidenza',
-                metric: 'Floor Price',
-                value: '12.5 ETH',
-                change: '+5.2%',
-                trend: 'up',
-                time: 'Live',
-                verified: true
-            },
-            {
-                id: 'm2',
-                collection: 'Ringers',
-                metric: '24h Volume',
-                value: '45.2 ETH',
-                change: '+12.8%',
-                trend: 'up',
-                time: 'Live',
-                verified: true
-            },
-            {
-                id: 'm3',
-                collection: 'Chromie Squiggle',
-                metric: 'Floor Price',
-                value: '8.1 ETH',
-                change: '-2.1%',
-                trend: 'down',
-                time: 'Live',
-                verified: true
-            },
-            {
-                id: 'm4',
-                collection: 'BasePaint',
-                metric: 'Daily Active',
-                value: '1,234',
-                change: '+23.5%',
-                trend: 'up',
-                time: '24h',
-                verified: true
-            },
-            {
-                id: 'm5',
-                collection: 'Based Fellas',
-                metric: 'Floor Price',
-                value: '0.45 ETH',
-                change: '+18.4%',
-                trend: 'up',
-                time: 'Live',
-                verified: true
-            }
-        ];
-
-        const DROPS_DATA = [
-            {
-                id: 'd1',
-                artist: 'XCOPY ✓',
-                title: 'TRAITORS #2',
-                verified: true,
-                platform: 'SuperRare',
-                type: 'auction',
-                price: '5.0 ETH',
-                time: 'LIVE',
-                supply: '1/1',
-                url: 'https://superrare.com/xcopy'
-            },
-            {
-                id: 'd2',
-                artist: 'Pak ✓',
-                title: 'Merge [phase 2]',
-                verified: true,
-                platform: 'Foundation',
-                type: 'drop',
-                price: '0.5 ETH',
-                time: 'In 2h',
-                supply: 'Dynamic',
-                url: 'https://foundation.app/pak'
-            },
-            {
-                id: 'd3',
-                artist: 'Tyler Hobbs ✓',
-                title: 'Fidenza: Echoes',
-                verified: true,
-                platform: 'Art Blocks',
-                type: 'mint',
-                price: '0.25 ETH',
-                time: 'Tomorrow',
-                supply: '500',
-                url: 'https://artblocks.io/tyler-hobbs'
-            },
-            {
-                id: 'd4',
-                artist: 'Dmitri Cherniak ✓',
-                title: 'Ringers: Remix',
-                verified: true,
-                platform: 'ZORA',
-                type: 'mint',
-                price: '0.05 ETH',
-                time: 'In 3d',
-                supply: '1000',
-                url: 'https://zora.co/cherniak'
-            },
-            {
-                id: 'd5',
-                artist: 'AI Collective ✓',
-                title: 'Neural Dreams',
-                verified: true,
-                platform: 'Paragraph',
-                type: 'drop',
-                price: '0.01 ETH',
-                time: 'Next Week',
-                supply: 'Open',
-                url: 'https://paragraph.xyz/@aicollective'
-            }
-        ];
-
-        const NEWS_DATA = [
-            {
-                id: 'n1',
-                source: 'Hyperallergic ✓',
-                title: 'Venice Biennale Embraces Digital Art',
-                verified: true,
-                excerpt: 'This year\'s exhibition features unprecedented focus on blockchain-based works and generative installations.',
-                category: 'exhibition',
-                time: '2h ago',
-                url: 'https://hyperallergic.com/venice-biennale-digital'
-            },
-            {
-                id: 'n2',
-                source: 'Artnet ✓',
-                title: 'Museums Adopt On-Chain Provenance',
-                verified: true,
-                excerpt: 'Major institutions pilot blockchain tracking for contemporary acquisitions, starting with digital works.',
-                category: 'technology',
-                time: '4h ago',
-                url: 'https://news.artnet.com/museums-blockchain'
-            },
-            {
-                id: 'n3',
-                source: 'Frieze ✓',
-                title: 'The Rise of Generative Art Markets',
-                verified: true,
-                excerpt: 'How algorithmic art is reshaping collector behavior and market dynamics in 2024.',
-                category: 'market',
-                time: '6h ago',
-                url: 'https://frieze.com/generative-art-markets'
-            },
-            {
-                id: 'n4',
-                source: 'The Art Newspaper ✓',
-                title: 'Base Network: Artist Haven',
-                verified: true,
-                excerpt: 'Why creators are choosing Base for experimental digital art projects and lower barrier entries.',
-                category: 'technology',
-                time: '8h ago',
-                url: 'https://theartnewspaper.com/base-network'
-            },
-            {
-                id: 'n5',
-                source: 'Decrypt ✓',
-                title: 'AI Agents Start Collecting NFTs',
-                verified: true,
-                excerpt: 'Autonomous AI agents are now participating in NFT markets, raising questions about digital ownership.',
-                category: 'technology',
-                time: '12h ago',
-                url: 'https://decrypt.co/ai-agents-nfts'
-            }
-        ];
-
-        const MODAL_CONTENT = {
-            about: {
-                title: 'About ARTHOUSE',
-                body: `
-                    <p><strong>ARTHOUSE</strong> is a curated intelligence platform for digital art and NFT markets on Base and beyond.</p>
-                    <h4>Our Mission</h4>
-                    <p>To provide verified, actionable intelligence for artists, collectors, and builders in the on-chain art ecosystem.</p>
-                    <h4>What Makes Us Different</h4>
-                    <ul style="margin-left: 1rem; margin-top: 0.5rem;">
-                        <li>✓ Verified accounts only — no anon noise</li>
-                        <li>🛡️ Active scam monitoring and alerts</li>
-                        <li>⛓ Multi-source aggregation (X, Farcaster, Base, Paragraph)</li>
-                        <li>⚡ Real-time on-chain data</li>
-                    </ul>
-                    <h4>Version</h4>
-                    <p>v1.9 — Verified Intelligence Edition</p>
-                `
-            },
-            terms: {
-                title: 'Terms of Service',
-                body: `
-                    <h4>1. Not Financial Advice</h4>
-                    <p>All content on ARTHOUSE is for informational purposes only. We do not provide investment advice, recommendations, or endorsements.</p>
-                    <h4>2. Do Your Own Research (DYOR)</h4>
-                    <p>Users must verify all information independently before making any financial decisions. Past performance does not indicate future results.</p>
-                    <h4>3. Verification Standards</h4>
-                    <p>We display only verified accounts, but verification does not guarantee legitimacy. Always double-check contract addresses and URLs.</p>
-                    <h4>4. Liability</h4>
-                    <p>ARTHOUSE is not liable for any losses incurred from using our platform. Use at your own risk.</p>
-                    <h4>5. Data Accuracy</h4>
-                    <p>While we strive for accuracy, we cannot guarantee real-time data precision. Verify critical data on official sources.</p>
-                `
-            },
-            privacy: {
-                title: 'Privacy Policy',
-                body: `
-                    <h4>Data Collection</h4>
-                    <p>We collect minimal data: anonymous usage analytics and preference cookies only.</p>
-                    <h4>No Wallet Connection</h4>
-                    <p>ARTHOUSE never requests wallet connections or private keys. We are a read-only intelligence layer.</p>
-                    <h4>Third Parties</h4>
-                    <p>We use external APIs (X, Farcaster, Base) but do not store your personal data from these sources.</p>
-                    <h4>Cookies</h4>
-                    <p>Essential cookies only. No tracking for advertising purposes.</p>
-                `
-            },
-            cookies: {
-                title: 'Cookie Policy',
-                body: `
-                    <h4>What We Use</h4>
-                    <ul style="margin-left: 1rem;">
-                        <li><strong>Essential:</strong> Site functionality and preferences</li>
-                        <li><strong>Analytics:</strong> Anonymous usage statistics</li>
-                    </ul>
-                    <h4>What We Don't Use</h4>
-                    <ul style="margin-left: 1rem;">
-                        <li>❌ Advertising cookies</li>
-                        <li>❌ Third-party trackers</li>
-                        <li>❌ Personal data collection</li>
-                    </ul>
-                    <h4>Manage Preferences</h4>
-                    <p>You can disable non-essential cookies in your browser settings. This will not affect core functionality.</p>
-                `
-            },
-            disclaimer: {
-                title: 'Financial Disclaimer',
-                body: `
-                    <h4>⚠️ NOT FINANCIAL ADVICE</h4>
-                    <p style="color: var(--red); font-weight: 600; margin: 1rem 0;">
-                        ARTHOUSE DOES NOT PROVIDE FINANCIAL, LEGAL, OR TAX ADVICE.
-                    </p>
-                    <h4>Risk Warning</h4>
-                    <p>NFTs and cryptocurrency are highly volatile. You may lose all invested capital. Never invest more than you can afford to lose.</p>
-                    <h4>Due Diligence</h4>
-                    <ul style="margin-left: 1rem;">
-                        <li>Always verify contract addresses independently</li>
-                        <li>Check official social media for announcements</li>
-                        <li>Review on-chain data personally</li>
-                        <li>Consult professionals for large investments</li>
-                    </ul>
-                    <h4>Scam Awareness</h4>
-                    <p>Even verified accounts can be compromised. If something seems too good to be true, it probably is.</p>
-                `
-            },
-            scam: {
-                title: 'Report Scam',
-                body: `
-                    <h4>How to Report</h4>
-                    <p>Help keep the community safe by reporting suspicious activity:</p>
-                    <ul style="margin-left: 1rem; margin: 1rem 0;">
-                        <li>Email: security@arthouse.example</li>
-                        <li>DM verified @arthouse on X</li>
-                        <li>Use the 🛡️ flag button on any feed item</li>
-                    </ul>
-                    <h4>Red Flags</h4>
-                    <ul style="margin-left: 1rem;">
-                        <li>Unsolicited DMs with mint links</li>
-                        <li>Pressure to "act fast" or "limited time"</li>
-                        <li>Requests for seed phrases or private keys</li>
-                        <li>Similar but slightly different URLs</li>
-                        <li>Promises of guaranteed returns</li>
-                    </ul>
-                    <h4>Verification</h4>
-                    <p>We investigate all reports within 24 hours. Confirmed scams are added to our blacklist and displayed in the Scam Alert section.</p>
-                `
-            },
-            verified: {
-                title: 'Verification Standards',
-                body: `
-                    <h4>Blue Check Requirements</h4>
-                    <p>To display a ✓ verified badge on ARTHOUSE, accounts must meet:</p>
-                    <ul style="margin-left: 1rem; margin: 1rem 0;">
-                        <li>Platform-native verification (X Blue, Farcaster verified)</li>
-                        <li>Minimum 6 months active history</li>
-                        <li>No history of scam reports</li>
-                        <li>Consistent, authentic content</li>
-                        <li>Established reputation in art/NFT space</li>
-                    </ul>
-                    <h4>Ongoing Monitoring</h4>
-                    <p>Verified status can be revoked if:</p>
-                    <ul style="margin-left: 1rem;">
-                        <li>Account engages in suspicious activity</li>
-                        <li>Multiple community reports filed</li>
-                        <li>Platform verification removed</li>
-                        <li>Prolonged inactivity (12+ months)</li>
-                    </ul>
-                    <h4>Appeals</h4>
-                    <p>Contact verification@arthouse.example if you believe your status was removed in error.</p>
-                `
-            },
-            methodology: {
-                title: 'Data Methodology',
-                body: `
-                    <h4>Sources</h4>
-                    <ul style="margin-left: 1rem; margin: 1rem 0;">
-                        <li><strong>X API:</strong> Verified accounts only, art/NFT keywords</li>
-                        <li><strong>Farcaster Hubs:</strong> /art, /nft, /base channels</li>
-                        <li><strong>Base.app:</strong> Official trending and activity APIs</li>
-                        <li><strong>Paragraph:</strong> Verified publication feeds</li>
-                        <li><strong>On-chain:</strong> Direct Base blockchain indexing</li>
-                    </ul>
-                    <h4>Filtering</h4>
-                    <p>All data passes through:</p>
-                    <ul style="margin-left: 1rem;">
-                        <li>Spam detection algorithms</li>
-                        <li>Duplicate content removal</li>
-                        <li>Sentiment analysis for quality</li>
-                        <li>Community flag integration</li>
-                    </ul>
-                    <h4>Update Frequency</h4>
-                    <p>Social feeds: 5 minutes | On-chain: Real-time | Market: 1 minute</p>
-                `
-            },
-            api: {
-                title: 'API Access',
-                body: `
-                    <h4>Public API</h4>
-                    <p>ARTHOUSE offers limited API access for researchers and builders:</p>
-                    <ul style="margin-left: 1rem; margin: 1rem 0;">
-                        <li>Rate limit: 100 requests/hour</li>
-                        <li>Endpoints: /feeds, /market, /verified</li>
-                        <li>No authentication required for public data</li>
-                    </ul>
-                    <h4>Enterprise</h4>
-                    <p>For higher limits and real-time WebSocket access:</p>
-                    <p style="margin-top: 0.5rem;">Contact: api@arthouse.example</p>
-                    <h4>Documentation</h4>
-                    <p>Full docs: <a href="#" style="color: var(--base-blue);">docs.arthouse.example</a></p>
-                `
-            },
-            contact: {
-                title: 'Contact Us',
-                body: `
-                    <h4>General Inquiries</h4>
-                    <p>hello@arthouse.example</p>
-                    <h4>Security & Scam Reports</h4>
-                    <p>security@arthouse.example</p>
-                    <h4>Verification</h4>
-                    <p>verification@arthouse.example</p>
-                    <h4>Social</h4>
-                    <ul style="margin-left: 1rem; margin-top: 0.5rem;">
-                        <li>X: @arthouse</li>
-                        <li>Farcaster: @arthouse</li>
-                        <li>Paragraph: @arthouse</li>
-                    </ul>
-                    <h4>Office</h4>
-                    <p>Remote-first team<br>Base: San Francisco, CA<br>ETH: Worldwide</p>
-                `
-            }
+        // Environment Detection
+        const ENV={
+            isBase:()=>window.ethereum?.isCoinbaseWallet||navigator.userAgent.includes('Coinbase')||location.search.includes('source=base'),
+            isFarcaster:()=>location.search.includes('fc')||location.search.includes('farcaster')||window.parent!==window,
+            isFrame:()=>new URLSearchParams(location.search).get('frame')==='true'
         };
-
-        // ===== UTILITIES =====
         
-        const formatAddr = (addr) => addr.slice(0, 6) + '...' + addr.slice(-4);
+        const badge=document.getElementById('env-badge');
+        if(ENV.isFrame()){
+            badge.className='env-badge farcaster';
+            badge.textContent='Farcaster Frame';
+            document.body.classList.add('frame-mode');
+        }else if(ENV.isBase()){
+            badge.className='env-badge base';
+            badge.textContent='Base Mini App';
+            document.getElementById('wallet-btn').style.display='flex';
+        }else if(ENV.isFarcaster()){
+            badge.className='env-badge farcaster';
+            badge.textContent='Farcaster';
+            document.getElementById('cast-btn').style.display='flex';
+        }
         
-        const getIcon = (type) => {
-            const icons = {
-                sale: '💰', mint: '✨', transfer: '↗️',
-                drop: '🎨', auction: '🔨', minting: '🖼️',
-                up: '📈', down: '📉',
-                exhibition: '🏛️', technology: '💻', market: '📊',
-                article: '📝', publication: '📰',
-                trending: '📈', new: '✨', top: '👑',
-                cast: '🟣'
-            };
-            return icons[type] || '●';
+        // Data
+        const TICKER_DATA=[
+            {text:"Blooze AI launching art curator on Base",tag:"agent",type:"agent",url:"https://x.com/search?q=Blooze+AI"},
+            {text:"Based Fellas hits 1M volume",tag:"early",type:"early",url:"https://x.com/search?q=Based+Fellas"},
+            {text:"Agent XYZ gallery protocol",tag:"agent",type:"agent",url:"https://x.com/search?q=Agent+XYZ"},
+            {text:"Early Birds sold out 4min",tag:"early",type:"early",url:"https://x.com/search?q=Early+Birds"},
+            {text:"BasePaint auction 2.5 ETH",tag:"early",type:"early",url:"https://x.com/search?q=BasePaint"},
+            {text:"ArtBot v2.0 generative mint",tag:"agent",type:"agent",url:"https://x.com/search?q=ArtBot"},
+            {text:"Farcaster Frames instant mint",tag:"farcaster",type:"farcaster",url:"https://warpcast.com"},
+            {text:"Base.app NFT viewer launch",tag:"early",type:"early",url:"https://base.app"}
+        ];
+        
+        const SCAM_DATA=[
+            {name:"fake-basepaint.eth",risk:"HIGH",type:"Impersonation",reported:"2h ago"},
+            {name:"based-fellas-copy.xyz",risk:"HIGH",type:"Phishing",reported:"4h ago"},
+            {name:"@BaseNFT_Official (fake)",risk:"MEDIUM",type:"Fake Account",reported:"6h ago"},
+            {name:"early-birds-premint.xyz",risk:"HIGH",type:"Drainer",reported:"8h ago"}
+        ];
+        
+        const X_DATA=[
+            {id:'x1',handle:'@digital_art_daily',name:'Digital Art Daily ✓',verified:true,text:'Just discovered an incredible generative art collection on Base. The intersection of code and creativity continues to evolve. Thread below 👇',likes:234,retweets:45,time:'15m ago',url:'https://x.com/digital_art_daily/status/1'},
+            {id:'x2',handle:'@nftcollector',name:'NFT Collector ✓',verified:true,text:'Floor prices on Base NFTs showing steady growth this week. Blue-chip collections holding strong despite market volatility.',likes:567,retweets:89,time:'42m ago',url:'https://x.com/nftcollector/status/2'},
+            {id:'x3',handle:'@artblocks',name:'Art Blocks ✓',verified:true,text:'New Curated drop announcement: Tyler Hobbs returns with Fidenza-inspired collection. Minting exclusively on Base next week.',likes:1203,retweets:234,time:'1h ago',url:'https://x.com/artblocks/status/3'},
+            {id:'x4',handle:'@basenft',name:'Base NFTs ✓',verified:true,text:'Weekly recap: 12K new wallets, $2.4M volume, 45 new collections. The Base art ecosystem is thriving. Data below 📊',likes:892,retweets:156,time:'3h ago',url:'https://x.com/basenft/status/4'}
+        ];
+        
+        const FARCASTER_DATA=[
+            {id:'f1',username:'jesse',displayName:'Jesse Pollak ✓',verified:true,text:'Base is for the artists. Every day we see incredible creativity onchain. Keep building, keep creating. 🎨',likes:342,recasts:56,time:'12m ago',url:'https://warpcast.com/jesse/1',channel:'/base'},
+            {id:'f2',username:'artcollector',displayName:'Art Collector ✓',verified:true,text:'Just minted my first Farcaster Frame NFT. The seamless experience from social to ownership is the future.',likes:128,recasts:23,time:'34m ago',url:'https://warpcast.com/artcollector/2',channel:'/nft'},
+            {id:'f3',username:'generative',displayName:'Generative Art ✓',verified:true,text:'New drop: Algorithmic Dreams #47 now live on Zora Base. 0.01 ETH, open edition for 24 hours.',likes:567,recasts:89,time:'1h ago',url:'https://warpcast.com/generative/3',channel:'/art'},
+            {id:'f4',username:'basedartist',displayName:'Based Artist ✓',verified:true,text:'The Base community hits different. Builders actually support each other here. Rare in this space.',likes:892,recasts:134,time:'2h ago',url:'https://warpcast.com/basedartist/4',channel:'/base'}
+        ];
+        
+        const BASEAPP_DATA=[
+            {id:'ba1',type:'trending',title:'Based Fellas',subtitle:'Trending',stat:'+24%',desc:'24h volume up 24% with 156 new holders',time:'Live',verified:true,url:'https://base.app/nft/based-fellas'},
+            {id:'ba2',type:'new',title:'BasePaint #892',subtitle:'New Mint',stat:'0.01 ETH',desc:'Daily collaborative canvas now live',time:'Just now',verified:true,url:'https://base.app/nft/basepaint-892'},
+            {id:'ba3',type:'top',title:'Fidenza #780',subtitle:'Top Sale',stat:'12.5 ETH',desc:'Rare trait combination sold',time:'5m ago',verified:true,url:'https://base.app/nft/fidenza-780'},
+            {id:'ba4',type:'trending',title:'Early Birds',subtitle:'Minting',stat:'78%',desc:'78% minted, 0.005 ETH per mint',time:'Live',verified:true,url:'https://base.app/nft/early-birds'}
+        ];
+        
+        const PARAGRAPH_DATA=[
+            {id:'p1',author:'0xArt ✓',title:'The Future of On-Chain Publishing',verified:true,excerpt:'How Paragraph.xyz is revolutionizing long-form content for crypto-native writers and artists.',readTime:'5 min',time:'2h ago',url:'https://paragraph.xyz/@0xart/future-publishing',category:'article'},
+            {id:'p2',author:'Base Daily ✓',title:'Weekly On-Chain Art Review',verified:true,excerpt:'Curated selection of the best generative art mints this week. Featuring works from emerging artists on Base.',readTime:'8 min',time:'5h ago',url:'https://paragraph.xyz/@basedaily/weekly-review',category:'publication'},
+            {id:'p3',author:'AI Art Labs ✓',title:'Training Models on NFT Metadata',verified:true,excerpt:'Technical exploration of using on-chain art metadata to train generative AI models.',readTime:'12 min',time:'1d ago',url:'https://paragraph.xyz/@aiartlabs/training-models',category:'article'}
+        ];
+        
+        const ONCHAIN_DATA=[
+            {id:'oc1',type:'sale',platform:'ZORA',tokenId:'042',from:'0x742d...',to:'0x8ba1...',value:'0.0500',time:'12m ago',tx:'0xabc...',verified:true},
+            {id:'oc2',type:'mint',platform:'BASEPAINT',tokenId:'1337',from:'0x0000...',to:'0x1111...',time:'45m ago',tx:'0xdef...',verified:true},
+            {id:'oc3',type:'sale',platform:'FOUNDATION',tokenId:'007',from:'0x7777...',to:'0x9999...',value:'0.1200',time:'2h ago',tx:'0xjkl...',verified:true},
+            {id:'oc4',type:'transfer',platform:'ZORA',tokenId:'999',from:'0xaaaa...',to:'0xffff...',time:'3h ago',tx:'0xpqr...',verified:true}
+        ];
+        
+        const MARKET_DATA=[
+            {id:'m1',collection:'Fidenza',metric:'Floor Price',value:'12.5 ETH',change:'+5.2%',trend:'up',time:'Live',verified:true},
+            {id:'m2',collection:'Ringers',metric:'24h Volume',value:'45.2 ETH',change:'+12.8%',trend:'up',time:'Live',verified:true},
+            {id:'m3',collection:'Chromie Squiggle',metric:'Floor Price',value:'8.1 ETH',change:'-2.1%',trend:'down',time:'Live',verified:true},
+            {id:'m4',collection:'BasePaint',metric:'Daily Active',value:'1,234',change:'+23.5%',trend:'up',time:'24h',verified:true},
+            {id:'m5',collection:'Based Fellas',metric:'Floor Price',value:'0.45 ETH',change:'+18.4%',trend:'up',time:'Live',verified:true}
+        ];
+        
+        const DROPS_DATA=[
+            {id:'d1',artist:'XCOPY ✓',title:'TRAITORS #2',verified:true,platform:'SuperRare',type:'auction',price:'5.0 ETH',time:'LIVE',supply:'1/1',url:'https://superrare.com/xcopy'},
+            {id:'d2',artist:'Pak ✓',title:'Merge [phase 2]',verified:true,platform:'Foundation',type:'drop',price:'0.5 ETH',time:'In 2h',supply:'Dynamic',url:'https://foundation.app/pak'},
+            {id:'d3',artist:'Tyler Hobbs ✓',title:'Fidenza: Echoes',verified:true,platform:'Art Blocks',type:'mint',price:'0.25 ETH',time:'Tomorrow',supply:'500',url:'https://artblocks.io/tyler-hobbs'},
+            {id:'d4',artist:'Dmitri Cherniak ✓',title:'Ringers: Remix',verified:true,platform:'ZORA',type:'mint',price:'0.05 ETH',time:'In 3d',supply:'1000',url:'https://zora.co/cherniak'}
+        ];
+        
+        const MODAL_CONTENT={
+            about:{title:'About ARTHOUSE',body:'<p><strong>ARTHOUSE v2.0</strong> is a verified intelligence layer for digital art on Base.</p><h4>Features</h4><ul><li>✓ Verified accounts only</li><li>🛡️ Real-time scam alerts</li><li>⛓ Multi-source aggregation</li><li>⚡ Live on-chain data</li></ul><h4>Platforms</h4><p>Available on Web, Base Mini App, and Farcaster Frame.</p>'},
+            terms:{title:'Terms of Service',body:'<h4>NOT FINANCIAL ADVICE</h4><p>All content is for informational purposes only. We do not provide investment advice.</p><h4>DYOR Required</h4><p>Verify all information independently before any financial decisions.</p><h4>Liability</h4><p>ARTHOUSE is not liable for any losses. Use at your own risk.</p>'},
+            privacy:{title:'Privacy Policy',body:'<p>We collect minimal anonymous data only. No wallet data stored.</p><h4>No Tracking</h4><p>No advertising cookies or third-party trackers.</p>'},
+            cookies:{title:'Cookie Policy',body:'<p><strong>Essential only:</strong> Site functionality and preferences.</p><p><strong>We don\'t use:</strong> Advertising cookies, third-party trackers, or personal data collection.</p>'},
+            disclaimer:{title:'Financial Disclaimer',body:'<p style="color:var(--red);font-weight:600">⚠️ NOT FINANCIAL ADVICE</p><p>NFTs and crypto are highly volatile. Never invest more than you can afford to lose.</p><h4>Risk Warning</h4><ul><li>Always verify contract addresses</li><li>Check official sources</li><li>Beware of impersonators</li></ul>'},
+            scam:{title:'Report Scam',body:'<p>Help keep the community safe:</p><ul><li>Email: security@arthouse.example</li><li>DM @arthouse on X</li></ul><h4>Red Flags</h4><ul><li>Unsolicited DMs with links</li><li>"Act fast" pressure</li><li>Requests for seed phrases</li><li>Similar but wrong URLs</li></ul>'},
+            verified:{title:'Verification Standards',body:'<h4>Blue Check Requirements</h4><ul><li>Platform-native verification</li><li>6+ months active history</li><li>No scam reports</li><li>Established reputation</li></ul><p>Status can be revoked for suspicious activity.</p>'},
+            methodology:{title:'Data Methodology',body:'<h4>Sources</h4><ul><li>X API (verified only)</li><li>Farcaster Hubs</li><li>Base.app APIs</li><li>Direct Base indexing</li></ul><p>Update frequency: Social 5min | On-chain real-time | Market 1min</p>'}
         };
-
-        // ===== MODAL FUNCTIONS =====
-
-        function openModal(type) {
-            const overlay = document.getElementById('modal-overlay');
-            const title = document.getElementById('modal-title');
-            const body = document.getElementById('modal-body');
-            
-            const content = MODAL_CONTENT[type];
-            if (content) {
-                title.textContent = content.title;
-                body.innerHTML = content.body;
-                overlay.classList.add('active');
-                document.body.style.overflow = 'hidden';
+        
+        // Functions
+        function openModal(type){
+            const c=MODAL_CONTENT[type];
+            if(!c)return;
+            document.getElementById('modal-title').textContent=c.title;
+            document.getElementById('modal-body').innerHTML=c.body;
+            document.getElementById('modal-overlay').classList.add('active');
+            document.body.style.overflow='hidden';
+        }
+        
+        function closeModal(e){
+            if(!e||e.target.id==='modal-overlay'||e.target.classList.contains('modal-close')){
+                document.getElementById('modal-overlay').classList.remove('active');
+                document.body.style.overflow='';
             }
         }
-
-        function closeModal(event) {
-            if (!event || event.target.id === 'modal-overlay' || event.target.classList.contains('modal-close')) {
-                const overlay = document.getElementById('modal-overlay');
-                overlay.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        }
-
-        // ===== RENDERERS =====
-
-        function renderScamAlert() {
-            const list = document.getElementById('scam-list');
-            list.innerHTML = SCAM_DATA.map(scam => `
-                <li>
-                    <span>${scam.name} <span style="color: #9ca3af;">(${scam.type})</span></span>
-                    <span class="scam-risk">${scam.risk} — ${scam.reported}</span>
-                </li>
-            `).join('');
-        }
-
-        function renderTicker() {
-            const track = document.getElementById('ticker-track');
-            const items = [...TICKER_DATA, ...TICKER_DATA, ...TICKER_DATA];
-            track.innerHTML = items.map(item => `
-                <a href="${item.url}" target="_blank" class="ticker-item">
-                    <span class="ticker-tag ${item.type}">${item.tag}</span>
-                    <span>${item.text}</span>
-                </a>
-            `).join('');
-        }
-
-        function renderX() {
-            const el = document.getElementById('x-feed');
-            el.innerHTML = X_DATA.map((item, idx) => `
-                <div class="feed-item tweet ${item.verified ? 'verified' : ''}">
-                    <div class="feed-header">
-                        <span class="feed-type">𝕏 ${item.name} ${item.verified ? '<span class="verified-badge">✓</span>' : ''}</span>
-                        <span class="feed-platform">${item.handle}</span>
-                        <span class="feed-time">${item.time}</span>
-                    </div>
-                    <p class="tweet-text">${item.text}</p>
-                    <div class="tweet-stats">
-                        <span>♥ ${item.likes}</span>
-                        <span>↻ ${item.retweets}</span>
-                    </div>
-                    <a href="${item.url}" target="_blank" class="feed-link">↗</a>
-                    <div class="feed-index">${String(idx + 1).padStart(2, '0')}/${String(X_DATA.length).padStart(2, '0')}</div>
-                </div>
-            `).join('');
-        }
-
-        function renderFarcaster() {
-            const el = document.getElementById('farcaster-feed');
-            el.innerHTML = FARCASTER_DATA.map((item, idx) => `
-                <div class="feed-item cast ${item.verified ? 'verified' : ''}">
-                    <div class="feed-header">
-                        <span class="feed-type">🟣 ${item.displayName} ${item.verified ? '<span class="verified-badge">✓</span>' : ''}</span>
-                        <span class="feed-platform">@${item.username}</span>
-                        <span class="feed-time">${item.time}</span>
-                    </div>
-                    <p class="cast-text">${item.text}</p>
-                    <div class="cast-stats">
-                        <span>❤️ ${item.likes}</span>
-                        <span>🔄 ${item.recasts}</span>
-                        <span>in ${item.channel}</span>
-                    </div>
-                    <a href="${item.url}" target="_blank" class="feed-link">↗</a>
-                    <div class="feed-index">${String(idx + 1).padStart(2, '0')}/${String(FARCASTER_DATA.length).padStart(2, '0')}</div>
-                </div>
-            `).join('');
-        }
-
-        function renderBaseApp() {
-            const el = document.getElementById('baseapp-feed');
-            el.innerHTML = BASEAPP_DATA.map((item, idx) => `
-                <div class="feed-item ${item.type} baseapp ${item.verified ? 'verified' : ''}">
-                    <div class="feed-header">
-                        <span class="feed-type">${getIcon(item.type)} ${item.subtitle} ${item.verified ? '<span class="verified-badge">✓</span>' : ''}</span>
-                        <span class="feed-platform">Base.app</span>
-                        <span class="feed-time">${item.time}</span>
-                    </div>
-                    <h3 class="feed-title">${item.title}</h3>
-                    <p class="feed-excerpt">${item.desc}</p>
-                    <div class="feed-value">${item.stat}</div>
-                    <a href="${item.url}" target="_blank" class="feed-link">↗</a>
-                    <div class="feed-index">${String(idx + 1).padStart(2, '0')}/${String(BASEAPP_DATA.length).padStart(2, '0')}</div>
-                </div>
-            `).join('');
-        }
-
-        function renderParagraph() {
-            const el = document.getElementById('paragraph-feed');
-            el.innerHTML = PARAGRAPH_DATA.map((item, idx) => `
-                <article class="feed-item ${item.category} ${item.verified ? 'verified' : ''}">
-                    <div class="feed-header">
-                        <span class="feed-type">${getIcon(item.category)} ${item.author} ${item.verified ? '<span class="verified-badge">✓</span>' : ''}</span>
-                        <span class="feed-platform">${item.readTime} read</span>
-                        <span class="feed-time">${item.time}</span>
-                    </div>
-                    <h3 class="feed-title">${item.title}</h3>
-                    <p class="feed-excerpt">${item.excerpt}</p>
-                    <div class="feed-meta">Type: ${item.category}</div>
-                    <a href="${item.url}" target="_blank" class="feed-link">↗</a>
-                    <div class="feed-index">${String(idx + 1).padStart(2, '0')}/${String(PARAGRAPH_DATA.length).padStart(2, '0')}</div>
-                </article>
-            `).join('');
-        }
-
-        function renderOnchain() {
-            const el = document.getElementById('onchain-feed');
-            
-            const sales = ONCHAIN_DATA.filter(i => i.type === 'sale').length;
-            const mints = ONCHAIN_DATA.filter(i => i.type === 'mint').length;
-            const vol = ONCHAIN_DATA.filter(i => i.value).reduce((a, i) => a + parseFloat(i.value), 0).toFixed(3);
-            
-            document.getElementById('stat-sales').textContent = sales;
-            document.getElementById('stat-mints').textContent = mints;
-            document.getElementById('stat-volume').textContent = vol;
-
-            el.innerHTML = ONCHAIN_DATA.map((item, idx) => `
-                <div class="feed-item ${item.type} ${item.verified ? 'verified' : ''}">
-                    <div class="feed-header">
-                        <span class="feed-type">${getIcon(item.type)} ${item.type} ${item.verified ? '<span class="verified-badge">✓</span>' : ''}</span>
-                        <span class="feed-platform">${item.platform}</span>
-                        <span class="feed-time">${item.time}</span>
-                    </div>
-                    <div class="feed-title" style="font-family: monospace; font-size: 0.8rem;">
-                        TOKEN: <strong>${item.tokenId}</strong>
-                    </div>
-                    <div class="feed-meta">
-                        <span>${formatAddr(item.from)}</span>
-                        <span>→</span>
-                        <span>${formatAddr(item.to)}</span>
-                    </div>
-                    ${item.value ? `<div class="feed-value">${item.value} ETH</div>` : ''}
-                    <a href="https://basescan.org/tx/${item.tx}" target="_blank" class="feed-link">↗</a>
-                    <div class="feed-index">${String(idx + 1).padStart(2, '0')}/${String(ONCHAIN_DATA.length).padStart(2, '0')}</div>
-                </div>
-            `).join('');
-        }
-
-        function renderMarket() {
-            const el = document.getElementById('market-feed');
-            el.innerHTML = MARKET_DATA.map((item, idx) => `
-                <div class="feed-item ${item.trend === 'up' ? 'sale' : 'mint'} ${item.verified ? 'verified' : ''}">
-                    <div class="feed-header">
-                        <span class="feed-type">${getIcon(item.trend)} ${item.collection} ${item.verified ? '<span class="verified-badge">✓</span>' : ''}</span>
-                        <span class="feed-platform">${item.metric}</span>
-                        <span class="feed-time">${item.time}</span>
-                    </div>
-                    <div class="feed-title">${item.value}</div>
-                    <div class="feed-value">${item.change} ${item.trend === 'up' ? '📈' : '📉'}</div>
-                    <div class="feed-index">${String(idx + 1).padStart(2, '0')}/${String(MARKET_DATA.length).padStart(2, '0')}</div>
-                </div>
-            `).join('');
-        }
-
-        function renderDrops() {
-            const el = document.getElementById('drops-feed');
-            el.innerHTML = DROPS_DATA.map((item, idx) => `
-                <div class="feed-item ${item.type} ${item.verified ? 'verified' : ''}">
-                    <div class="feed-header">
-                        <span class="feed-type">${getIcon(item.type)} ${item.artist} ${item.verified ? '<span class="verified-badge">✓</span>' : ''}</span>
-                        <span class="feed-platform">${item.platform}</span>
-                        <span class="feed-time">${item.time}</span>
-                    </div>
-                    <h3 class="feed-title">${item.title}</h3>
-                    <div class="feed-meta">Supply: ${item.supply}</div>
-                    <div class="feed-value">${item.price}</div>
-                    <a href="${item.url}" target="_blank" class="feed-link">↗</a>
-                    <div class="feed-index">${String(idx + 1).padStart(2, '0')}/${String(DROPS_DATA.length).padStart(2, '0')}</div>
-                </div>
-            `).join('');
-        }
-
-        function renderNews() {
-            const el = document.getElementById('news-feed');
-            el.innerHTML = NEWS_DATA.map((item, idx) => `
-                <article class="feed-item ${item.category} ${item.verified ? 'verified' : ''}">
-                    <div class="feed-header">
-                        <span class="feed-type">${getIcon(item.category)} ${item.source} ${item.verified ? '<span class="verified-badge">✓</span>' : ''}</span>
-                        <span class="feed-time">${item.time}</span>
-                    </div>
-                    <h3 class="feed-title">${item.title}</h3>
-                    <p class="feed-excerpt">${item.excerpt}</p>
-                    <div class="feed-meta">Category: ${item.category}</div>
-                    <a href="${item.url}" target="_blank" class="feed-link">↗</a>
-                    <div class="feed-index">${String(idx + 1).padStart(2, '0')}/${String(NEWS_DATA.length).padStart(2, '0')}</div>
-                </article>
-            `).join('');
-        }
-
-        // ===== INTERACTION =====
-
-        function switchTab(tabName, btn) {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        
+        function switchTab(tabName,btn){
+            document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
             btn.classList.add('active');
-            
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
             document.getElementById(tabName).classList.add('active');
         }
-
-        function typeWriter(text, el, speed = 40) {
-            let i = 0;
-            el.textContent = '';
-            el.style.color = '#0000ff';
-            const type = () => {
-                if (i < text.length) {
-                    el.textContent += text.charAt(i);
+        
+        function typeWriter(text,el,speed=50){
+            let i=0;
+            el.textContent='';
+            el.style.color='#0000ff';
+            const type=()=>{
+                if(i<text.length){
+                    el.textContent+=text.charAt(i);
                     i++;
-                    setTimeout(type, speed);
+                    setTimeout(type,speed);
                 }
             };
             type();
         }
-
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('clock').textContent = now.toISOString().replace('T', ' ').slice(0, 19);
-        }
-
-        function initCanvas() {
-            const canvas = document.getElementById('bg-canvas');
-            const ctx = canvas.getContext('2d');
-            let w, h, dots = [];
-            
-            const resize = () => {
-                w = canvas.width = window.innerWidth;
-                h = canvas.height = window.innerHeight;
-            };
-            
-            const initDots = () => {
-                dots = [];
-                for (let i = 0; i < 15; i++) {
-                    dots.push({
-                        x: Math.random() * w,
-                        y: Math.random() * h,
-                        vx: (Math.random() - 0.5) * 0.3,
-                        vy: (Math.random() - 0.5) * 0.3,
-                        r: Math.random() * 2 + 1
-                    });
-                }
-            };
-            
-            const animate = () => {
-                ctx.clearRect(0, 0, w, h);
-                
-                dots.forEach(d => {
-                    d.x += d.vx;
-                    d.y += d.vy;
-                    if (d.x < 0 || d.x > w) d.vx *= -1;
-                    if (d.y < 0 || d.y > h) d.vy *= -1;
-                    
-                    ctx.beginPath();
-                    ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
-                    ctx.fillStyle = 'rgba(0,0,255,0.08)';
-                    ctx.fill();
-                });
-                
-                for (let i = 0; i < dots.length; i++) {
-                    for (let j = i + 1; j < dots.length; j++) {
-                        const dx = dots[i].x - dots[j].x;
-                        const dy = dots[i].y - dots[j].y;
-                        const dist = Math.sqrt(dx*dx + dy*dy);
-                        if (dist < 100) {
-                            ctx.beginPath();
-                            ctx.moveTo(dots[i].x, dots[i].y);
-                            ctx.lineTo(dots[j].x, dots[j].y);
-                            ctx.strokeStyle = `rgba(0,0,255,${0.06 * (1 - dist/100)})`;
-                            ctx.stroke();
-                        }
-                    }
-                }
-                
-                requestAnimationFrame(animate);
-            };
-            
-            resize();
-            initDots();
-            animate();
-            window.addEventListener('resize', () => { resize(); initDots(); });
-        }
-
-        // ===== INIT =====
         
-        document.addEventListener('DOMContentLoaded', () => {
-            typeWriter('ARTHOUSE_INTELLIGENCE', document.getElementById('typewriter'), 50);
+        function updateClock(){
+            const now=new Date();
+            document.getElementById('clock').textContent=now.toLocaleTimeString('en-US',{hour12:false})+' UTC';
+        }
+        
+        async function connectWallet(){
+            if(typeof window.ethereum!=='undefined'){
+                try{
+                    const accounts=await window.ethereum.request({method:'eth_requestAccounts'});
+                    const address=accounts[0];
+                    document.getElementById('wallet-btn').classList.add('connected');
+                    document.getElementById('wallet-text').textContent=`${address.slice(0,6)}...${address.slice(-4)}`;
+                }catch(err){
+                    console.error('Wallet connect failed:',err);
+                }
+            }else{
+                alert('Please install Coinbase Wallet or MetaMask');
+            }
+        }
+        
+        function cast(){
+            const text='Check out ARTHOUSE for verified Base NFT intelligence! 🎨';
+            const url=encodeURIComponent(location.href);
+            window.open(`https://warpcast.com/~/compose?text=${encodeURIComponent(text)}&embeds[]=${url}`,'_blank');
+        }
+        
+        // Renderers
+        function renderScam(){
+            document.getElementById('scam-list').innerHTML=SCAM_DATA.map(s=>`<li><span>${s.name} <span style="color:#9ca3af">(${s.type})</span></span><span class="${s.risk==='HIGH'?'risk-high':'risk-med'}">${s.risk} — ${s.reported}</span></li>`).join('');
+        }
+        
+        function renderTicker(){
+            const items=[...TICKER_DATA,...TICKER_DATA];
+            document.getElementById('ticker-track').innerHTML=items.map(i=>`<a href="${i.url}" target="_blank" class="ticker-item"><span class="ticker-tag ${i.type}">${i.tag}</span><span>${i.text}</span></a>`).join('');
+        }
+        
+        function renderX(){
+            document.getElementById('x-feed').innerHTML=X_DATA.map((item,idx)=>`<div class="feed-item tweet ${item.verified?'verified':''}"><div class="feed-header"><span class="feed-type">𝕏 ${item.name} ${item.verified?'<span class="verified-badge">✓</span>':''}</span><span class="feed-platform">${item.handle}</span><span class="feed-time">${item.time}</span></div><p class="tweet-text">${item.text}</p><div class="tweet-stats"><span>♥ ${item.likes}</span><span>↻ ${item.retweets}</span></div><a href="${item.url}" target="_blank" class="feed-link">↗</a><div class="feed-index">${String(idx+1).padStart(2,'0')}/${String(X_DATA.length).padStart(2,'0')}</div></div>`).join('');
+        }
+        
+        function renderFarcaster(){
+            document.getElementById('farcaster-feed').innerHTML=FARCASTER_DATA.map((item,idx)=>`<div class="feed-item cast ${item.verified?'verified':''}"><div class="feed-header"><span class="feed-type">🟣 ${item.displayName} ${item.verified?'<span class="verified-badge">✓</span>':''}</span><span class="feed-platform">@${item.username}</span><span class="feed-time">${item.time}</span></div><p class="cast-text">${item.text}</p><div class="cast-stats"><span>❤️ ${item.likes}</span><span>🔄 ${item.recasts}</span><span>in ${item.channel}</span></div><a href="${item.url}" target="_blank" class="feed-link">↗</a><div class="feed-index">${String(idx+1).padStart(2,'0')}/${String(FARCASTER_DATA.length).padStart(2,'0')}</div></div>`).join('');
+        }
+        
+        function renderBaseApp(){
+            document.getElementById('baseapp-feed').innerHTML=BASEAPP_DATA.map((item,idx)=>`<div class="feed-item ${item.type} baseapp ${item.verified?'verified':''}"><div class="feed-header"><span class="feed-type">${item.subtitle==='Trending'?'📈':item.subtitle==='New Mint'?'✨':'👑'} ${item.subtitle} ${item.verified?'<span class="verified-badge">✓</span>':''}</span><span class="feed-platform">Base.app</span><span class="feed-time">${item.time}</span></div><h3 class="feed-title">${item.title}</h3><p class="feed-excerpt">${item.desc}</p><div class="feed-value">${item.stat}</div><a href="${item.url}" target="_blank" class="feed-link">↗</a><div class="feed-index">${String(idx+1).padStart(2,'0')}/${String(BASEAPP_DATA.length).padStart(2,'0')}</div></div>`).join('');
+        }
+        
+        function renderParagraph(){
+            document.getElementById('paragraph-feed').innerHTML=PARAGRAPH_DATA.map((item,idx)=>`<article class="feed-item ${item.category} ${item.verified?'verified':''}"><div class="feed-header"><span class="feed-type">${item.category==='article'?'📝':'📰'} ${item.author} ${item.verified?'<span class="verified-badge">✓</span>':''}</span><span class="feed-platform">${item.readTime} read</span><span class="feed-time">${item.time}</span></div><h3 class="feed-title">${item.title}</h3><p class="feed-excerpt">${item.excerpt}</p><div class="feed-meta">Type: ${item.category}</div><a href="${item.url}" target="_blank" class="feed-link">↗</a><div class="feed-index">${String(idx+1).padStart(2,'0')}/${String(PARAGRAPH_DATA.length).padStart(2,'0')}</div></article>`).join('');
+        }
+        
+        function renderOnchain(){
+            const sales=ONCHAIN_DATA.filter(i=>i.type==='sale').length;
+            const mints=ONCHAIN_DATA.filter(i=>i.type==='mint').length;
+            const vol=ONCHAIN_DATA.filter(i=>i.value).reduce((a,i)=>a+parseFloat(i.value||0),0).toFixed(3);
+            document.getElementById('stat-sales').textContent=sales;
+            document.getElementById('stat-mints').textContent=mints;
+            document.getElementById('stat-volume').textContent=vol;
+            document.getElementById('onchain-feed').innerHTML=ONCHAIN_DATA.map((item,idx)=>`<div class="feed-item ${item.type} ${item.verified?'verified':''}"><div class="feed-header"><span class="feed-type">${item.type==='sale'?'💰':item.type==='mint'?'✨':'↗️'} ${item.type} ${item.verified?'<span class="verified-badge">✓</span>':''}</span><span class="feed-platform">${item.platform}</span><span class="feed-time">${item.time}</span></div><div class="feed-title" style="font-family:monospace;font-size:0.8rem">TOKEN: <strong>${item.tokenId}</strong></div><div class="feed-meta"><span>${item.from}</span><span>→</span><span>${item.to}</span></div>${item.value?`<div class="feed-value">${item.value} ETH</div>`:''}<a href="https://basescan.org/tx/${item.tx}" target="_blank" class="feed-link">↗</a><div class="feed-index">${String(idx+1).padStart(2,'0')}/${String(ONCHAIN_DATA.length).padStart(2,'0')}</div></div>`).join('');
+        }
+        
+        function renderMarket(){
+            document.getElementById('market-feed').innerHTML=MARKET_DATA.map((item,idx)=>`<div class="feed-item ${item.trend==='up'?'sale':'mint'} ${item.verified?'verified':''}"><div class="feed-header"><span class="feed-type">${item.trend==='up'?'📈':'📉'} ${item.collection} ${item.verified?'<span class="verified-badge">✓</span>':''}</span><span class="feed-platform">${item.metric}</span><span class="feed-time">${item.time}</span></div><div class="feed-title">${item.value}</div><div class="feed-value">${item.change} ${item.trend==='up'?'📈':'📉'}</div><div class="feed-index">${String(idx+1).padStart(2,'0')}/${String(MARKET_DATA.length).padStart(2,'0')}</div></div>`).join('');
+        }
+        
+        function renderDrops(){
+            document.getElementById('drops-feed').innerHTML=DROPS_DATA.map((item,idx)=>`<div class="feed-item ${item.type} ${item.verified?'verified':''}"><div class="feed-header"><span class="feed-type">${item.type==='auction'?'🔨':item.type==='drop'?'🎨':'🖼️'} ${item.artist} ${item.verified?'<span class="verified-badge">✓</span>':''}</span><span class="feed-platform">${item.platform}</span><span class="feed-time">${item.time}</span></div><h3 class="feed-title">${item.title}</h3><div class="feed-meta">Supply: ${item.supply}</div><div class="feed-value">${item.price}</div><a href="${item.url}" target="_blank" class="feed-link">↗</a><div class="feed-index">${String(idx+1).padStart(2,'0')}/${String(DROPS_DATA.length).padStart(2,'0')}</div></div>`).join('');
+        }
+        
+        // Init
+        document.addEventListener('DOMContentLoaded',()=>{
+            typeWriter('ARTHOUSE_INTELLIGENCE',document.getElementById('typewriter'));
             updateClock();
-            setInterval(updateClock, 1000);
-            initCanvas();
+            setInterval(updateClock,1000);
             
-            renderScamAlert();
+            renderScam();
             renderTicker();
             renderX();
             renderFarcaster();
@@ -2118,9 +611,62 @@
             renderOnchain();
             renderMarket();
             renderDrops();
-            renderNews();
             
-            console.log('ARTHOUSE v1.9 // Verified Multi-Source Intelligence');
+            document.getElementById('wallet-btn')?.addEventListener('click',connectWallet);
+            
+            // Canvas background
+            const canvas=document.getElementById('bg-canvas');
+            const ctx=canvas.getContext('2d');
+            let w,h,dots=[];
+            
+            const resize=()=>{
+                w=canvas.width=window.innerWidth;
+                h=canvas.height=window.innerHeight;
+            };
+            
+            const initDots=()=>{
+                dots=Array.from({length:12},()=>({
+                    x:Math.random()*w,
+                    y:Math.random()*h,
+                    vx:(Math.random()-0.5)*0.3,
+                    vy:(Math.random()-0.5)*0.3,
+                    r:Math.random()*2+1
+                }));
+            };
+            
+            const animate=()=>{
+                ctx.clearRect(0,0,w,h);
+                dots.forEach(d=>{
+                    d.x+=d.vx;d.y+=d.vy;
+                    if(d.x<0||d.x>w)d.vx*=-1;
+                    if(d.y<0||d.y>h)d.vy*=-1;
+                    ctx.beginPath();
+                    ctx.arc(d.x,d.y,d.r,0,Math.PI*2);
+                    ctx.fillStyle='rgba(0,0,255,0.06)';
+                    ctx.fill();
+                });
+                for(let i=0;i<dots.length;i++){
+                    for(let j=i+1;j<dots.length;j++){
+                        const dx=dots[i].x-dots[j].x,dy=dots[i].y-dots[j].y;
+                        const dist=Math.sqrt(dx*dx+dy*dy);
+                        if(dist<120){
+                            ctx.beginPath();
+                            ctx.moveTo(dots[i].x,dots[i].y);
+                            ctx.lineTo(dots[j].x,dots[j].y);
+                            ctx.strokeStyle=`rgba(0,0,255,${0.04*(1-dist/120)})`;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(animate);
+            };
+            
+            resize();
+            initDots();
+            animate();
+            window.addEventListener('resize',()=>{resize();initDots()});
+            
+            console.log('ARTHOUSE v2.0 // Env:',ENV.isBase()?'Base':ENV.isFarcaster()?'Farcaster':'Web');
         });
     </script>
 </body>
