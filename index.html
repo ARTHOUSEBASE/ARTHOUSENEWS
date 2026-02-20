@@ -206,7 +206,6 @@
             border-color:var(--border);
             color:var(--text);
         }
-        /* Special Blue Button for Footer */
         .btn-blue{
             background:var(--primary);
             color:white;
@@ -236,104 +235,18 @@
         }
         @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
         
-        /* Ticker - Fixed Height & Better Layout */
-        .ticker-wrap{
-            position:fixed;
-            top:57px;
-            left:0;
-            right:0;
-            z-index:98;
-            background:var(--surface);
-            border-bottom:1px solid var(--border);
-            height:40px;
-            display:flex;
-            align-items:center;
-            overflow:hidden;
-        }
-        .ticker-label{
-            background:var(--primary);
-            color:white;
-            padding:0 1rem;
-            font-size:0.65rem;
-            font-weight:600;
-            text-transform:uppercase;
-            letter-spacing:0.1em;
-            height:100%;
-            display:flex;
-            align-items:center;
-            flex-shrink:0;
-            z-index:2;
-            font-family:var(--mono);
-        }
-        .ticker-container{
-            flex:1;
-            overflow:hidden;
-            position:relative;
-            height:100%;
-            mask-image:linear-gradient(90deg,transparent,black 10%,black 90%,transparent);
-            -webkit-mask-image:linear-gradient(90deg,transparent,black 10%,black 90%,transparent);
-        }
-        .ticker-track{
-            display:flex;
-            position:absolute;
-            left:0;
-            top:0;
-            height:100%;
-            align-items:center;
-            animation:ticker 40s linear infinite;
-            will-change:transform;
-            padding-right:2rem;
-        }
-        .ticker-track:hover{animation-play-state:paused}
-        .ticker-item{
-            display:inline-flex;
-            align-items:center;
-            gap:0.75rem;
-            padding:0 1.5rem;
-            font-size:0.75rem;
-            border-right:1px solid var(--border);
-            height:100%;
-            white-space:nowrap;
-            cursor:pointer;
-            transition:all 0.2s;
-            text-decoration:none;
-            color:var(--text-secondary);
-            font-family:var(--mono);
-            flex-shrink:0;
-        }
-        .ticker-item:hover{
-            color:var(--primary);
-            background:var(--surface-hover);
-        }
-        .ticker-tag{
-            font-size:0.6rem;
-            text-transform:uppercase;
-            font-weight:700;
-            padding:0.15rem 0.4rem;
-            border-radius:var(--radius-sm);
-            border:1px solid;
-            letter-spacing:0.05em;
-            flex-shrink:0;
-        }
-        .ticker-tag.official{border-color:var(--primary);color:var(--primary)}
-        .ticker-tag.early{border-color:var(--accent-green);color:var(--accent-green)}
-        .ticker-tag.agent{border-color:var(--accent-purple);color:var(--accent-purple)}
-        .ticker-tag.builder{border-color:var(--accent-orange);color:var(--accent-orange)}
-        
-        @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-        
         /* Main Layout */
         .main{
             position:relative;
             z-index:10;
-            padding-top:98px;
+            padding-top:65px;
         }
         
         /* Hero - IDE Style */
         .hero{
             max-width:900px;
             margin:0 auto;
-            padding:2.5rem 1rem 1.5rem;
+            padding:2rem 1rem 1.5rem;
             text-align:center;
         }
         .hero-badge{
@@ -346,7 +259,7 @@
             font-size:0.65rem;
             font-weight:600;
             color:var(--primary);
-            margin-bottom:1.25rem;
+            margin-bottom:1rem;
             text-transform:uppercase;
             letter-spacing:0.1em;
             font-family:var(--mono);
@@ -366,9 +279,97 @@
             font-size:0.875rem;
             color:var(--text-secondary);
             max-width:480px;
-            margin:0 auto 1.5rem;
+            margin:0 auto 1.25rem;
             line-height:1.6;
             font-family:var(--mono);
+        }
+        
+        /* Ticker - Below Subtitle, Slower Animation */
+        .ticker-container-hero{
+            max-width:800px;
+            margin:0 auto 1.5rem;
+            background:var(--surface);
+            border:1px solid var(--border);
+            border-radius:var(--radius);
+            overflow:hidden;
+            height:44px;
+            position:relative;
+        }
+        .ticker-label-hero{
+            position:absolute;
+            left:0;
+            top:0;
+            bottom:0;
+            background:var(--primary);
+            color:white;
+            padding:0 0.875rem;
+            font-size:0.7rem;
+            font-weight:600;
+            text-transform:uppercase;
+            letter-spacing:0.05em;
+            display:flex;
+            align-items:center;
+            z-index:2;
+            font-family:var(--mono);
+        }
+        .ticker-wrap-hero{
+            margin-left:90px;
+            overflow:hidden;
+            height:100%;
+            position:relative;
+            mask-image:linear-gradient(90deg,transparent,black 5%,black 95%,transparent);
+            -webkit-mask-image:linear-gradient(90deg,transparent,black 5%,black 95%,transparent);
+        }
+        .ticker-track-hero{
+            display:flex;
+            position:absolute;
+            left:0;
+            top:0;
+            height:100%;
+            align-items:center;
+            animation:tickerSlow 60s linear infinite;
+            will-change:transform;
+        }
+        .ticker-track-hero:hover{animation-play-state:paused}
+        .ticker-item-hero{
+            display:inline-flex;
+            align-items:center;
+            gap:0.625rem;
+            padding:0 1.25rem;
+            font-size:0.8rem;
+            border-right:1px solid var(--border);
+            height:100%;
+            white-space:nowrap;
+            cursor:pointer;
+            transition:all 0.2s;
+            text-decoration:none;
+            color:var(--text-secondary);
+            font-family:var(--mono);
+            flex-shrink:0;
+        }
+        .ticker-item-hero:hover{
+            color:var(--primary);
+            background:var(--surface-hover);
+        }
+        .ticker-tag-hero{
+            font-size:0.65rem;
+            text-transform:uppercase;
+            font-weight:700;
+            padding:0.15rem 0.375rem;
+            border-radius:var(--radius-sm);
+            border:1px solid;
+            letter-spacing:0.05em;
+            flex-shrink:0;
+        }
+        .ticker-tag-hero.official{border-color:var(--primary);color:var(--primary)}
+        .ticker-tag-hero.early{border-color:var(--accent-green);color:var(--accent-green)}
+        .ticker-tag-hero.agent{border-color:var(--accent-purple);color:var(--accent-purple)}
+        .ticker-tag-hero.builder{border-color:var(--accent-orange);color:var(--accent-orange)}
+        .ticker-tag-hero.media{border-color:var(--accent-cyan);color:var(--accent-cyan)}
+        
+        @keyframes tickerSlow{
+            0%{transform:translateX(0)}
+            100%{transform:translateX(-50%)}
         }
         
         /* Filter Pills - IDE Tags */
@@ -407,7 +408,7 @@
             margin:0 auto;
             padding:0 1rem;
             position:sticky;
-            top:97px;
+            top:64px;
             z-index:50;
             background:var(--bg);
             padding-bottom:1rem;
@@ -558,6 +559,10 @@
             border-left:3px solid var(--accent-purple);
             background:linear-gradient(90deg,var(--surface) 0%,rgba(124,58,237,0.03) 100%);
         }
+        .feed-card.baseapp-verified{
+            border-left:3px solid #0052FF;
+            background:linear-gradient(90deg,var(--surface) 0%,rgba(0,82,255,0.03) 100%);
+        }
         .feed-card.tweet{border-left:2px solid var(--text-tertiary)}
         .feed-card.cast{border-left:2px solid #855DCD}
         .feed-card.onchain{border-left:2px solid var(--accent-green)}
@@ -599,6 +604,11 @@
             border-color:var(--accent-purple);
             color:var(--accent-purple);
             background:rgba(124,58,237,0.05);
+        }
+        .priority-baseapp{
+            border-color:#0052FF;
+            color:#0052FF;
+            background:rgba(0,82,255,0.05);
         }
         
         .card-header{
@@ -671,6 +681,7 @@
         .badge-reply{border-color:var(--accent-cyan);color:var(--accent-cyan)}
         .badge-alpha{border-color:var(--accent-green);color:var(--accent-green)}
         .badge-media{border-color:var(--accent-purple);color:var(--accent-purple)}
+        .badge-baseapp{border-color:#0052FF;color:#0052FF}
         .badge-team{border-color:var(--accent-orange);color:var(--accent-orange)}
         .badge-dev{border-color:var(--accent-purple);color:var(--accent-purple)}
         
@@ -773,16 +784,68 @@
             font-weight:700;
         }
         
-        /* Media Source Badge */
-        .media-source{
+        /* Base.app Follow Section */
+        .baseapp-follow{
+            background:linear-gradient(135deg,var(--surface) 0%,rgba(0,82,255,0.05) 100%);
+            border:1px solid var(--border);
+            border-radius:var(--radius);
+            padding:1.25rem;
+            margin-bottom:1.5rem;
+            text-align:center;
+        }
+        .baseapp-follow-title{
+            font-family:var(--mono);
+            font-size:0.875rem;
+            font-weight:700;
+            color:var(--text);
+            margin-bottom:0.5rem;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:0.5rem;
+        }
+        .baseapp-follow-text{
+            font-size:0.8rem;
+            color:var(--text-secondary);
+            margin-bottom:1rem;
+            font-family:var(--mono);
+        }
+        
+        /* Feed Rotation Indicator */
+        .feed-rotation-indicator{
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:0.5rem;
+            font-size:0.7rem;
+            color:var(--text-tertiary);
+            margin-bottom:1rem;
+            font-family:var(--mono);
+        }
+        .rotation-timer{
             display:inline-flex;
             align-items:center;
             gap:0.375rem;
-            font-size:0.65rem;
-            color:var(--accent-purple);
+            padding:0.2rem 0.5rem;
+            background:var(--bg);
+            border:1px solid var(--border);
+            border-radius:var(--radius-sm);
             font-weight:600;
+            color:var(--primary);
+        }
+        .rotation-bar{
+            width:100%;
+            height:2px;
+            background:var(--border);
             margin-top:0.5rem;
-            font-family:var(--mono);
+            position:relative;
+            overflow:hidden;
+        }
+        .rotation-progress{
+            height:100%;
+            background:var(--primary);
+            width:0%;
+            transition:width 1s linear;
         }
         
         /* Reply Context */
@@ -936,26 +999,6 @@
             gap:0.75rem;
             justify-content:center;
             flex-wrap:wrap;
-        }
-        .social-link{
-            display:inline-flex;
-            align-items:center;
-            gap:0.5rem;
-            padding:0.625rem 1rem;
-            background:var(--surface);
-            border:1px solid var(--border);
-            border-radius:var(--radius-sm);
-            text-decoration:none;
-            color:var(--text);
-            font-size:0.75rem;
-            font-weight:500;
-            transition:all 0.2s;
-            font-family:var(--mono);
-        }
-        .social-link:hover{
-            border-color:var(--primary);
-            color:var(--primary);
-            background:var(--primary-light);
         }
         
         .footer-main{
@@ -1111,8 +1154,10 @@
             .card-header{flex-direction:column;gap:0.625rem}
             .section-header{flex-direction:column;align-items:flex-start;gap:0.625rem}
             .footer-main{flex-direction:column;text-align:center}
-            .ticker-wrap{height:36px}
-            .ticker-item{padding:0 1rem;font-size:0.7rem}
+            .ticker-container-hero{height:40px}
+            .ticker-label-hero{font-size:0.65rem;padding:0 0.625rem}
+            .ticker-wrap-hero{margin-left:80px}
+            .ticker-item-hero{font-size:0.75rem;padding:0 0.875rem}
         }
     </style>
 </head>
@@ -1143,18 +1188,20 @@
         </div>
     </header>
     
-    <div class="ticker-wrap">
-        <div class="ticker-label">BASE_ALPHA</div>
-        <div class="ticker-container">
-            <div class="ticker-track" id="ticker-track"></div>
-        </div>
-    </div>
-    
     <main class="main">
         <section class="hero">
             <div class="hero-badge">Verified_Only</div>
             <h1 class="title">ARTHOUSE_INTELLIGENCE</h1>
             <p class="subtitle">Real-time intelligence from verified creators, early-stage projects, and on-chain activity across the Base ecosystem.</p>
+            
+            <!-- Ticker Moved Below Subtitle -->
+            <div class="ticker-container-hero">
+                <div class="ticker-label-hero">BASE_ALPHA</div>
+                <div class="ticker-wrap-hero">
+                    <div class="ticker-track-hero" id="ticker-track-hero"></div>
+                </div>
+            </div>
+            
             <div class="filter-pills">
                 <span class="pill verified">Verified_Only</span>
                 <span class="pill">Early_Stage</span>
@@ -1167,6 +1214,7 @@
         <nav class="category-nav">
             <div class="tabs">
                 <button class="tab-btn active" onclick="switchTab('xfeed',this)">X_Feed</button>
+                <button class="tab-btn" onclick="switchTab('baseapp',this)">Base.app</button>
                 <button class="tab-btn" onclick="switchTab('media',this)">Media</button>
                 <button class="tab-btn" onclick="switchTab('farcaster',this)">Farcaster</button>
                 <button class="tab-btn" onclick="switchTab('early',this)">Early_Projects</button>
@@ -1195,6 +1243,43 @@
                 <!-- Alpha Projects Noticed by Trusted Devs -->
                 <div class="section-divider">Alpha_Noticed_By_Trusted_Devs</div>
                 <div id="x-feed-alpha" class="feed"></div>
+            </div>
+            
+            <!-- Base.app Feed - New Tab with Verified Priority -->
+            <div id="baseapp" class="tab-content">
+                <div class="section-header">
+                    <h2 class="section-title">Base.app_Feed</h2>
+                    <a href="https://base.app" target="_blank" class="btn btn-secondary">Open_Base.app →</a>
+                </div>
+                
+                <!-- Follow Base.app/arthouse -->
+                <div class="baseapp-follow">
+                    <div class="baseapp-follow-title">
+                        <span style="color:#0052FF;">🅱</span>
+                        <span>Follow ARTHOUSE on Base.app</span>
+                    </div>
+                    <div class="baseapp-follow-text">Join 200K+ verified users on Base.app. Follow @arthouse for exclusive drops and early access.</div>
+                    <a href="https://base.app/arthouse" target="_blank" class="btn btn-blue">Follow @arthouse →</a>
+                </div>
+                
+                <!-- Feed Rotation Indicator -->
+                <div class="feed-rotation-indicator">
+                    <span>Feed rotates every 30 minutes</span>
+                    <span class="rotation-timer" id="rotation-timer">30:00</span>
+                </div>
+                <div class="rotation-bar">
+                    <div class="rotation-progress" id="rotation-progress"></div>
+                </div>
+                
+                <!-- Base.app Verified Priority Feeds -->
+                <div class="section-divider">Coinbase_Verified_Priority</div>
+                <div id="baseapp-feed-verified" class="feed"></div>
+                
+                <div class="section-divider">Base_Creator_Rewards</div>
+                <div id="baseapp-feed-creators" class="feed"></div>
+                
+                <div class="section-divider">Trending_Mini_Apps</div>
+                <div id="baseapp-feed-trending" class="feed"></div>
             </div>
             
             <!-- Media Coverage - New Tab -->
@@ -1635,6 +1720,160 @@
             }
         ];
         
+        // BASE.APP VERIFIED FEED DATA - With Rotation
+        const BASEAPP_VERIFIED=[
+            {
+                id:'bv1',
+                handle:'jesse.base.eth',
+                name:'Jesse Pollak',
+                avatar:'JP',
+                verified:true,
+                verificationType:'Coinbase_Verified',
+                badge:'Verified',
+                badgeClass:'badge-baseapp',
+                priorityClass:'priority-baseapp',
+                cardClass:'baseapp-verified',
+                title:'Base App is the future of onchain social',
+                text:'Just hit 200K verifications on Base App. The combination of verified identity + social + trading is unlocking entirely new use cases for creators.',
+                stats:[{icon:'♥',val:'12.5K'},{icon:'↻',val:'2.3K'},{icon:'💬',val:'567'}],
+                time:'10m ago',
+                url:'https://base.app/jesse',
+                tags:['Base_App','Verified','Social']
+            },
+            {
+                id:'bv2',
+                handle:'basecreator.base.eth',
+                name:'Base Creator',
+                avatar:'BC',
+                verified:true,
+                verificationType:'Coinbase_One',
+                badge:'Coinbase_One',
+                badgeClass:'badge-baseapp',
+                priorityClass:'priority-baseapp',
+                cardClass:'baseapp-verified',
+                title:'Creator Rewards Week 12',
+                text:'Distributed $50K to top creators this week. Quality content is winning over quantity. Verified creators seeing 3x engagement vs unverified.',
+                stats:[{icon:'♥',val:'3.2K'},{icon:'↻',val:'567'},{icon:'💬',val:'123'}],
+                time:'25m ago',
+                url:'https://base.app/basecreator',
+                tags:['Creator_Rewards','Coinbase_One','Earnings']
+            },
+            {
+                id:'bv3',
+                handle:'arthouse.base.eth',
+                name:'ARTHOUSE',
+                avatar:'AH',
+                verified:true,
+                verificationType:'Coinbase_Verified',
+                badge:'Verified',
+                badgeClass:'badge-baseapp',
+                priorityClass:'priority-baseapp',
+                cardClass:'baseapp-verified',
+                title:'New Drop: Generative Series #4',
+                text:'Just minted exclusive generative art series for Base App verified users only. 100 editions, 0.01 ETH each. Gasless minting enabled.',
+                stats:[{icon:'♥',val:'892'},{icon:'↻',val:'234'},{icon:'💬',val:'89'}],
+                time:'45m ago',
+                url:'https://base.app/arthouse',
+                tags:['Drop','Generative','Exclusive']
+            }
+        ];
+        
+        const BASEAPP_CREATORS=[
+            {
+                id:'bc1',
+                handle:'artbot.base.eth',
+                name:'ArtBot',
+                avatar:'AB',
+                verified:true,
+                badge:'Creator',
+                badgeClass:'badge-baseapp',
+                priorityClass:'priority-baseapp',
+                cardClass:'baseapp-verified',
+                title:'AI Art Generator Mini App',
+                text:'Generate art directly in Base App using our new Mini App. 50K generations this week. Top creators earning $2K+ weekly from tips.',
+                stats:[{icon:'♥',val:'2.1K'},{icon:'↻',val:'445'},{icon:'💬',val:'167'}],
+                time:'1h ago',
+                url:'https://base.app/artbot',
+                tags:['Mini_App','AI_Art','Creator_Economy']
+            },
+            {
+                id:'bc2',
+                handle:'nftdegen.base.eth',
+                name:'NFTDegen',
+                avatar:'ND',
+                verified:true,
+                badge:'Top_Creator',
+                badgeClass:'badge-baseapp',
+                priorityClass:'priority-baseapp',
+                cardClass:'baseapp-verified',
+                title:'Base Punks Minting Now',
+                text:'10K unique punks minting exclusively on Base App. 70% minted in 2 hours. Verified users get priority access + discount.',
+                stats:[{icon:'♥',val:'5.6K'},{icon:'↻',val:'1.2K'},{icon:'💬',val:'445'}],
+                time:'2h ago',
+                url:'https://base.app/nftdegen',
+                tags:['NFT','Mint','Base_Punks']
+            }
+        ];
+        
+        const BASEAPP_TRENDING=[
+            {
+                id:'bt1',
+                handle:'cody.base.eth',
+                name:'Cody',
+                avatar:'CD',
+                verified:true,
+                badge:'Mini_App',
+                badgeClass:'badge-baseapp',
+                priorityClass:'priority-baseapp',
+                cardClass:'baseapp-verified',
+                title:'Cody - AI Companion',
+                text:'Trending #1 Mini App this week. Chat with AI, earn rewards, prove humanity. Uses Base Verify to prevent bots. 50K DAU.',
+                stats:[{icon:'♥',val:'8.9K'},{icon:'↻',val:'2.3K'},{icon:'💬',val:'890'}],
+                time:'30m ago',
+                url:'https://base.app/cody',
+                tags:['Trending','AI','Mini_App']
+            },
+            {
+                id:'bt2',
+                handle:'scratch.base.eth',
+                name:'Scratch',
+                avatar:'SC',
+                verified:true,
+                badge:'Mini_App',
+                badgeClass:'badge-baseapp',
+                priorityClass:'priority-baseapp',
+                cardClass:'baseapp-verified',
+                title:'Scratch - Social Trading',
+                text:'Watch friends trade in real-time. Copy top performers. $12M volume this week. Verified traders only.',
+                stats:[{icon:'♥',val:'4.5K'},{icon:'↻',val:'890'},{icon:'💬',val:'234'}],
+                time:'1.5h ago',
+                url:'https://base.app/scratch',
+                tags:['Trading','Social','Trending']
+            },
+            {
+                id:'bt3',
+                handle:'bracket.base.eth',
+                name:'Bracket',
+                avatar:'BR',
+                verified:true,
+                badge:'Mini_App',
+                badgeClass:'badge-baseapp',
+                priorityClass:'priority-baseapp',
+                cardClass:'baseapp-verified',
+                title:'Bracket - Sports Betting',
+                text:'$BRACKY airdrop gated to Coinbase One members. 100K verified users participated. Instant payouts via Base Pay.',
+                stats:[{icon:'♥',val:'3.2K'},{icon:'↻',val:'567'},{icon:'💬',val:'123'}],
+                time:'3h ago',
+                url:'https://base.app/bracket',
+                tags:['Sports','Betting','Airdrop']
+            }
+        ];
+        
+        // Feed Rotation State
+        let currentFeedSet=0;
+        const feedSets=['verified','creators','trending'];
+        const ROTATION_INTERVAL=30*60*1000; // 30 minutes
+        
         // MEDIA COVERAGE DATA - Latest News
         const MEDIA_DATA=[
             {
@@ -1912,11 +2151,10 @@
         }
         
         function renderTicker(){
-            // Duplicate items for seamless loop
             const items=[...TICKER_DATA,...TICKER_DATA,...TICKER_DATA];
-            document.getElementById('ticker-track').innerHTML=items.map(i=>`
-                <a href="${i.url}" target="_blank" class="ticker-item">
-                    <span class="ticker-tag ${i.type}">${i.tag}</span>
+            document.getElementById('ticker-track-hero').innerHTML=items.map(i=>`
+                <a href="${i.url}" target="_blank" class="ticker-item-hero">
+                    <span class="ticker-tag-hero ${i.type}">${i.tag}</span>
                     <span>${i.text}</span>
                 </a>
             `).join('');
@@ -1924,7 +2162,6 @@
         
         // Render Hierarchical X Feed
         function renderX(){
-            // 1. Official Team
             document.getElementById('x-feed-official').innerHTML=X_OFFICIAL.map(item=>`
                 <div class="feed-card ${item.cardClass}" onclick="window.open('${item.url}','_blank')">
                     <div class="priority-badge ${item.priorityClass}">● OFFICIAL_TEAM</div>
@@ -1960,7 +2197,6 @@
                 </div>
             `).join('');
             
-            // 2. Noticed by Official
             document.getElementById('x-feed-noticed').innerHTML=X_NOTICED.map(item=>`
                 <div class="feed-card ${item.cardClass}" onclick="window.open('${item.url}','_blank')">
                     <div class="priority-badge ${item.priorityClass}">◐ NOTICED_BY_OFFICIAL</div>
@@ -1999,7 +2235,6 @@
                 </div>
             `).join('');
             
-            // 3. Alpha Projects Noticed by Trusted Devs
             document.getElementById('x-feed-alpha').innerHTML=X_ALPHA.map(item=>`
                 <div class="feed-card ${item.cardClass}" onclick="window.open('${item.url}','_blank')">
                     <div class="priority-badge ${item.priorityClass}">○ ALPHA_NOTICED</div>
@@ -2044,7 +2279,146 @@
             `).join('');
         }
         
-        // Render Media Coverage
+        // Render Base.app Feed with Rotation
+        function renderBaseapp(){
+            // Verified Priority
+            document.getElementById('baseapp-feed-verified').innerHTML=BASEAPP_VERIFIED.map(item=>`
+                <div class="feed-card ${item.cardClass}" onclick="window.open('${item.url}','_blank')">
+                    <div class="priority-badge ${item.priorityClass}">● COINBASE_VERIFIED</div>
+                    <div class="card-header">
+                        <div class="card-meta">
+                            <div class="card-avatar" style="background:#0052FF;color:white;font-weight:700;">${item.avatar}</div>
+                            <div class="card-author">
+                                <div class="author-name">
+                                    ${item.name}
+                                    ${item.verified?'<span class="verified-check" style="color:#0052FF;">✓</span>':''}
+                                </div>
+                                <div class="author-handle">${item.handle}</div>
+                            </div>
+                        </div>
+                        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.375rem;">
+                            <span class="card-badge ${item.badgeClass}">${item.badge}</span>
+                            <span class="card-time">${item.time}</span>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-title">${item.title}</div>
+                        <div class="card-text">${item.text}</div>
+                    </div>
+                    <div class="card-stats">
+                        ${item.stats.map(s=>`<span class="stat-item"><span>${s.icon}</span><span>${s.val}</span></span>`).join('')}
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-tags">
+                            ${item.tags.map(t=>`<span class="tag">${t}</span>`).join('')}
+                        </div>
+                        <button class="btn btn-ghost" onclick="event.stopPropagation();window.open('${item.url}','_blank')">View →</button>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Creator Rewards
+            document.getElementById('baseapp-feed-creators').innerHTML=BASEAPP_CREATORS.map(item=>`
+                <div class="feed-card ${item.cardClass}" onclick="window.open('${item.url}','_blank')">
+                    <div class="priority-badge ${item.priorityClass}">◐ CREATOR_REWARDS</div>
+                    <div class="card-header">
+                        <div class="card-meta">
+                            <div class="card-avatar" style="background:#0052FF;color:white;font-weight:700;">${item.avatar}</div>
+                            <div class="card-author">
+                                <div class="author-name">
+                                    ${item.name}
+                                    ${item.verified?'<span class="verified-check" style="color:#0052FF;">✓</span>':''}
+                                </div>
+                                <div class="author-handle">${item.handle}</div>
+                            </div>
+                        </div>
+                        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.375rem;">
+                            <span class="card-badge ${item.badgeClass}">${item.badge}</span>
+                            <span class="card-time">${item.time}</span>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-title">${item.title}</div>
+                        <div class="card-text">${item.text}</div>
+                    </div>
+                    <div class="card-stats">
+                        ${item.stats.map(s=>`<span class="stat-item"><span>${s.icon}</span><span>${s.val}</span></span>`).join('')}
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-tags">
+                            ${item.tags.map(t=>`<span class="tag">${t}</span>`).join('')}
+                        </div>
+                        <button class="btn btn-ghost" onclick="event.stopPropagation();window.open('${item.url}','_blank')">View →</button>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Trending Mini Apps
+            document.getElementById('baseapp-feed-trending').innerHTML=BASEAPP_TRENDING.map(item=>`
+                <div class="feed-card ${item.cardClass}" onclick="window.open('${item.url}','_blank')">
+                    <div class="priority-badge ${item.priorityClass}">○ TRENDING_MINI_APP</div>
+                    <div class="card-header">
+                        <div class="card-meta">
+                            <div class="card-avatar" style="background:#0052FF;color:white;font-weight:700;">${item.avatar}</div>
+                            <div class="card-author">
+                                <div class="author-name">
+                                    ${item.name}
+                                    ${item.verified?'<span class="verified-check" style="color:#0052FF;">✓</span>':''}
+                                </div>
+                                <div class="author-handle">${item.handle}</div>
+                            </div>
+                        </div>
+                        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.375rem;">
+                            <span class="card-badge ${item.badgeClass}">${item.badge}</span>
+                            <span class="card-time">${item.time}</span>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-title">${item.title}</div>
+                        <div class="card-text">${item.text}</div>
+                    </div>
+                    <div class="card-stats">
+                        ${item.stats.map(s=>`<span class="stat-item"><span>${s.icon}</span><span>${s.val}</span></span>`).join('')}
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-tags">
+                            ${item.tags.map(t=>`<span class="tag">${t}</span>`).join('')}
+                        </div>
+                        <button class="btn btn-ghost" onclick="event.stopPropagation();window.open('${item.url}','_blank')">View →</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Feed Rotation Logic
+        function startFeedRotation(){
+            const timerEl=document.getElementById('rotation-timer');
+            const progressEl=document.getElementById('rotation-progress');
+            let timeLeft=30*60; // 30 minutes in seconds
+            
+            setInterval(()=>{
+                timeLeft--;
+                if(timeLeft<0){
+                    timeLeft=30*60;
+                    rotateFeed();
+                }
+                
+                const minutes=Math.floor(timeLeft/60);
+                const seconds=timeLeft%60;
+                timerEl.textContent=`${minutes}:${seconds.toString().padStart(2,'0')}`;
+                
+                const progress=((30*60-timeLeft)/(30*60))*100;
+                progressEl.style.width=`${progress}%`;
+            },1000);
+        }
+        
+        function rotateFeed(){
+            currentFeedSet=(currentFeedSet+1)%feedSets.length;
+            // In real implementation, this would fetch new data
+            // For demo, we just log the rotation
+            console.log(`Feed rotated to: ${feedSets[currentFeedSet]}`);
+        }
+        
         function renderMedia(){
             document.getElementById('media-feed').innerHTML=MEDIA_DATA.map(item=>`
                 <div class="feed-card ${item.cardClass}" onclick="window.open('${item.url}','_blank')">
@@ -2236,12 +2610,16 @@
             renderScam();
             renderTicker();
             renderX();
+            renderBaseapp();
             renderMedia();
             renderFarcaster();
             renderEarly();
             renderOnchain();
             renderMarket();
             renderDrops();
+            
+            // Start 30-minute feed rotation
+            startFeedRotation();
             
             document.getElementById('wallet-btn')?.addEventListener('click',connectWallet);
         });
