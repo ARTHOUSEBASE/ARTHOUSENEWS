@@ -24,6 +24,7 @@
             --blue: #3b82f6;
             --purple: #8b5cf6;
             --orange: #f97316;
+            --red: #ef4444;
         }
 
         body {
@@ -111,10 +112,72 @@
             animation: pulse 2s infinite;
         }
 
+        /* Ticker Styles */
+        .ticker-wrap {
+            position: fixed;
+            top: 48px;
+            left: 0;
+            right: 0;
+            z-index: 99;
+            background: var(--base-blue);
+            color: white;
+            overflow: hidden;
+            height: 28px;
+            display: flex;
+            align-items: center;
+        }
+
+        .ticker-label {
+            background: rgba(0,0,0,0.2);
+            padding: 0 1rem;
+            font-size: 0.6rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            z-index: 2;
+            white-space: nowrap;
+        }
+
+        .ticker {
+            display: flex;
+            animation: ticker 30s linear infinite;
+            white-space: nowrap;
+            padding-left: 1rem;
+        }
+
+        .ticker-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0 1.5rem;
+            font-size: 0.7rem;
+            border-right: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .ticker-tag {
+            background: rgba(255,255,255,0.2);
+            padding: 0.1rem 0.4rem;
+            border-radius: 2px;
+            font-size: 0.55rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .ticker-tag.early { background: var(--green); }
+        .ticker-tag.agent { background: var(--purple); }
+
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
         .main {
             position: relative;
             z-index: 10;
-            padding-top: 60px;
+            padding-top: 88px;
         }
 
         .hero {
@@ -320,6 +383,8 @@
         .feed-item.listing { border-left: 3px solid var(--purple); }
         .feed-item.auction { border-left: 3px solid var(--orange); }
         .feed-item.tweet { border-left: 3px solid var(--base-blue); }
+        .feed-item.article { border-left: 3px solid var(--red); }
+        .feed-item.publication { border-left: 3px solid #ec4899; }
 
         .feed-header {
             display: flex;
@@ -384,6 +449,35 @@
         .feed-value {
             color: var(--green);
             font-weight: 600;
+        }
+
+        /* Enhanced Source Button */
+        .source-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.4rem 0.8rem;
+            background: var(--bg);
+            border: 1px solid var(--light-gray);
+            color: var(--gray);
+            font-family: inherit;
+            font-size: 0.65rem;
+            text-decoration: none;
+            border-radius: 3px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .source-btn:hover {
+            border-color: var(--base-blue);
+            color: var(--base-blue);
+            background: rgba(0, 0, 255, 0.03);
+        }
+
+        .source-btn::after {
+            content: '↗';
+            font-size: 0.8rem;
+            opacity: 0.7;
         }
 
         .feed-link {
@@ -475,7 +569,7 @@
         <div class="header-content">
             <div class="logo">
                 <span class="logo-text">ARTHOUSE</span>
-                <span class="version">v1.6</span>
+                <span class="version">v1.7</span>
             </div>
             <div class="status">
                 <span id="clock">00:00:00</span>
@@ -484,6 +578,14 @@
         </div>
     </header>
 
+    <!-- Live Ticker -->
+    <div class="ticker-wrap">
+        <div class="ticker-label">🔥 BASE ALPHA</div>
+        <div class="ticker" id="ticker-content">
+            <!-- Populated by JS -->
+        </div>
+    </div>
+
     <main class="main">
         <section class="hero">
             <h1 class="title">
@@ -491,13 +593,13 @@
             </h1>
             
             <p class="subtitle">
-                Art intelligence from social and on-chain sources.
+                Art intelligence from social, on-chain, and publishing sources.
             </p>
 
             <div class="badges">
                 <span class="badge">𝕏 SOCIAL</span>
                 <span class="badge">⛓ BASE</span>
-                <span class="badge">📰 NEWS</span>
+                <span class="badge">📝 PARAGRAPH</span>
                 <span class="badge live">● LIVE</span>
             </div>
         </section>
@@ -507,6 +609,9 @@
             <div class="tabs">
                 <button class="tab-btn active" onclick="switchTab('xfeed', this)">
                     𝕏 SOCIAL
+                </button>
+                <button class="tab-btn" onclick="switchTab('paragraph', this)">
+                    📝 PARAGRAPH
                 </button>
                 <button class="tab-btn" onclick="switchTab('onchain', this)">
                     ⛓ ONCHAIN
@@ -524,20 +629,29 @@
         </nav>
 
         <section class="content">
-            <!-- X SOCIAL FEED - FIRST & DEFAULT -->
+            <!-- X SOCIAL FEED -->
             <div id="xfeed" class="tab-content active">
                 <div class="section-header">
                     <h2>𝕏 ART COMMUNITY</h2>
-                    <span class="source">x.com</span>
+                    <a href="https://x.com/search?q=base%20nft%20art&src=typed_query&f=live" target="_blank" class="source-btn">View on X</a>
                 </div>
                 <div id="x-feed" class="feed"></div>
+            </div>
+
+            <!-- Paragraph.xyz Feed -->
+            <div id="paragraph" class="tab-content">
+                <div class="section-header">
+                    <h2>📝 PARAGRAPH PUBLICATIONS</h2>
+                    <a href="https://paragraph.xyz" target="_blank" class="source-btn">View on Paragraph</a>
+                </div>
+                <div id="paragraph-feed" class="feed"></div>
             </div>
 
             <!-- On-chain Activity -->
             <div id="onchain" class="tab-content">
                 <div class="section-header">
                     <h2>⛓ BASE ONCHAIN ACTIVITY</h2>
-                    <span class="source">base.org</span>
+                    <a href="https://basescan.org" target="_blank" class="source-btn">View on Basescan</a>
                 </div>
                 <div class="stats-grid">
                     <div class="stat-card">
@@ -560,7 +674,7 @@
             <div id="market" class="tab-content">
                 <div class="section-header">
                     <h2>📊 MARKET ANALYTICS</h2>
-                    <span class="source">multiple_sources</span>
+                    <a href="https://opensea.io/rankings?chain=base" target="_blank" class="source-btn">View on OpenSea</a>
                 </div>
                 <div class="stats-grid">
                     <div class="stat-card">
@@ -583,7 +697,7 @@
             <div id="drops" class="tab-content">
                 <div class="section-header">
                     <h2>🎨 UPCOMING DROPS</h2>
-                    <span class="source">curated</span>
+                    <a href="https://paragraph.xyz/@basednfts" target="_blank" class="source-btn">View Calendar</a>
                 </div>
                 <div id="drops-feed" class="feed"></div>
             </div>
@@ -592,7 +706,7 @@
             <div id="news" class="tab-content">
                 <div class="section-header">
                     <h2>📰 ART NEWS</h2>
-                    <span class="source">rss_aggregated</span>
+                    <a href="https://rss.app" target="_blank" class="source-btn">View Sources</a>
                 </div>
                 <div id="news-feed" class="feed"></div>
             </div>
@@ -607,6 +721,7 @@
             <div class="links">
                 <a href="https://x.com" target="_blank">𝕏</a>
                 <a href="https://base.org" target="_blank">BASE</a>
+                <a href="https://paragraph.xyz" target="_blank">PARAGRAPH</a>
                 <a href="https://github.com" target="_blank">GITHUB</a>
             </div>
         </div>
@@ -615,6 +730,21 @@
     <script>
         // ===== DATA =====
         
+        const TICKER_DATA = [
+            { text: "Blooze AI launching autonomous art curator on Base", tag: "agent", type: "agent" },
+            { text: "Based Fellas NFT collection hits 1M volume", tag: "early", type: "early" },
+            { text: "Agent XYZ announces on-chain gallery protocol", tag: "agent", type: "agent" },
+            { text: "Early Birds mint sold out in 4 minutes", tag: "early", type: "early" },
+            { text: "BasePaint daily auction reaches 2.5 ETH", tag: "early", type: "early" },
+            { text: "ArtBot v2.0 live with generative minting", tag: "agent", type: "agent" },
+            { text: "Based Ghouls reveal delayed 24h", tag: "early", type: "early" },
+            { text: "AI curator 'Muse' acquires first NFT", tag: "agent", type: "agent" },
+            { text: "Base Colors free mint trending", tag: "early", type: "early" },
+            { text: "Agent Smith proposes DAO for digital art", tag: "agent", type: "agent" },
+            { text: "Pixelmon Base migration complete", tag: "early", type: "early" },
+            { text: "Neural Canvas AI drop incoming", tag: "agent", type: "agent" }
+        ];
+
         const X_DATA = [
             {
                 id: 'x1',
@@ -624,27 +754,27 @@
                 likes: 234,
                 retweets: 45,
                 time: '15m ago',
-                url: 'https://x.com'
+                url: 'https://x.com/digital_art_daily/status/1'
             },
             {
                 id: 'x2',
                 handle: '@nftcollector',
                 name: 'NFT Collector',
-                text: 'Floor prices on Base NFTs showing steady growth this week. Blue-chip collections holding strong despite market volatility.',
+                text: 'Floor prices on Base NFTs showing steady growth this week. Blue-chip collections holding strong despite market volatility. #BaseNFT',
                 likes: 567,
                 retweets: 89,
                 time: '42m ago',
-                url: 'https://x.com'
+                url: 'https://x.com/nftcollector/status/2'
             },
             {
                 id: 'x3',
                 handle: '@artblocks',
                 name: 'Art Blocks',
-                text: 'New Curated drop announcement: Tyler Hobbs returns with Fidenza-inspired collection. Minting exclusively on Base.',
+                text: 'New Curated drop announcement: Tyler Hobbs returns with Fidenza-inspired collection. Minting exclusively on Base next week.',
                 likes: 1203,
                 retweets: 234,
                 time: '1h ago',
-                url: 'https://x.com'
+                url: 'https://x.com/artblocks/status/3'
             },
             {
                 id: 'x4',
@@ -654,7 +784,80 @@
                 likes: 892,
                 retweets: 156,
                 time: '3h ago',
-                url: 'https://x.com'
+                url: 'https://x.com/basenft/status/4'
+            },
+            {
+                id: 'x5',
+                handle: '@generative_art',
+                name: 'Generative Art',
+                text: 'Long-form generative art is finding its home on Base. Lower gas fees = more experimentation. Artists are noticing.',
+                likes: 445,
+                retweets: 67,
+                time: '5h ago',
+                url: 'https://x.com/generative_art/status/5'
+            },
+            {
+                id: 'x6',
+                handle: '@crypto_sarah',
+                name: 'Crypto Sarah',
+                text: 'Why I moved my art collecting to Base: 1) Speed 2) Cost 3) Community. The trifecta is complete.',
+                likes: 2341,
+                retweets: 445,
+                time: '6h ago',
+                url: 'https://x.com/crypto_sarah/status/6'
+            }
+        ];
+
+        const PARAGRAPH_DATA = [
+            {
+                id: 'p1',
+                author: '0xArt',
+                title: 'The Future of On-Chain Publishing',
+                excerpt: 'How Paragraph.xyz is revolutionizing long-form content for crypto-native writers and artists. A deep dive into decentralized media.',
+                readTime: '5 min',
+                time: '2h ago',
+                url: 'https://paragraph.xyz/@0xart/future-publishing',
+                category: 'article'
+            },
+            {
+                id: 'p2',
+                author: 'Base Daily',
+                title: 'Weekly On-Chain Art Review',
+                excerpt: 'Curated selection of the best generative art mints this week. Featuring works from emerging artists on Base.',
+                readTime: '8 min',
+                time: '5h ago',
+                url: 'https://paragraph.xyz/@basedaily/weekly-review',
+                category: 'publication'
+            },
+            {
+                id: 'p3',
+                author: 'AI Art Labs',
+                title: 'Training Models on NFT Metadata',
+                excerpt: 'Technical exploration of using on-chain art metadata to train generative AI models. Ethics and opportunities.',
+                readTime: '12 min',
+                time: '1d ago',
+                url: 'https://paragraph.xyz/@aiartlabs/training-models',
+                category: 'article'
+            },
+            {
+                id: 'p4',
+                author: 'Curator DAO',
+                title: 'Curation in the Age of Abundance',
+                excerpt: 'When everyone can mint, who decides what matters? The role of decentralized curation in digital art markets.',
+                readTime: '6 min',
+                time: '2d ago',
+                url: 'https://paragraph.xyz/@curatordao/curation-age',
+                category: 'article'
+            },
+            {
+                id: 'p5',
+                author: 'Base Paint',
+                title: 'Community Canvas: Month 3',
+                excerpt: 'Recap of three months of collaborative on-chain painting. Statistics, highlights, and upcoming features.',
+                readTime: '4 min',
+                time: '3d ago',
+                url: 'https://paragraph.xyz/@basepaint/community-canvas',
+                category: 'publication'
             }
         ];
 
@@ -700,6 +903,16 @@
                 to: '0xffffffffeeeeeeeeddddddddcccccccbbbbbbbbb',
                 time: '3h ago',
                 tx: '0xpqr678stu901'
+            },
+            {
+                id: 'oc5',
+                type: 'mint',
+                platform: 'MINT.FUN',
+                tokenId: '0001',
+                from: '0x0000000000000000000000000000000000000000',
+                to: '0x1234567890123456789012345678901234567890',
+                time: '4h ago',
+                tx: '0xzyx987wvu654'
             }
         ];
 
@@ -739,6 +952,15 @@
                 change: '+23.5%',
                 trend: 'up',
                 time: '24h'
+            },
+            {
+                id: 'm5',
+                collection: 'Based Fellas',
+                metric: 'Floor Price',
+                value: '0.45 ETH',
+                change: '+18.4%',
+                trend: 'up',
+                time: 'Live'
             }
         ];
 
@@ -752,7 +974,7 @@
                 price: '5.0 ETH',
                 time: 'LIVE',
                 supply: '1/1',
-                url: 'https://superrare.com'
+                url: 'https://superrare.com/xcopy'
             },
             {
                 id: 'd2',
@@ -763,7 +985,7 @@
                 price: '0.5 ETH',
                 time: 'In 2h',
                 supply: 'Dynamic',
-                url: 'https://foundation.app'
+                url: 'https://foundation.app/pak'
             },
             {
                 id: 'd3',
@@ -774,7 +996,7 @@
                 price: '0.25 ETH',
                 time: 'Tomorrow',
                 supply: '500',
-                url: 'https://artblocks.io'
+                url: 'https://artblocks.io/tyler-hobbs'
             },
             {
                 id: 'd4',
@@ -785,7 +1007,18 @@
                 price: '0.05 ETH',
                 time: 'In 3d',
                 supply: '1000',
-                url: 'https://zora.co'
+                url: 'https://zora.co/cherniak'
+            },
+            {
+                id: 'd5',
+                artist: 'AI Collective',
+                title: 'Neural Dreams',
+                platform: 'Paragraph',
+                type: 'drop',
+                price: '0.01 ETH',
+                time: 'Next Week',
+                supply: 'Open',
+                url: 'https://paragraph.xyz/@aicollective'
             }
         ];
 
@@ -794,37 +1027,46 @@
                 id: 'n1',
                 source: 'Hyperallergic',
                 title: 'Venice Biennale Embraces Digital Art',
-                excerpt: 'This year\'s exhibition features unprecedented focus on blockchain-based works.',
+                excerpt: 'This year\'s exhibition features unprecedented focus on blockchain-based works and generative installations.',
                 category: 'exhibition',
                 time: '2h ago',
-                url: 'https://hyperallergic.com'
+                url: 'https://hyperallergic.com/venice-biennale-digital'
             },
             {
                 id: 'n2',
                 source: 'Artnet',
                 title: 'Museums Adopt On-Chain Provenance',
-                excerpt: 'Major institutions pilot blockchain tracking for contemporary acquisitions.',
+                excerpt: 'Major institutions pilot blockchain tracking for contemporary acquisitions, starting with digital works.',
                 category: 'technology',
                 time: '4h ago',
-                url: 'https://news.artnet.com'
+                url: 'https://news.artnet.com/museums-blockchain'
             },
             {
                 id: 'n3',
                 source: 'Frieze',
                 title: 'The Rise of Generative Art Markets',
-                excerpt: 'How algorithmic art is reshaping collector behavior and market dynamics.',
+                excerpt: 'How algorithmic art is reshaping collector behavior and market dynamics in 2024.',
                 category: 'market',
                 time: '6h ago',
-                url: 'https://frieze.com'
+                url: 'https://frieze.com/generative-art-markets'
             },
             {
                 id: 'n4',
                 source: 'The Art Newspaper',
                 title: 'Base Network: Artist Haven',
-                excerpt: 'Why creators are choosing Base for experimental digital art projects.',
+                excerpt: 'Why creators are choosing Base for experimental digital art projects and lower barrier entries.',
                 category: 'technology',
                 time: '8h ago',
-                url: 'https://theartnewspaper.com'
+                url: 'https://theartnewspaper.com/base-network'
+            },
+            {
+                id: 'n5',
+                source: 'Decrypt',
+                title: 'AI Agents Start Collecting NFTs',
+                excerpt: 'Autonomous AI agents are now participating in NFT markets, raising questions about digital ownership.',
+                category: 'technology',
+                time: '12h ago',
+                url: 'https://decrypt.co/ai-agents-nfts'
             }
         ];
 
@@ -837,12 +1079,24 @@
                 sale: '💰', mint: '✨', transfer: '↗️',
                 drop: '🎨', auction: '🔨', minting: '🖼️',
                 up: '📈', down: '📉',
-                exhibition: '🏛️', technology: '💻', market: '📊'
+                exhibition: '🏛️', technology: '💻', market: '📊',
+                article: '📝', publication: '📰'
             };
             return icons[type] || '●';
         };
 
         // ===== RENDERERS =====
+
+        function renderTicker() {
+            const ticker = document.getElementById('ticker-content');
+            const items = [...TICKER_DATA, ...TICKER_DATA]; // Duplicate for seamless loop
+            ticker.innerHTML = items.map(item => `
+                <div class="ticker-item">
+                    <span class="ticker-tag ${item.type}">${item.tag}</span>
+                    <span>${item.text}</span>
+                </div>
+            `).join('');
+        }
 
         function renderX() {
             const el = document.getElementById('x-feed');
@@ -861,6 +1115,24 @@
                     <a href="${item.url}" target="_blank" class="feed-link">↗</a>
                     <div class="feed-index">${String(idx + 1).padStart(2, '0')}/${String(X_DATA.length).padStart(2, '0')}</div>
                 </div>
+            `).join('');
+        }
+
+        function renderParagraph() {
+            const el = document.getElementById('paragraph-feed');
+            el.innerHTML = PARAGRAPH_DATA.map((item, idx) => `
+                <article class="feed-item ${item.category}">
+                    <div class="feed-header">
+                        <span class="feed-type">${getIcon(item.category)} ${item.author}</span>
+                        <span class="feed-platform">${item.readTime} read</span>
+                        <span class="feed-time">${item.time}</span>
+                    </div>
+                    <h3 class="feed-title">${item.title}</h3>
+                    <p class="feed-excerpt">${item.excerpt}</p>
+                    <div class="feed-meta">Type: ${item.category}</div>
+                    <a href="${item.url}" target="_blank" class="feed-link">↗</a>
+                    <div class="feed-index">${String(idx + 1).padStart(2, '0')}/${String(PARAGRAPH_DATA.length).padStart(2, '0')}</div>
+                </article>
             `).join('');
         }
 
@@ -1042,19 +1314,20 @@
         // ===== INIT =====
         
         document.addEventListener('DOMContentLoaded', () => {
-            // JUDUL ANIMASI DIUBAH: ARTHOUSE_INTELLIGENCE
             typeWriter('ARTHOUSE_INTELLIGENCE', document.getElementById('typewriter'), 50);
             updateClock();
             setInterval(updateClock, 1000);
             initCanvas();
             
+            renderTicker();
             renderX();
+            renderParagraph();
             renderOnchain();
             renderMarket();
             renderDrops();
             renderNews();
             
-            console.log('ARTHOUSE v1.6 // ARTHOUSE_INTELLIGENCE Edition');
+            console.log('ARTHOUSE v1.7 // Multi-Source Intelligence');
         });
     </script>
 </body>
