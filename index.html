@@ -25,6 +25,7 @@
             --purple: #8b5cf6;
             --orange: #f97316;
             --red: #ef4444;
+            --farcaster-purple: #8b5cf6;
         }
 
         body {
@@ -112,7 +113,7 @@
             animation: pulse 2s infinite;
         }
 
-        /* Ticker Styles */
+        /* Ticker Styles - Slow & Clickable */
         .ticker-wrap {
             position: fixed;
             top: 48px;
@@ -122,7 +123,7 @@
             background: var(--base-blue);
             color: white;
             overflow: hidden;
-            height: 28px;
+            height: 32px;
             display: flex;
             align-items: center;
         }
@@ -139,35 +140,63 @@
             align-items: center;
             z-index: 2;
             white-space: nowrap;
+            flex-shrink: 0;
         }
 
-        .ticker {
+        .ticker-container {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            height: 100%;
+        }
+
+        .ticker-track {
             display: flex;
-            animation: ticker 30s linear infinite;
-            white-space: nowrap;
-            padding-left: 1rem;
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            align-items: center;
+            animation: ticker 60s linear infinite;
+            will-change: transform;
+        }
+
+        .ticker-track:hover {
+            animation-play-state: paused;
         }
 
         .ticker-item {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 0 1.5rem;
-            font-size: 0.7rem;
+            padding: 0 2rem;
+            font-size: 0.75rem;
             border-right: 1px solid rgba(255,255,255,0.2);
+            height: 100%;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: background 0.3s;
+            text-decoration: none;
+            color: white;
+        }
+
+        .ticker-item:hover {
+            background: rgba(255,255,255,0.1);
         }
 
         .ticker-tag {
             background: rgba(255,255,255,0.2);
-            padding: 0.1rem 0.4rem;
-            border-radius: 2px;
-            font-size: 0.55rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.6rem;
             text-transform: uppercase;
             font-weight: 600;
+            letter-spacing: 0.05em;
         }
 
-        .ticker-tag.early { background: var(--green); }
-        .ticker-tag.agent { background: var(--purple); }
+        .ticker-tag.early { background: var(--green); color: white; }
+        .ticker-tag.agent { background: var(--purple); color: white; }
+        .ticker-tag.farcaster { background: #855DCD; color: white; }
 
         @keyframes ticker {
             0% { transform: translateX(0); }
@@ -177,7 +206,7 @@
         .main {
             position: relative;
             z-index: 10;
-            padding-top: 88px;
+            padding-top: 92px;
         }
 
         .hero {
@@ -315,6 +344,8 @@
             margin-bottom: 1rem;
             padding-bottom: 0.75rem;
             border-bottom: 1px solid var(--light-gray);
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
 
         .section-header h2 {
@@ -385,6 +416,8 @@
         .feed-item.tweet { border-left: 3px solid var(--base-blue); }
         .feed-item.article { border-left: 3px solid var(--red); }
         .feed-item.publication { border-left: 3px solid #ec4899; }
+        .feed-item.cast { border-left: 3px solid #855DCD; }
+        .feed-item.baseapp { border-left: 3px solid #0052FF; }
 
         .feed-header {
             display: flex;
@@ -423,13 +456,13 @@
             margin-bottom: 0.5rem;
         }
 
-        .tweet-text {
+        .tweet-text, .cast-text {
             font-size: 0.85rem;
             line-height: 1.5;
             margin-bottom: 0.5rem;
         }
 
-        .tweet-stats {
+        .cast-stats, .tweet-stats {
             display: flex;
             gap: 1rem;
             font-size: 0.7rem;
@@ -451,7 +484,6 @@
             font-weight: 600;
         }
 
-        /* Enhanced Source Button */
         .source-btn {
             display: inline-flex;
             align-items: center;
@@ -569,7 +601,7 @@
         <div class="header-content">
             <div class="logo">
                 <span class="logo-text">ARTHOUSE</span>
-                <span class="version">v1.7</span>
+                <span class="version">v1.8</span>
             </div>
             <div class="status">
                 <span id="clock">00:00:00</span>
@@ -578,11 +610,13 @@
         </div>
     </header>
 
-    <!-- Live Ticker -->
+    <!-- Live Ticker - Slow & Clickable -->
     <div class="ticker-wrap">
         <div class="ticker-label">🔥 BASE ALPHA</div>
-        <div class="ticker" id="ticker-content">
-            <!-- Populated by JS -->
+        <div class="ticker-container">
+            <div class="ticker-track" id="ticker-track">
+                <!-- Populated by JS -->
+            </div>
         </div>
     </div>
 
@@ -593,12 +627,13 @@
             </h1>
             
             <p class="subtitle">
-                Art intelligence from social, on-chain, and publishing sources.
+                Art intelligence from social, on-chain, and decentralized sources.
             </p>
 
             <div class="badges">
                 <span class="badge">𝕏 SOCIAL</span>
-                <span class="badge">⛓ BASE</span>
+                <span class="badge">🟣 FARCASTER</span>
+                <span class="badge">🅱 BASE</span>
                 <span class="badge">📝 PARAGRAPH</span>
                 <span class="badge live">● LIVE</span>
             </div>
@@ -609,6 +644,12 @@
             <div class="tabs">
                 <button class="tab-btn active" onclick="switchTab('xfeed', this)">
                     𝕏 SOCIAL
+                </button>
+                <button class="tab-btn" onclick="switchTab('farcaster', this)">
+                    🟣 FARCASTER
+                </button>
+                <button class="tab-btn" onclick="switchTab('baseapp', this)">
+                    🅱 BASE.APP
                 </button>
                 <button class="tab-btn" onclick="switchTab('paragraph', this)">
                     📝 PARAGRAPH
@@ -636,6 +677,24 @@
                     <a href="https://x.com/search?q=base%20nft%20art&src=typed_query&f=live" target="_blank" class="source-btn">View on X</a>
                 </div>
                 <div id="x-feed" class="feed"></div>
+            </div>
+
+            <!-- Farcaster Feed -->
+            <div id="farcaster" class="tab-content">
+                <div class="section-header">
+                    <h2>🟣 FARCASTER CASTS</h2>
+                    <a href="https://warpcast.com/~/search?q=base%20nft" target="_blank" class="source-btn">View on Warpcast</a>
+                </div>
+                <div id="farcaster-feed" class="feed"></div>
+            </div>
+
+            <!-- Base.app Feed -->
+            <div id="baseapp" class="tab-content">
+                <div class="section-header">
+                    <h2>🅱 BASE.APP ACTIVITY</h2>
+                    <a href="https://base.app" target="_blank" class="source-btn">View on Base.app</a>
+                </div>
+                <div id="baseapp-feed" class="feed"></div>
             </div>
 
             <!-- Paragraph.xyz Feed -->
@@ -716,11 +775,12 @@
     <footer class="footer">
         <div class="footer-content">
             <div>
-                <strong>ARTHOUSE</strong> // Social + On-Chain Intelligence
+                <strong>ARTHOUSE</strong> // Multi-Source Intelligence
             </div>
             <div class="links">
                 <a href="https://x.com" target="_blank">𝕏</a>
-                <a href="https://base.org" target="_blank">BASE</a>
+                <a href="https://warpcast.com" target="_blank">FARCASTER</a>
+                <a href="https://base.app" target="_blank">BASE.APP</a>
                 <a href="https://paragraph.xyz" target="_blank">PARAGRAPH</a>
                 <a href="https://github.com" target="_blank">GITHUB</a>
             </div>
@@ -731,18 +791,20 @@
         // ===== DATA =====
         
         const TICKER_DATA = [
-            { text: "Blooze AI launching autonomous art curator on Base", tag: "agent", type: "agent" },
-            { text: "Based Fellas NFT collection hits 1M volume", tag: "early", type: "early" },
-            { text: "Agent XYZ announces on-chain gallery protocol", tag: "agent", type: "agent" },
-            { text: "Early Birds mint sold out in 4 minutes", tag: "early", type: "early" },
-            { text: "BasePaint daily auction reaches 2.5 ETH", tag: "early", type: "early" },
-            { text: "ArtBot v2.0 live with generative minting", tag: "agent", type: "agent" },
-            { text: "Based Ghouls reveal delayed 24h", tag: "early", type: "early" },
-            { text: "AI curator 'Muse' acquires first NFT", tag: "agent", type: "agent" },
-            { text: "Base Colors free mint trending", tag: "early", type: "early" },
-            { text: "Agent Smith proposes DAO for digital art", tag: "agent", type: "agent" },
-            { text: "Pixelmon Base migration complete", tag: "early", type: "early" },
-            { text: "Neural Canvas AI drop incoming", tag: "agent", type: "agent" }
+            { text: "Blooze AI launching autonomous art curator on Base", tag: "agent", type: "agent", url: "https://x.com/search?q=Blooze+AI+Base" },
+            { text: "Based Fellas NFT collection hits 1M volume", tag: "early", type: "early", url: "https://x.com/search?q=Based+Fellas+1M" },
+            { text: "Agent XYZ announces on-chain gallery protocol", tag: "agent", type: "agent", url: "https://x.com/search?q=Agent+XYZ+gallery" },
+            { text: "Early Birds mint sold out in 4 minutes", tag: "early", type: "early", url: "https://x.com/search?q=Early+Birds+mint" },
+            { text: "BasePaint daily auction reaches 2.5 ETH", tag: "early", type: "early", url: "https://x.com/search?q=BasePaint+auction" },
+            { text: "ArtBot v2.0 live with generative minting", tag: "agent", type: "agent", url: "https://x.com/search?q=ArtBot+v2" },
+            { text: "Based Ghouls reveal delayed 24h", tag: "early", type: "early", url: "https://x.com/search?q=Based+Ghouls" },
+            { text: "AI curator 'Muse' acquires first NFT", tag: "agent", type: "agent", url: "https://x.com/search?q=Muse+AI+NFT" },
+            { text: "Base Colors free mint trending", tag: "early", type: "early", url: "https://x.com/search?q=Base+Colors+mint" },
+            { text: "Agent Smith proposes DAO for digital art", tag: "agent", type: "agent", url: "https://x.com/search?q=Agent+Smith+DAO" },
+            { text: "Pixelmon Base migration complete", tag: "early", type: "early", url: "https://x.com/search?q=Pixelmon+Base" },
+            { text: "Neural Canvas AI drop incoming", tag: "agent", type: "agent", url: "https://x.com/search?q=Neural+Canvas" },
+            { text: "Farcaster Frames enable instant minting", tag: "farcaster", type: "farcaster", url: "https://warpcast.com/~/search?q=frames+mint" },
+            { text: "Base.app launches native NFT viewer", tag: "early", type: "early", url: "https://base.app" }
         ];
 
         const X_DATA = [
@@ -805,6 +867,117 @@
                 retweets: 445,
                 time: '6h ago',
                 url: 'https://x.com/crypto_sarah/status/6'
+            }
+        ];
+
+        const FARCASTER_DATA = [
+            {
+                id: 'f1',
+                username: 'jesse',
+                displayName: 'Jesse Pollak',
+                text: 'Base is for the artists. Every day we see incredible creativity onchain. Keep building, keep creating. 🎨',
+                likes: 342,
+                recasts: 56,
+                time: '12m ago',
+                url: 'https://warpcast.com/jesse/1',
+                channel: '/base'
+            },
+            {
+                id: 'f2',
+                username: 'artcollector',
+                displayName: 'Art Collector',
+                text: 'Just minted my first Farcaster Frame NFT. The seamless experience from social to ownership is the future.',
+                likes: 128,
+                recasts: 23,
+                time: '34m ago',
+                url: 'https://warpcast.com/artcollector/2',
+                channel: '/nft'
+            },
+            {
+                id: 'f3',
+                username: 'generative',
+                displayName: 'Generative Art',
+                text: 'New drop: Algorithmic Dreams #47 now live on Zora Base. 0.01 ETH, open edition for 24 hours. Link in comments.',
+                likes: 567,
+                recasts: 89,
+                time: '1h ago',
+                url: 'https://warpcast.com/generative/3',
+                channel: '/art'
+            },
+            {
+                id: 'f4',
+                username: 'basedartist',
+                displayName: 'Based Artist',
+                text: 'The Base community hits different. Builders actually support each other here. Rare in this space.',
+                likes: 892,
+                recasts: 134,
+                time: '2h ago',
+                url: 'https://warpcast.com/basedartist/4',
+                channel: '/base'
+            },
+            {
+                id: 'f5',
+                username: 'nftcurator',
+                displayName: 'NFT Curator',
+                text: 'Curating a new gallery of Base generative art. DM if you want your work featured. Quality only.',
+                likes: 234,
+                recasts: 45,
+                time: '4h ago',
+                url: 'https://warpcast.com/nftcurator/5',
+                channel: '/art'
+            }
+        ];
+
+        const BASEAPP_DATA = [
+            {
+                id: 'ba1',
+                type: 'trending',
+                title: 'Based Fellas',
+                subtitle: 'Trending Collection',
+                stat: '+24%',
+                desc: '24h volume up 24% with 156 new holders',
+                time: 'Live',
+                url: 'https://base.app/nft/based-fellas'
+            },
+            {
+                id: 'ba2',
+                type: 'new',
+                title: 'BasePaint #892',
+                subtitle: 'New Mint',
+                stat: '0.01 ETH',
+                desc: 'Daily collaborative canvas now live',
+                time: 'Just now',
+                url: 'https://base.app/nft/basepaint-892'
+            },
+            {
+                id: 'ba3',
+                type: 'top',
+                title: 'Fidenza #780',
+                subtitle: 'Top Sale',
+                stat: '12.5 ETH',
+                desc: 'Rare trait combination sold to 0x742d...',
+                time: '5m ago',
+                url: 'https://base.app/nft/fidenza-780'
+            },
+            {
+                id: 'ba4',
+                type: 'trending',
+                title: 'Early Birds',
+                subtitle: 'Minting Now',
+                stat: '78%',
+                desc: '78% minted, 0.005 ETH per mint',
+                time: 'Live',
+                url: 'https://base.app/nft/early-birds'
+            },
+            {
+                id: 'ba5',
+                type: 'new',
+                title: 'Base Colors',
+                subtitle: 'Free Mint',
+                stat: 'FREE',
+                desc: 'Generative color palettes by @colorist',
+                time: '1h ago',
+                url: 'https://base.app/nft/base-colors'
             }
         ];
 
@@ -1080,7 +1253,9 @@
                 drop: '🎨', auction: '🔨', minting: '🖼️',
                 up: '📈', down: '📉',
                 exhibition: '🏛️', technology: '💻', market: '📊',
-                article: '📝', publication: '📰'
+                article: '📝', publication: '📰',
+                trending: '📈', new: '✨', top: '👑',
+                cast: '🟣'
             };
             return icons[type] || '●';
         };
@@ -1088,13 +1263,14 @@
         // ===== RENDERERS =====
 
         function renderTicker() {
-            const ticker = document.getElementById('ticker-content');
-            const items = [...TICKER_DATA, ...TICKER_DATA]; // Duplicate for seamless loop
-            ticker.innerHTML = items.map(item => `
-                <div class="ticker-item">
+            const track = document.getElementById('ticker-track');
+            // Duplicate data for seamless infinite scroll
+            const items = [...TICKER_DATA, ...TICKER_DATA, ...TICKER_DATA];
+            track.innerHTML = items.map(item => `
+                <a href="${item.url}" target="_blank" class="ticker-item">
                     <span class="ticker-tag ${item.type}">${item.tag}</span>
                     <span>${item.text}</span>
-                </div>
+                </a>
             `).join('');
         }
 
@@ -1114,6 +1290,45 @@
                     </div>
                     <a href="${item.url}" target="_blank" class="feed-link">↗</a>
                     <div class="feed-index">${String(idx + 1).padStart(2, '0')}/${String(X_DATA.length).padStart(2, '0')}</div>
+                </div>
+            `).join('');
+        }
+
+        function renderFarcaster() {
+            const el = document.getElementById('farcaster-feed');
+            el.innerHTML = FARCASTER_DATA.map((item, idx) => `
+                <div class="feed-item cast">
+                    <div class="feed-header">
+                        <span class="feed-type">🟣 ${item.displayName}</span>
+                        <span class="feed-platform">@${item.username}</span>
+                        <span class="feed-time">${item.time}</span>
+                    </div>
+                    <p class="cast-text">${item.text}</p>
+                    <div class="cast-stats">
+                        <span>❤️ ${item.likes}</span>
+                        <span>🔄 ${item.recasts}</span>
+                        <span>in ${item.channel}</span>
+                    </div>
+                    <a href="${item.url}" target="_blank" class="feed-link">↗</a>
+                    <div class="feed-index">${String(idx + 1).padStart(2, '0')}/${String(FARCASTER_DATA.length).padStart(2, '0')}</div>
+                </div>
+            `).join('');
+        }
+
+        function renderBaseApp() {
+            const el = document.getElementById('baseapp-feed');
+            el.innerHTML = BASEAPP_DATA.map((item, idx) => `
+                <div class="feed-item ${item.type} baseapp">
+                    <div class="feed-header">
+                        <span class="feed-type">${getIcon(item.type)} ${item.subtitle}</span>
+                        <span class="feed-platform">Base.app</span>
+                        <span class="feed-time">${item.time}</span>
+                    </div>
+                    <h3 class="feed-title">${item.title}</h3>
+                    <p class="feed-excerpt">${item.desc}</p>
+                    <div class="feed-value">${item.stat}</div>
+                    <a href="${item.url}" target="_blank" class="feed-link">↗</a>
+                    <div class="feed-index">${String(idx + 1).padStart(2, '0')}/${String(BASEAPP_DATA.length).padStart(2, '0')}</div>
                 </div>
             `).join('');
         }
@@ -1321,13 +1536,15 @@
             
             renderTicker();
             renderX();
+            renderFarcaster();
+            renderBaseApp();
             renderParagraph();
             renderOnchain();
             renderMarket();
             renderDrops();
             renderNews();
             
-            console.log('ARTHOUSE v1.7 // Multi-Source Intelligence');
+            console.log('ARTHOUSE v1.8 // Multi-Source Intelligence');
         });
     </script>
 </body>
