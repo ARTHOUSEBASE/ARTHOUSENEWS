@@ -57,26 +57,22 @@
         /* Header */
         .header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--light-gray)}
         .header-content{max-width:1200px;margin:0 auto;padding:0.75rem 1rem;display:flex;justify-content:space-between;align-items:center}
-        .logo{display:flex;align-items:center;gap:0.5rem}
+        .logo{display:flex;align-items:center;gap:0.75rem}
+        .logo-img{height:32px;width:auto;object-fit:contain}
         .logo-text{font-weight:600;letter-spacing:0.05em;font-size:0.85rem}
         .version{font-size:0.6rem;padding:0.15rem 0.4rem;border:1px solid var(--light-gray);border-radius:2px;color:var(--gray)}
         .header-actions{display:flex;align-items:center;gap:0.75rem}
         .status{display:flex;align-items:center;gap:0.5rem;font-size:0.65rem;color:var(--gray)}
         .live-indicator{color:var(--base-blue);animation:pulse 2s infinite}
         
-        /* Disclaimer */
-        .disclaimer{position:fixed;top:50px;left:0;right:0;z-index:99;background:#fef3c7;border-bottom:1px solid #f59e0b;padding:0.4rem 1rem;text-align:center;font-size:0.6rem;color:#92400e}
-        .disclaimer strong{color:#b45309}
-        .disclaimer a{color:#b45309;text-decoration:underline}
-        
-        /* Ticker */
-        .ticker-wrap{position:fixed;top:78px;left:0;right:0;z-index:98;background:var(--base-blue);color:white;height:30px;display:flex;align-items:center;overflow:hidden}
+        /* Ticker - Now at top without disclaimer blocking */
+        .ticker-wrap{position:fixed;top:60px;left:0;right:0;z-index:98;background:var(--base-blue);color:white;height:32px;display:flex;align-items:center;overflow:hidden}
         .ticker-label{background:rgba(0,0,0,0.2);padding:0 1rem;font-size:0.6rem;font-weight:600;text-transform:uppercase;height:100%;display:flex;align-items:center;flex-shrink:0;z-index:2}
         .ticker-container{flex:1;overflow:hidden;position:relative;height:100%}
         .ticker-track{display:flex;position:absolute;left:0;top:0;height:100%;align-items:center;animation:ticker 50s linear infinite;will-change:transform}
         .ticker-track:hover{animation-play-state:paused}
-        .ticker-item{display:inline-flex;align-items:center;gap:0.5rem;padding:0 2rem;font-size:0.75rem;border-right:1px solid rgba(255,255,255,0.2);height:100%;white-space:nowrap;cursor:pointer;transition:background 0.3s;text-decoration:none;color:white}
-        .ticker-item:hover{background:rgba(255,255,255,0.1)}
+        .ticker-item{display:inline-flex;align-items:center;gap:0.5rem;padding:0 2rem;font-size:0.75rem;border-right:1px solid rgba(255,255,255,0.2);height:100%;white-space:nowrap;cursor:pointer;transition:all 0.3s;text-decoration:none;color:white}
+        .ticker-item:hover{background:rgba(255,255,255,0.15);transform:scale(1.02)}
         .ticker-tag{background:rgba(255,255,255,0.2);padding:0.1rem 0.4rem;border-radius:3px;font-size:0.55rem;text-transform:uppercase;font-weight:600}
         .ticker-tag.early{background:var(--green)}
         .ticker-tag.agent{background:var(--purple)}
@@ -85,8 +81,8 @@
         @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
         @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
         
-        /* Main */
-        .main{position:relative;z-index:10;padding-top:120px}
+        /* Main - Adjusted for ticker only */
+        .main{position:relative;z-index:10;padding-top:95px}
         .hero{max-width:900px;margin:0 auto;padding:2rem 1rem 1rem;text-align:center}
         .title{font-size:1.6rem;font-weight:600;margin-bottom:0.5rem}
         .cursor{display:inline-block;width:2px;height:1em;background:var(--base-blue);margin-left:0.15rem;animation:blink 1s step-end infinite;vertical-align:text-bottom}
@@ -94,108 +90,148 @@
         .subtitle{font-size:0.8rem;color:var(--gray);max-width:500px;margin:0 auto 1rem}
         
         .badges{display:flex;flex-wrap:wrap;gap:0.4rem;justify-content:center;margin-bottom:1rem}
-        .badge{font-size:0.6rem;padding:0.3rem 0.6rem;border:1px solid var(--light-gray);border-radius:2px;color:var(--gray);background:white}
+        .badge{font-size:0.6rem;padding:0.3rem 0.6rem;border:1px solid var(--light-gray);border-radius:2px;color:var(--gray);background:white;transition:all 0.3s}
+        .badge:hover{transform:translateY(-2px);box-shadow:0 2px 8px rgba(0,0,0,0.1)}
         .badge.verified{border-color:var(--blue);color:var(--blue);background:rgba(59,130,246,0.05)}
         .badge.scam{border-color:var(--red);color:var(--red);background:rgba(239,68,68,0.05)}
         .badge.live{border-color:var(--base-blue);color:var(--base-blue);background:rgba(0,0,255,0.05)}
         
-        /* Scam Alert */
+        /* Scam Alert - Enhanced */
         .scam-alert{max-width:900px;margin:0 auto 1rem;padding:0 1rem}
-        .scam-box{background:#fef2f2;border:1px solid var(--red);border-radius:4px;padding:0.75rem 1rem}
-        .scam-title{font-size:0.7rem;color:var(--red);font-weight:600;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.4rem}
-        .scam-list{font-size:0.65rem;color:var(--gray);list-style:none}
-        .scam-list li{padding:0.2rem 0;border-bottom:1px solid #fee2e2;display:flex;justify-content:space-between}
+        .scam-box{background:linear-gradient(135deg, #fef2f2 0%, #fff5f5 100%);border:1px solid var(--red);border-radius:6px;padding:1rem;transition:all 0.3s}
+        .scam-box:hover{box-shadow:0 4px 12px rgba(239,68,68,0.1);transform:translateY(-1px)}
+        .scam-title{font-size:0.75rem;color:var(--red);font-weight:600;margin-bottom:0.75rem;display:flex;align-items:center;gap:0.4rem}
+        .scam-list{font-size:0.7rem;color:var(--gray);list-style:none}
+        .scam-list li{padding:0.4rem 0;border-bottom:1px solid #fee2e2;display:flex;justify-content:space-between;align-items:center;transition:background 0.2s}
+        .scam-list li:hover{background:rgba(239,68,68,0.03)}
         .scam-list li:last-child{border-bottom:none}
-        .risk-high{color:var(--red);font-weight:600}
-        .risk-med{color:var(--orange);font-weight:600}
+        .risk-high{color:var(--red);font-weight:600;background:rgba(239,68,68,0.1);padding:0.2rem 0.5rem;border-radius:3px;font-size:0.6rem}
+        .risk-med{color:var(--orange);font-weight:600;background:rgba(249,115,22,0.1);padding:0.2rem 0.5rem;border-radius:3px;font-size:0.6rem}
         
-        /* Navigation */
+        /* Navigation - Enhanced */
         .category-nav{max-width:900px;margin:0 auto;padding:0 1rem}
         .category-title{font-size:0.6rem;color:var(--gray);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.1em}
         .tabs{display:flex;gap:0.25rem;border-bottom:1px solid var(--light-gray);overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:1px;scrollbar-width:none}
         .tabs::-webkit-scrollbar{display:none}
-        .tab-btn{padding:0.6rem 0.8rem;background:none;border:none;font-family:inherit;font-size:0.65rem;font-weight:500;color:var(--gray);cursor:pointer;transition:all 0.3s;border-bottom:2px solid transparent;white-space:nowrap;flex-shrink:0}
+        .tab-btn{padding:0.6rem 0.8rem;background:none;border:none;font-family:inherit;font-size:0.65rem;font-weight:500;color:var(--gray);cursor:pointer;transition:all 0.3s;border-bottom:2px solid transparent;white-space:nowrap;flex-shrink:0;position:relative}
         .tab-btn:hover{color:var(--base-blue)}
         .tab-btn.active{color:var(--base-blue);border-bottom-color:var(--base-blue)}
+        .tab-btn::after{content:'';position:absolute;bottom:-2px;left:0;width:100%;height:2px;background:var(--base-blue);transform:scaleX(0);transition:transform 0.3s}
+        .tab-btn:hover::after{transform:scaleX(0.5)}
+        .tab-btn.active::after{transform:scaleX(1)}
         
         /* Content */
         .content{max-width:900px;margin:0 auto;padding:1rem;min-height:400px}
         .tab-content{display:none}
-        .tab-content.active{display:block;animation:fadeIn 0.3s ease}
+        .tab-content.active{display:block;animation:fadeIn 0.4s ease}
         @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
         
         .section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;padding-bottom:0.75rem;border-bottom:1px solid var(--light-gray);flex-wrap:wrap;gap:0.5rem}
         .section-header h2{font-size:0.75rem;font-weight:600;letter-spacing:0.05em;color:var(--base-blue)}
         
         .source-btn{display:inline-flex;align-items:center;gap:0.3rem;padding:0.4rem 0.8rem;background:white;border:1px solid var(--light-gray);color:var(--gray);font-family:inherit;font-size:0.65rem;text-decoration:none;border-radius:3px;transition:all 0.3s;cursor:pointer}
-        .source-btn:hover{border-color:var(--base-blue);color:var(--base-blue);background:rgba(0,0,255,0.03)}
-        .source-btn::after{content:'↗';font-size:0.8rem;opacity:0.7}
+        .source-btn:hover{border-color:var(--base-blue);color:var(--base-blue);background:rgba(0,0,255,0.03);transform:translateY(-1px)}
+        .source-btn::after{content:'↗';font-size:0.8rem;opacity:0.7;transition:transform 0.2s}
+        .source-btn:hover::after{transform:translate(2px,-2px)}
         
-        /* Stats */
-        .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;margin-bottom:1rem}
-        .stat-card{border:1px solid var(--light-gray);padding:0.75rem;text-align:center;transition:all 0.3s;background:white}
-        .stat-card:hover{border-color:var(--base-blue)}
-        .stat-value{font-size:1.1rem;font-weight:600;color:var(--base-blue);margin-bottom:0.25rem}
+        /* Stats - Enhanced */
+        .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1rem}
+        .stat-card{border:1px solid var(--light-gray);padding:1rem;text-align:center;transition:all 0.3s;background:white;border-radius:4px;position:relative;overflow:hidden}
+        .stat-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:var(--base-blue);transform:scaleX(0);transition:transform 0.3s}
+        .stat-card:hover::before{transform:scaleX(1)}
+        .stat-card:hover{border-color:var(--base-blue);transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,255,0.08)}
+        .stat-value{font-size:1.2rem;font-weight:600;color:var(--base-blue);margin-bottom:0.25rem;transition:transform 0.3s}
+        .stat-card:hover .stat-value{transform:scale(1.05)}
         .stat-label{font-size:0.55rem;color:var(--gray);letter-spacing:0.05em}
         
-        /* Feed */
+        /* Feed - Enhanced Interactivity */
         .feed{display:flex;flex-direction:column;gap:0.75rem}
-        .feed-item{border:1px solid var(--light-gray);padding:1rem;transition:all 0.3s;position:relative;background:white;border-radius:2px}
-        .feed-item:hover{border-color:var(--base-blue);transform:translateY(-1px);box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+        .feed-item{border:1px solid var(--light-gray);padding:1.25rem;transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);position:relative;background:white;border-radius:6px;cursor:pointer}
+        .feed-item:hover{border-color:var(--base-blue);transform:translateY(-2px);box-shadow:0 8px 25px rgba(0,0,0,0.08)}
+        .feed-item:active{transform:translateY(0)}
         
-        .feed-item.sale{border-left:3px solid var(--green)}
-        .feed-item.mint{border-left:3px solid var(--blue)}
-        .feed-item.tweet{border-left:3px solid var(--base-blue)}
-        .feed-item.cast{border-left:3px solid #855DCD}
-        .feed-item.baseapp{border-left:3px solid #0052FF}
-        .feed-item.article{border-left:3px solid var(--red)}
-        .feed-item.publication{border-left:3px solid #ec4899}
-        .feed-item.verified{border-left:3px solid var(--blue)}
+        .feed-item.sale{border-left:4px solid var(--green)}
+        .feed-item.mint{border-left:4px solid var(--blue)}
+        .feed-item.tweet{border-left:4px solid var(--base-blue)}
+        .feed-item.cast{border-left:4px solid #855DCD}
+        .feed-item.baseapp{border-left:4px solid #0052FF}
+        .feed-item.article{border-left:4px solid var(--red)}
+        .feed-item.publication{border-left:4px solid #ec4899}
+        .feed-item.verified{border-left:4px solid var(--blue)}
         
-        .feed-header{display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem;font-size:0.6rem}
-        .feed-type{font-weight:600;text-transform:uppercase;color:var(--base-blue)}
-        .feed-platform{color:var(--gray)}
-        .feed-time{color:var(--gray);margin-left:auto;font-size:0.55rem}
-        .verified-badge{color:var(--blue);font-size:0.7rem;margin-left:0.2rem}
+        .feed-header{display:flex;align-items:center;gap:0.5rem;margin-bottom:0.75rem;font-size:0.65rem;flex-wrap:wrap}
+        .feed-type{font-weight:600;text-transform:uppercase;color:var(--base-blue);display:flex;align-items:center;gap:0.3rem}
+        .feed-platform{color:var(--gray);background:var(--light-gray);padding:0.15rem 0.4rem;border-radius:3px;font-size:0.6rem}
+        .feed-time{color:var(--gray);margin-left:auto;font-size:0.6rem;font-family:monospace}
+        .verified-badge{color:var(--blue);font-size:0.8rem;background:rgba(59,130,246,0.1);padding:0.1rem 0.3rem;border-radius:3px}
         
-        .feed-title{font-size:0.9rem;font-weight:600;margin-bottom:0.4rem;line-height:1.3}
-        .feed-excerpt{font-size:0.8rem;color:var(--gray);line-height:1.5;margin-bottom:0.5rem}
-        .tweet-text,.cast-text{font-size:0.85rem;line-height:1.5;margin-bottom:0.5rem}
+        .feed-title{font-size:0.95rem;font-weight:600;margin-bottom:0.5rem;line-height:1.4;transition:color 0.3s}
+        .feed-item:hover .feed-title{color:var(--base-blue)}
+        .feed-excerpt{font-size:0.8rem;color:var(--gray);line-height:1.6;margin-bottom:0.75rem}
+        .tweet-text,.cast-text{font-size:0.85rem;line-height:1.6;margin-bottom:0.75rem;color:var(--text)}
         
-        .tweet-stats,.cast-stats{display:flex;gap:1rem;font-size:0.7rem;color:var(--gray)}
+        .tweet-stats,.cast-stats{display:flex;gap:1.25rem;font-size:0.7rem;color:var(--gray)}
+        .tweet-stats span,.cast-stats span{display:flex;align-items:center;gap:0.3rem;transition:color 0.3s}
+        .tweet-stats span:hover,.cast-stats span:hover{color:var(--base-blue)}
         .feed-meta{display:flex;align-items:center;gap:0.75rem;font-size:0.65rem;color:var(--gray);font-family:monospace;flex-wrap:wrap}
-        .feed-value{color:var(--green);font-weight:600}
+        .feed-value{color:var(--green);font-weight:600;font-size:0.9rem;background:rgba(16,185,129,0.1);padding:0.3rem 0.6rem;border-radius:4px;display:inline-block;margin-top:0.5rem}
         
-        .feed-link{position:absolute;top:0.75rem;right:0.75rem;opacity:0;transition:opacity 0.3s;text-decoration:none;color:var(--base-blue);font-size:1rem}
-        .feed-item:hover .feed-link{opacity:1}
-        .feed-index{position:absolute;bottom:0.35rem;right:0.35rem;font-size:0.55rem;color:#ccc}
+        .feed-link{position:absolute;top:1rem;right:1rem;opacity:0;transition:all 0.3s;text-decoration:none;color:var(--base-blue);font-size:1.1rem;background:rgba(0,0,255,0.05);padding:0.4rem;border-radius:4px}
+        .feed-item:hover .feed-link{opacity:1;transform:scale(1.1)}
+        .feed-index{position:absolute;bottom:0.5rem;right:0.5rem;font-size:0.6rem;color:#ccc;font-weight:600}
         
-        /* Footer */
+        /* Action buttons in feed */
+        .feed-actions{display:flex;gap:0.5rem;margin-top:0.75rem;opacity:0;transform:translateY(10px);transition:all 0.3s}
+        .feed-item:hover .feed-actions{opacity:1;transform:translateY(0)}
+        .feed-action-btn{padding:0.4rem 0.8rem;border:1px solid var(--light-gray);background:white;font-family:inherit;font-size:0.6rem;cursor:pointer;border-radius:4px;transition:all 0.3s;display:flex;align-items:center;gap:0.3rem}
+        .feed-action-btn:hover{border-color:var(--base-blue);color:var(--base-blue);background:rgba(0,0,255,0.03)}
+        
+        /* Footer Docs */
         .footer-docs{background:#f9fafb;border-top:1px solid var(--light-gray);padding:2rem 1rem;margin-top:2rem}
         .docs-content{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:1.5rem}
         @media(min-width:768px){.docs-content{grid-template-columns:repeat(3,1fr)}}
         .doc-section h4{font-size:0.7rem;color:var(--text);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.1em}
         .doc-section ul{list-style:none;font-size:0.7rem}
         .doc-section li{margin-bottom:0.5rem}
-        .doc-section a{color:var(--gray);text-decoration:none;transition:color 0.3s}
-        .doc-section a:hover{color:var(--base-blue)}
+        .doc-section a{color:var(--gray);text-decoration:none;transition:all 0.3s;display:inline-block}
+        .doc-section a:hover{color:var(--base-blue);transform:translateX(3px)}
         .doc-section p{font-size:0.7rem;color:var(--gray);line-height:1.6}
         
-        .footer{border-top:1px solid var(--light-gray);padding:1.5rem 1rem;background:white}
+        /* Enhanced Footer with Social CTA */
+        .footer{border-top:1px solid var(--light-gray);padding:0;background:white}
+        .footer-social-cta{background:linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);padding:2rem 1rem;border-bottom:1px solid var(--light-gray)}
+        .social-cta-content{max-width:900px;margin:0 auto;text-align:center}
+        .social-cta-title{font-size:0.9rem;font-weight:600;margin-bottom:0.5rem;color:var(--text)}
+        .social-cta-text{font-size:0.75rem;color:var(--gray);margin-bottom:1.25rem;max-width:500px;margin-left:auto;margin-right:auto}
+        .social-buttons{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+        .social-btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.75rem 1.25rem;border-radius:8px;font-family:inherit;font-size:0.75rem;font-weight:500;text-decoration:none;transition:all 0.3s;border:1px solid transparent}
+        .social-btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.15)}
+        .social-btn.x{background:#000;color:white}
+        .social-btn.x:hover{background:#1a1a1a}
+        .social-btn.base{background:#0052FF;color:white}
+        .social-btn.base:hover{background:#0043d1}
+        
+        .footer-main{padding:1.5rem 1rem}
         .footer-content{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:0.75rem;font-size:0.7rem;color:var(--gray);text-align:center}
         @media(min-width:768px){.footer-content{flex-direction:row;justify-content:space-between;text-align:left}}
         .links{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap}
-        .links a{color:var(--gray);text-decoration:none}
+        .links a{color:var(--gray);text-decoration:none;transition:color 0.3s}
         .links a:hover{color:var(--base-blue)}
-        .copyright{font-size:0.65rem;color:#999;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--light-gray);text-align:center}
+        
+        /* Disclaimer Footer - Moved to bottom */
+        .disclaimer-footer{background:#fef3c7;border-top:1px solid #f59e0b;padding:1rem;text-align:center;font-size:0.65rem;color:#92400e}
+        .disclaimer-footer strong{color:#b45309}
+        .disclaimer-footer a{color:#b45309;text-decoration:underline;font-weight:500}
+        
+        .copyright{font-size:0.65rem;color:#999;padding:1rem;text-align:center;background:#fafafa}
         
         /* Modal */
         .modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:10000;justify-content:center;align-items:center;padding:1rem;backdrop-filter:blur(4px)}
         .modal-overlay.active{display:flex}
-        .modal{background:white;max-width:600px;width:100%;max-height:85vh;overflow-y:auto;border-radius:4px;border:1px solid var(--light-gray);box-shadow:0 20px 60px rgba(0,0,0,0.3)}
-        .modal-header{padding:1rem;border-bottom:1px solid var(--light-gray);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:white;z-index:10}
+        .modal{background:white;max-width:600px;width:100%;max-height:85vh;overflow-y:auto;border-radius:8px;border:1px solid var(--light-gray);box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+        .modal-header{padding:1.25rem;border-bottom:1px solid var(--light-gray);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:white;z-index:10}
         .modal-header h3{font-size:0.9rem;font-weight:600}
-        .modal-close{background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--gray);line-height:1}
+        .modal-close{background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--gray);line-height:1;transition:color 0.3s}
         .modal-close:hover{color:var(--text)}
         .modal-body{padding:1.5rem;font-size:0.75rem;line-height:1.8;color:var(--text)}
         .modal-body h4{margin-top:1.25rem;margin-bottom:0.5rem;color:var(--base-blue);font-size:0.8rem}
@@ -203,20 +239,28 @@
         .modal-body ul{margin-left:1rem;margin-bottom:0.75rem}
         .modal-body li{margin-bottom:0.25rem}
         
-        /* Mobile */
+        /* Mobile Optimizations */
         @media(max-width:640px){
-            .title{font-size:1.2rem}
-            .ticker-wrap{top:70px;height:28px}
+            .title{font-size:1.3rem}
+            .ticker-wrap{top:55px;height:28px}
             .ticker-item{font-size:0.7rem;padding:0 1rem}
-            .disclaimer{top:45px;font-size:0.55rem;padding:0.3rem}
-            .main{padding-top:105px}
+            .main{padding-top:85px}
             .stats-grid{grid-template-columns:1fr}
-            .env-badge{font-size:0.55rem;padding:0.3rem 0.6rem}
+            .env-badge{font-size:0.55rem;padding:0.3rem 0.6rem;top:5px;right:5px}
+            .logo-img{height:28px}
+            .feed-actions{opacity:1;transform:none}
+            .feed-link{opacity:1;position:static;margin-top:0.5rem;display:inline-block}
+            .social-buttons{flex-direction:column;align-items:center}
+            .social-btn{width:100%;max-width:280px;justify-content:center}
+        }
+        
+        /* Tablet */
+        @media(min-width:641px) and (max-width:1024px){
+            .stats-grid{grid-template-columns:repeat(2,1fr)}
         }
         
         /* Frame Mode */
         body.frame-mode .header,
-        body.frame-mode .disclaimer,
         body.frame-mode .ticker-wrap,
         body.frame-mode .footer-docs,
         body.frame-mode .footer,
@@ -224,6 +268,17 @@
         body.frame-mode .scam-alert{display:none!important}
         body.frame-mode .main{padding-top:20px}
         body.frame-mode .hero{padding:1rem}
+        
+        /* Loading animation */
+        @keyframes shimmer{
+            0%{background-position:-1000px 0}
+            100%{background-position:1000px 0}
+        }
+        .loading{
+            background:linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size:1000px 100%;
+            animation:shimmer 2s infinite;
+        }
     </style>
 </head>
 <body>
@@ -235,7 +290,7 @@
     <header class="header">
         <div class="header-content">
             <div class="logo">
-                <span class="logo-text">ARTHOUSE</span>
+                <img src="/mnt/kimi/upload/f0e9d5d0-2122-4da6-997a-f43be02c1580-wm-removebg-preview.png" alt="ARTHOUSE" class="logo-img">
                 <span class="version">v2.0</span>
             </div>
             <div class="header-actions">
@@ -253,11 +308,7 @@
         </div>
     </header>
     
-    <div class="disclaimer">
-        <strong>NOT FINANCIAL ADVICE</strong> — DYOR. All data for informational purposes only. 
-        <a href="#" onclick="openModal('terms');return false">Read Terms</a>
-    </div>
-    
+    <!-- Ticker now at top without disclaimer blocking -->
     <div class="ticker-wrap">
         <div class="ticker-label">🔥 BASE ALPHA</div>
         <div class="ticker-container">
@@ -377,15 +428,42 @@
     </div>
     
     <footer class="footer">
-        <div class="footer-content">
-            <div><strong>ARTHOUSE</strong> // Verified Intelligence</div>
-            <div class="links">
-                <a href="https://x.com" target="_blank">𝕏</a>
-                <a href="https://warpcast.com" target="_blank">Farcaster</a>
-                <a href="https://base.app" target="_blank">Base</a>
-                <a href="https://paragraph.xyz" target="_blank">Paragraph</a>
+        <!-- New Social CTA Section -->
+        <div class="footer-social-cta">
+            <div class="social-cta-content">
+                <div class="social-cta-title">Stay Connected with ARTHOUSE</div>
+                <div class="social-cta-text">Get real-time updates, verified drops, and exclusive alpha directly from our official channels.</div>
+                <div class="social-buttons">
+                    <a href="https://x.com/arthousebase" target="_blank" class="social-btn x">
+                        <span>𝕏</span>
+                        <span>Follow @arthousebase</span>
+                    </a>
+                    <a href="https://base.app/profile/arthouse" target="_blank" class="social-btn base">
+                        <span>🅱</span>
+                        <span>Follow on Base.app</span>
+                    </a>
+                </div>
             </div>
         </div>
+        
+        <div class="footer-main">
+            <div class="footer-content">
+                <div><strong>ARTHOUSE</strong> // Verified Intelligence</div>
+                <div class="links">
+                    <a href="https://x.com" target="_blank">𝕏</a>
+                    <a href="https://warpcast.com" target="_blank">Farcaster</a>
+                    <a href="https://base.app" target="_blank">Base</a>
+                    <a href="https://paragraph.xyz" target="_blank">Paragraph</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Disclaimer moved to bottom -->
+        <div class="disclaimer-footer">
+            <strong>NOT FINANCIAL ADVICE</strong> — DYOR. All data for informational purposes only. 
+            <a href="#" onclick="openModal('terms');return false">Read Terms</a>
+        </div>
+        
         <div class="copyright">
             © 2024 ARTHOUSE. Not financial advice. DYOR. | 
             <a href="#" onclick="openModal('cookies');return false" style="color:#999">Manage Cookies</a>
@@ -568,7 +646,7 @@
             window.open(`https://warpcast.com/~/compose?text=${encodeURIComponent(text)}&embeds[]=${url}`,'_blank');
         }
         
-        // Renderers
+        // Renderers with enhanced interactivity
         function renderScam(){
             document.getElementById('scam-list').innerHTML=SCAM_DATA.map(s=>`<li><span>${s.name} <span style="color:#9ca3af">(${s.type})</span></span><span class="${s.risk==='HIGH'?'risk-high':'risk-med'}">${s.risk} — ${s.reported}</span></li>`).join('');
         }
@@ -579,19 +657,88 @@
         }
         
         function renderX(){
-            document.getElementById('x-feed').innerHTML=X_DATA.map((item,idx)=>`<div class="feed-item tweet ${item.verified?'verified':''}"><div class="feed-header"><span class="feed-type">𝕏 ${item.name} ${item.verified?'<span class="verified-badge">✓</span>':''}</span><span class="feed-platform">${item.handle}</span><span class="feed-time">${item.time}</span></div><p class="tweet-text">${item.text}</p><div class="tweet-stats"><span>♥ ${item.likes}</span><span>↻ ${item.retweets}</span></div><a href="${item.url}" target="_blank" class="feed-link">↗</a><div class="feed-index">${String(idx+1).padStart(2,'0')}/${String(X_DATA.length).padStart(2,'0')}</div></div>`).join('');
+            document.getElementById('x-feed').innerHTML=X_DATA.map((item,idx)=>`
+                <div class="feed-item tweet ${item.verified?'verified':''}" onclick="window.open('${item.url}','_blank')">
+                    <div class="feed-header">
+                        <span class="feed-type">𝕏 ${item.name} ${item.verified?'<span class="verified-badge">✓</span>':''}</span>
+                        <span class="feed-platform">${item.handle}</span>
+                        <span class="feed-time">${item.time}</span>
+                    </div>
+                    <p class="tweet-text">${item.text}</p>
+                    <div class="tweet-stats">
+                        <span>♥ ${item.likes}</span>
+                        <span>↻ ${item.retweets}</span>
+                    </div>
+                    <div class="feed-actions">
+                        <button class="feed-action-btn" onclick="event.stopPropagation();window.open('${item.url}','_blank')">View on X ↗</button>
+                        <button class="feed-action-btn" onclick="event.stopPropagation();navigator.clipboard.writeText('${item.url}')">Copy Link</button>
+                    </div>
+                    <div class="feed-index">${String(idx+1).padStart(2,'0')}/${String(X_DATA.length).padStart(2,'0')}</div>
+                </div>
+            `).join('');
         }
         
         function renderFarcaster(){
-            document.getElementById('farcaster-feed').innerHTML=FARCASTER_DATA.map((item,idx)=>`<div class="feed-item cast ${item.verified?'verified':''}"><div class="feed-header"><span class="feed-type">🟣 ${item.displayName} ${item.verified?'<span class="verified-badge">✓</span>':''}</span><span class="feed-platform">@${item.username}</span><span class="feed-time">${item.time}</span></div><p class="cast-text">${item.text}</p><div class="cast-stats"><span>❤️ ${item.likes}</span><span>🔄 ${item.recasts}</span><span>in ${item.channel}</span></div><a href="${item.url}" target="_blank" class="feed-link">↗</a><div class="feed-index">${String(idx+1).padStart(2,'0')}/${String(FARCASTER_DATA.length).padStart(2,'0')}</div></div>`).join('');
+            document.getElementById('farcaster-feed').innerHTML=FARCASTER_DATA.map((item,idx)=>`
+                <div class="feed-item cast ${item.verified?'verified':''}" onclick="window.open('${item.url}','_blank')">
+                    <div class="feed-header">
+                        <span class="feed-type">🟣 ${item.displayName} ${item.verified?'<span class="verified-badge">✓</span>':''}</span>
+                        <span class="feed-platform">@${item.username}</span>
+                        <span class="feed-time">${item.time}</span>
+                    </div>
+                    <p class="cast-text">${item.text}</p>
+                    <div class="cast-stats">
+                        <span>❤️ ${item.likes}</span>
+                        <span>🔄 ${item.recasts}</span>
+                        <span>in ${item.channel}</span>
+                    </div>
+                    <div class="feed-actions">
+                        <button class="feed-action-btn" onclick="event.stopPropagation();window.open('${item.url}','_blank')">View Cast ↗</button>
+                        <button class="feed-action-btn" onclick="event.stopPropagation();navigator.clipboard.writeText('${item.url}')">Copy Link</button>
+                    </div>
+                    <div class="feed-index">${String(idx+1).padStart(2,'0')}/${String(FARCASTER_DATA.length).padStart(2,'0')}</div>
+                </div>
+            `).join('');
         }
         
         function renderBaseApp(){
-            document.getElementById('baseapp-feed').innerHTML=BASEAPP_DATA.map((item,idx)=>`<div class="feed-item ${item.type} baseapp ${item.verified?'verified':''}"><div class="feed-header"><span class="feed-type">${item.subtitle==='Trending'?'📈':item.subtitle==='New Mint'?'✨':'👑'} ${item.subtitle} ${item.verified?'<span class="verified-badge">✓</span>':''}</span><span class="feed-platform">Base.app</span><span class="feed-time">${item.time}</span></div><h3 class="feed-title">${item.title}</h3><p class="feed-excerpt">${item.desc}</p><div class="feed-value">${item.stat}</div><a href="${item.url}" target="_blank" class="feed-link">↗</a><div class="feed-index">${String(idx+1).padStart(2,'0')}/${String(BASEAPP_DATA.length).padStart(2,'0')}</div></div>`).join('');
+            document.getElementById('baseapp-feed').innerHTML=BASEAPP_DATA.map((item,idx)=>`
+                <div class="feed-item ${item.type} baseapp ${item.verified?'verified':''}" onclick="window.open('${item.url}','_blank')">
+                    <div class="feed-header">
+                        <span class="feed-type">${item.subtitle==='Trending'?'📈':item.subtitle==='New Mint'?'✨':'👑'} ${item.subtitle} ${item.verified?'<span class="verified-badge">✓</span>':''}</span>
+                        <span class="feed-platform">Base.app</span>
+                        <span class="feed-time">${item.time}</span>
+                    </div>
+                    <h3 class="feed-title">${item.title}</h3>
+                    <p class="feed-excerpt">${item.desc}</p>
+                    <div class="feed-value">${item.stat}</div>
+                    <div class="feed-actions">
+                        <button class="feed-action-btn" onclick="event.stopPropagation();window.open('${item.url}','_blank')">View NFT ↗</button>
+                        <button class="feed-action-btn" onclick="event.stopPropagation()">Track</button>
+                    </div>
+                    <div class="feed-index">${String(idx+1).padStart(2,'0')}/${String(BASEAPP_DATA.length).padStart(2,'0')}</div>
+                </div>
+            `).join('');
         }
         
         function renderParagraph(){
-            document.getElementById('paragraph-feed').innerHTML=PARAGRAPH_DATA.map((item,idx)=>`<article class="feed-item ${item.category} ${item.verified?'verified':''}"><div class="feed-header"><span class="feed-type">${item.category==='article'?'📝':'📰'} ${item.author} ${item.verified?'<span class="verified-badge">✓</span>':''}</span><span class="feed-platform">${item.readTime} read</span><span class="feed-time">${item.time}</span></div><h3 class="feed-title">${item.title}</h3><p class="feed-excerpt">${item.excerpt}</p><div class="feed-meta">Type: ${item.category}</div><a href="${item.url}" target="_blank" class="feed-link">↗</a><div class="feed-index">${String(idx+1).padStart(2,'0')}/${String(PARAGRAPH_DATA.length).padStart(2,'0')}</div></article>`).join('');
+            document.getElementById('paragraph-feed').innerHTML=PARAGRAPH_DATA.map((item,idx)=>`
+                <article class="feed-item ${item.category} ${item.verified?'verified':''}" onclick="window.open('${item.url}','_blank')">
+                    <div class="feed-header">
+                        <span class="feed-type">${item.category==='article'?'📝':'📰'} ${item.author} ${item.verified?'<span class="verified-badge">✓</span>':''}</span>
+                        <span class="feed-platform">${item.readTime} read</span>
+                        <span class="feed-time">${item.time}</span>
+                    </div>
+                    <h3 class="feed-title">${item.title}</h3>
+                    <p class="feed-excerpt">${item.excerpt}</p>
+                    <div class="feed-meta">Type: ${item.category}</div>
+                    <div class="feed-actions">
+                        <button class="feed-action-btn" onclick="event.stopPropagation();window.open('${item.url}','_blank')">Read Article ↗</button>
+                        <button class="feed-action-btn" onclick="event.stopPropagation()">Save</button>
+                    </div>
+                    <div class="feed-index">${String(idx+1).padStart(2,'0')}/${String(PARAGRAPH_DATA.length).padStart(2,'0')}</div>
+                </article>
+            `).join('');
         }
         
         function renderOnchain(){
@@ -601,15 +748,62 @@
             document.getElementById('stat-sales').textContent=sales;
             document.getElementById('stat-mints').textContent=mints;
             document.getElementById('stat-volume').textContent=vol;
-            document.getElementById('onchain-feed').innerHTML=ONCHAIN_DATA.map((item,idx)=>`<div class="feed-item ${item.type} ${item.verified?'verified':''}"><div class="feed-header"><span class="feed-type">${item.type==='sale'?'💰':item.type==='mint'?'✨':'↗️'} ${item.type} ${item.verified?'<span class="verified-badge">✓</span>':''}</span><span class="feed-platform">${item.platform}</span><span class="feed-time">${item.time}</span></div><div class="feed-title" style="font-family:monospace;font-size:0.8rem">TOKEN: <strong>${item.tokenId}</strong></div><div class="feed-meta"><span>${item.from}</span><span>→</span><span>${item.to}</span></div>${item.value?`<div class="feed-value">${item.value} ETH</div>`:''}<a href="https://basescan.org/tx/${item.tx}" target="_blank" class="feed-link">↗</a><div class="feed-index">${String(idx+1).padStart(2,'0')}/${String(ONCHAIN_DATA.length).padStart(2,'0')}</div></div>`).join('');
+            document.getElementById('onchain-feed').innerHTML=ONCHAIN_DATA.map((item,idx)=>`
+                <div class="feed-item ${item.type} ${item.verified?'verified':''}" onclick="window.open('https://basescan.org/tx/${item.tx}','_blank')">
+                    <div class="feed-header">
+                        <span class="feed-type">${item.type==='sale'?'💰':item.type==='mint'?'✨':'↗️'} ${item.type.toUpperCase()} ${item.verified?'<span class="verified-badge">✓</span>':''}</span>
+                        <span class="feed-platform">${item.platform}</span>
+                        <span class="feed-time">${item.time}</span>
+                    </div>
+                    <div class="feed-title" style="font-family:monospace;font-size:0.85rem">TOKEN: <strong>${item.tokenId}</strong></div>
+                    <div class="feed-meta"><span>${item.from}</span><span>→</span><span>${item.to}</span></div>
+                    ${item.value?`<div class="feed-value">${item.value} ETH</div>`:''}
+                    <div class="feed-actions">
+                        <button class="feed-action-btn" onclick="event.stopPropagation();window.open('https://basescan.org/tx/${item.tx}','_blank')">View Tx ↗</button>
+                        <button class="feed-action-btn" onclick="event.stopPropagation()">Copy</button>
+                    </div>
+                    <div class="feed-index">${String(idx+1).padStart(2,'0')}/${String(ONCHAIN_DATA.length).padStart(2,'0')}</div>
+                </div>
+            `).join('');
         }
         
         function renderMarket(){
-            document.getElementById('market-feed').innerHTML=MARKET_DATA.map((item,idx)=>`<div class="feed-item ${item.trend==='up'?'sale':'mint'} ${item.verified?'verified':''}"><div class="feed-header"><span class="feed-type">${item.trend==='up'?'📈':'📉'} ${item.collection} ${item.verified?'<span class="verified-badge">✓</span>':''}</span><span class="feed-platform">${item.metric}</span><span class="feed-time">${item.time}</span></div><div class="feed-title">${item.value}</div><div class="feed-value">${item.change} ${item.trend==='up'?'📈':'📉'}</div><div class="feed-index">${String(idx+1).padStart(2,'0')}/${String(MARKET_DATA.length).padStart(2,'0')}</div></div>`).join('');
+            document.getElementById('market-feed').innerHTML=MARKET_DATA.map((item,idx)=>`
+                <div class="feed-item ${item.trend==='up'?'sale':'mint'} ${item.verified?'verified':''}">
+                    <div class="feed-header">
+                        <span class="feed-type">${item.trend==='up'?'📈':'📉'} ${item.collection} ${item.verified?'<span class="verified-badge">✓</span>':''}</span>
+                        <span class="feed-platform">${item.metric}</span>
+                        <span class="feed-time">${item.time}</span>
+                    </div>
+                    <div class="feed-title">${item.value}</div>
+                    <div class="feed-value">${item.change} ${item.trend==='up'?'📈':'📉'}</div>
+                    <div class="feed-actions">
+                        <button class="feed-action-btn">View Chart</button>
+                        <button class="feed-action-btn">Alert</button>
+                    </div>
+                    <div class="feed-index">${String(idx+1).padStart(2,'0')}/${String(MARKET_DATA.length).padStart(2,'0')}</div>
+                </div>
+            `).join('');
         }
         
         function renderDrops(){
-            document.getElementById('drops-feed').innerHTML=DROPS_DATA.map((item,idx)=>`<div class="feed-item ${item.type} ${item.verified?'verified':''}"><div class="feed-header"><span class="feed-type">${item.type==='auction'?'🔨':item.type==='drop'?'🎨':'🖼️'} ${item.artist} ${item.verified?'<span class="verified-badge">✓</span>':''}</span><span class="feed-platform">${item.platform}</span><span class="feed-time">${item.time}</span></div><h3 class="feed-title">${item.title}</h3><div class="feed-meta">Supply: ${item.supply}</div><div class="feed-value">${item.price}</div><a href="${item.url}" target="_blank" class="feed-link">↗</a><div class="feed-index">${String(idx+1).padStart(2,'0')}/${String(DROPS_DATA.length).padStart(2,'0')}</div></div>`).join('');
+            document.getElementById('drops-feed').innerHTML=DROPS_DATA.map((item,idx)=>`
+                <div class="feed-item ${item.type} ${item.verified?'verified':''}" onclick="window.open('${item.url}','_blank')">
+                    <div class="feed-header">
+                        <span class="feed-type">${item.type==='auction'?'🔨':item.type==='drop'?'🎨':'🖼️'} ${item.artist} ${item.verified?'<span class="verified-badge">✓</span>':''}</span>
+                        <span class="feed-platform">${item.platform}</span>
+                        <span class="feed-time">${item.time}</span>
+                    </div>
+                    <h3 class="feed-title">${item.title}</h3>
+                    <div class="feed-meta">Supply: ${item.supply}</div>
+                    <div class="feed-value">${item.price}</div>
+                    <div class="feed-actions">
+                        <button class="feed-action-btn" onclick="event.stopPropagation();window.open('${item.url}','_blank')">View Drop ↗</button>
+                        <button class="feed-action-btn" onclick="event.stopPropagation()">Remind Me</button>
+                    </div>
+                    <div class="feed-index">${String(idx+1).padStart(2,'0')}/${String(DROPS_DATA.length).padStart(2,'0')}</div>
+                </div>
+            `).join('');
         }
         
         // Init
