@@ -30,285 +30,1000 @@
     
     <title>ARTHOUSE // Intelligence</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
-        :root{--bg:#ffffff;--text:#0a0a0a;--gray:#666666;--light-gray:#e5e5e5;--base-blue:#0000ff;--green:#10b981;--blue:#3b82f6;--purple:#8b5cf6;--orange:#f97316;--red:#ef4444;--farcaster:#855DCD}
-        body{font-family:'Fira Code',monospace;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;min-height:100vh}
+        :root{
+            --bg:#fafafa;
+            --surface:#ffffff;
+            --text:#0a0a0a;
+            --text-secondary:#525252;
+            --text-tertiary:#737373;
+            --border:#e5e5e5;
+            --border-light:#f0f0f0;
+            --base-blue:#0052FF;
+            --base-blue-light:#EEF4FF;
+            --accent-purple:#6366f1;
+            --accent-green:#10b981;
+            --accent-orange:#f59e0b;
+            --accent-red:#ef4444;
+            --accent-pink:#ec4899;
+            --radius:12px;
+            --radius-sm:8px;
+            --shadow-sm:0 1px 2px 0 rgba(0,0,0,0.05);
+            --shadow:0 4px 6px -1px rgba(0,0,0,0.1),0 2px 4px -2px rgba(0,0,0,0.1);
+            --shadow-lg:0 10px 15px -3px rgba(0,0,0,0.1),0 4px 6px -4px rgba(0,0,0,0.1);
+        }
+        
+        body{
+            font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+            background:var(--bg);
+            color:var(--text);
+            line-height:1.5;
+            overflow-x:hidden;
+            min-height:100vh;
+            -webkit-font-smoothing:antialiased;
+        }
         
         /* Environment Badge */
-        .env-badge{position:fixed;top:10px;right:10px;padding:0.4rem 0.8rem;border-radius:20px;font-size:0.65rem;font-weight:600;z-index:10000;text-transform:uppercase;letter-spacing:0.05em;background:var(--gray);color:white}
-        .env-badge.base{background:#0052FF}
+        .env-badge{
+            position:fixed;
+            top:12px;
+            right:12px;
+            padding:0.35rem 0.75rem;
+            border-radius:20px;
+            font-size:0.65rem;
+            font-weight:600;
+            z-index:10000;
+            text-transform:uppercase;
+            letter-spacing:0.05em;
+            background:var(--text);
+            color:white;
+            box-shadow:var(--shadow);
+        }
+        .env-badge.base{background:var(--base-blue)}
         .env-badge.farcaster{background:#855DCD}
         
-        /* Base Wallet Button */
-        .base-wallet-btn{background:#0052FF;color:white;border:none;padding:0.6rem 1.2rem;border-radius:8px;font-family:inherit;font-size:0.75rem;cursor:pointer;display:flex;align-items:center;gap:0.5rem;transition:all 0.3s}
-        .base-wallet-btn:hover{background:#0043d1;transform:translateY(-1px)}
-        .base-wallet-btn.connected{background:#10b981}
+        /* Header - Minimalist */
+        .header{
+            position:fixed;
+            top:0;
+            left:0;
+            right:0;
+            z-index:100;
+            background:rgba(250,250,250,0.9);
+            backdrop-filter:blur(12px);
+            border-bottom:1px solid var(--border-light);
+        }
+        .header-content{
+            max-width:1200px;
+            margin:0 auto;
+            padding:0.875rem 1.25rem;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
         
-        /* Cast Button */
-        .cast-btn{background:#855DCD;color:white;border:none;padding:0.6rem 1.2rem;border-radius:8px;font-family:inherit;font-size:0.75rem;cursor:pointer;display:flex;align-items:center;gap:0.5rem}
+        /* Logo - Minimalist SVG */
+        .logo{
+            display:flex;
+            align-items:center;
+            gap:0.75rem;
+            text-decoration:none;
+        }
+        .logo-mark{
+            width:36px;
+            height:36px;
+            background:var(--base-blue);
+            border-radius:var(--radius-sm);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            position:relative;
+            overflow:hidden;
+        }
+        .logo-mark::before{
+            content:'';
+            position:absolute;
+            width:16px;
+            height:16px;
+            border:2px solid white;
+            border-radius:50%;
+            top:50%;
+            left:50%;
+            transform:translate(-50%,-50%);
+        }
+        .logo-mark::after{
+            content:'';
+            position:absolute;
+            width:4px;
+            height:4px;
+            background:white;
+            border-radius:50%;
+            top:35%;
+            right:30%;
+        }
+        .logo-text{
+            font-family:'Space Grotesk',sans-serif;
+            font-weight:700;
+            font-size:1.125rem;
+            letter-spacing:-0.02em;
+            color:var(--text);
+        }
+        .logo-sub{
+            font-size:0.65rem;
+            color:var(--text-tertiary);
+            font-weight:500;
+            letter-spacing:0.1em;
+            text-transform:uppercase;
+            margin-left:0.5rem;
+            padding-left:0.5rem;
+            border-left:1px solid var(--border);
+        }
         
-        /* Background */
-        #bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.15}
-        .grain{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;opacity:0.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")}
+        .header-actions{
+            display:flex;
+            align-items:center;
+            gap:0.75rem;
+        }
         
-        /* Header */
-        .header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--light-gray)}
-        .header-content{max-width:1200px;margin:0 auto;padding:0.75rem 1rem;display:flex;justify-content:space-between;align-items:center}
-        .logo{display:flex;align-items:center;gap:0.75rem}
-        .logo-img{height:32px;width:auto;object-fit:contain}
-        .logo-text{font-weight:600;letter-spacing:0.05em;font-size:0.85rem}
-        .version{font-size:0.6rem;padding:0.15rem 0.4rem;border:1px solid var(--light-gray);border-radius:2px;color:var(--gray)}
-        .header-actions{display:flex;align-items:center;gap:0.75rem}
-        .status{display:flex;align-items:center;gap:0.5rem;font-size:0.65rem;color:var(--gray)}
-        .live-indicator{color:var(--base-blue);animation:pulse 2s infinite}
+        /* Buttons - Minimalist */
+        .btn{
+            display:inline-flex;
+            align-items:center;
+            gap:0.5rem;
+            padding:0.5rem 1rem;
+            border-radius:var(--radius-sm);
+            font-family:inherit;
+            font-size:0.75rem;
+            font-weight:500;
+            cursor:pointer;
+            transition:all 0.2s;
+            border:1px solid transparent;
+            text-decoration:none;
+        }
+        .btn-primary{
+            background:var(--base-blue);
+            color:white;
+        }
+        .btn-primary:hover{
+            background:#0043d1;
+            transform:translateY(-1px);
+            box-shadow:var(--shadow);
+        }
+        .btn-secondary{
+            background:white;
+            border-color:var(--border);
+            color:var(--text-secondary);
+        }
+        .btn-secondary:hover{
+            border-color:var(--base-blue);
+            color:var(--base-blue);
+            background:var(--base-blue-light);
+        }
+        .btn-ghost{
+            background:transparent;
+            color:var(--text-secondary);
+            padding:0.5rem;
+        }
+        .btn-ghost:hover{
+            color:var(--text);
+            background:var(--border-light);
+        }
         
-        /* Ticker - Now at top without disclaimer blocking */
-        .ticker-wrap{position:fixed;top:60px;left:0;right:0;z-index:98;background:var(--base-blue);color:white;height:32px;display:flex;align-items:center;overflow:hidden}
-        .ticker-label{background:rgba(0,0,0,0.2);padding:0 1rem;font-size:0.6rem;font-weight:600;text-transform:uppercase;height:100%;display:flex;align-items:center;flex-shrink:0;z-index:2}
-        .ticker-container{flex:1;overflow:hidden;position:relative;height:100%}
-        .ticker-track{display:flex;position:absolute;left:0;top:0;height:100%;align-items:center;animation:ticker 50s linear infinite;will-change:transform}
-        .ticker-track:hover{animation-play-state:paused}
-        .ticker-item{display:inline-flex;align-items:center;gap:0.5rem;padding:0 2rem;font-size:0.75rem;border-right:1px solid rgba(255,255,255,0.2);height:100%;white-space:nowrap;cursor:pointer;transition:all 0.3s;text-decoration:none;color:white}
-        .ticker-item:hover{background:rgba(255,255,255,0.15);transform:scale(1.02)}
-        .ticker-tag{background:rgba(255,255,255,0.2);padding:0.1rem 0.4rem;border-radius:3px;font-size:0.55rem;text-transform:uppercase;font-weight:600}
-        .ticker-tag.early{background:var(--green)}
-        .ticker-tag.agent{background:var(--purple)}
-        .ticker-tag.farcaster{background:#855DCD}
-        
-        @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+        .status{
+            display:flex;
+            align-items:center;
+            gap:0.5rem;
+            font-size:0.7rem;
+            color:var(--text-tertiary);
+            font-family:'Space Grotesk',monospace;
+        }
+        .live-dot{
+            width:6px;
+            height:6px;
+            background:var(--accent-green);
+            border-radius:50%;
+            animation:pulse 2s infinite;
+        }
         @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
         
-        /* Main - Adjusted for ticker only */
-        .main{position:relative;z-index:10;padding-top:95px}
-        .hero{max-width:900px;margin:0 auto;padding:2rem 1rem 1rem;text-align:center}
-        .title{font-size:1.6rem;font-weight:600;margin-bottom:0.5rem}
-        .cursor{display:inline-block;width:2px;height:1em;background:var(--base-blue);margin-left:0.15rem;animation:blink 1s step-end infinite;vertical-align:text-bottom}
-        @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-        .subtitle{font-size:0.8rem;color:var(--gray);max-width:500px;margin:0 auto 1rem}
+        /* Ticker - Clean */
+        .ticker-wrap{
+            position:fixed;
+            top:65px;
+            left:0;
+            right:0;
+            z-index:98;
+            background:var(--base-blue);
+            color:white;
+            height:36px;
+            display:flex;
+            align-items:center;
+            overflow:hidden;
+        }
+        .ticker-label{
+            background:rgba(0,0,0,0.2);
+            padding:0 1.25rem;
+            font-size:0.65rem;
+            font-weight:600;
+            text-transform:uppercase;
+            letter-spacing:0.1em;
+            height:100%;
+            display:flex;
+            align-items:center;
+            flex-shrink:0;
+            z-index:2;
+            font-family:'Space Grotesk',sans-serif;
+        }
+        .ticker-container{
+            flex:1;
+            overflow:hidden;
+            position:relative;
+            height:100%;
+        }
+        .ticker-track{
+            display:flex;
+            position:absolute;
+            left:0;
+            top:0;
+            height:100%;
+            align-items:center;
+            animation:ticker 40s linear infinite;
+            will-change:transform;
+        }
+        .ticker-track:hover{animation-play-state:paused}
+        .ticker-item{
+            display:inline-flex;
+            align-items:center;
+            gap:0.75rem;
+            padding:0 2rem;
+            font-size:0.8rem;
+            border-right:1px solid rgba(255,255,255,0.15);
+            height:100%;
+            white-space:nowrap;
+            cursor:pointer;
+            transition:all 0.2s;
+            text-decoration:none;
+            color:white;
+            font-weight:500;
+        }
+        .ticker-item:hover{
+            background:rgba(255,255,255,0.1);
+        }
+        .ticker-tag{
+            font-size:0.6rem;
+            text-transform:uppercase;
+            font-weight:700;
+            padding:0.2rem 0.5rem;
+            border-radius:4px;
+            background:rgba(255,255,255,0.2);
+            letter-spacing:0.05em;
+        }
+        .ticker-tag.early{background:var(--accent-green)}
+        .ticker-tag.agent{background:var(--accent-purple)}
+        .ticker-tag.builder{background:var(--accent-orange)}
+        .ticker-tag.token{background:var(--accent-pink)}
         
-        .badges{display:flex;flex-wrap:wrap;gap:0.4rem;justify-content:center;margin-bottom:1rem}
-        .badge{font-size:0.6rem;padding:0.3rem 0.6rem;border:1px solid var(--light-gray);border-radius:2px;color:var(--gray);background:white;transition:all 0.3s}
-        .badge:hover{transform:translateY(-2px);box-shadow:0 2px 8px rgba(0,0,0,0.1)}
-        .badge.verified{border-color:var(--blue);color:var(--blue);background:rgba(59,130,246,0.05)}
-        .badge.scam{border-color:var(--red);color:var(--red);background:rgba(239,68,68,0.05)}
-        .badge.live{border-color:var(--base-blue);color:var(--base-blue);background:rgba(0,0,255,0.05)}
+        @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
         
-        /* Scam Alert - Enhanced */
-        .scam-alert{max-width:900px;margin:0 auto 1rem;padding:0 1rem}
-        .scam-box{background:linear-gradient(135deg, #fef2f2 0%, #fff5f5 100%);border:1px solid var(--red);border-radius:6px;padding:1rem;transition:all 0.3s}
-        .scam-box:hover{box-shadow:0 4px 12px rgba(239,68,68,0.1);transform:translateY(-1px)}
-        .scam-title{font-size:0.75rem;color:var(--red);font-weight:600;margin-bottom:0.75rem;display:flex;align-items:center;gap:0.4rem}
-        .scam-list{font-size:0.7rem;color:var(--gray);list-style:none}
-        .scam-list li{padding:0.4rem 0;border-bottom:1px solid #fee2e2;display:flex;justify-content:space-between;align-items:center;transition:background 0.2s}
-        .scam-list li:hover{background:rgba(239,68,68,0.03)}
-        .scam-list li:last-child{border-bottom:none}
-        .risk-high{color:var(--red);font-weight:600;background:rgba(239,68,68,0.1);padding:0.2rem 0.5rem;border-radius:3px;font-size:0.6rem}
-        .risk-med{color:var(--orange);font-weight:600;background:rgba(249,115,22,0.1);padding:0.2rem 0.5rem;border-radius:3px;font-size:0.6rem}
+        /* Main Layout */
+        .main{
+            position:relative;
+            z-index:10;
+            padding-top:105px;
+        }
         
-        /* Navigation - Enhanced */
-        .category-nav{max-width:900px;margin:0 auto;padding:0 1rem}
-        .category-title{font-size:0.6rem;color:var(--gray);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.1em}
-        .tabs{display:flex;gap:0.25rem;border-bottom:1px solid var(--light-gray);overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:1px;scrollbar-width:none}
+        /* Hero - Minimalist */
+        .hero{
+            max-width:900px;
+            margin:0 auto;
+            padding:3rem 1.25rem 2rem;
+            text-align:center;
+        }
+        .hero-badge{
+            display:inline-flex;
+            align-items:center;
+            gap:0.5rem;
+            padding:0.4rem 0.875rem;
+            background:var(--base-blue-light);
+            border:1px solid rgba(0,82,255,0.1);
+            border-radius:20px;
+            font-size:0.7rem;
+            font-weight:600;
+            color:var(--base-blue);
+            margin-bottom:1.5rem;
+            text-transform:uppercase;
+            letter-spacing:0.05em;
+        }
+        .title{
+            font-family:'Space Grotesk',sans-serif;
+            font-size:2.5rem;
+            font-weight:700;
+            letter-spacing:-0.03em;
+            margin-bottom:0.75rem;
+            line-height:1.1;
+        }
+        .title span{
+            color:var(--base-blue);
+        }
+        .subtitle{
+            font-size:1rem;
+            color:var(--text-secondary);
+            max-width:480px;
+            margin:0 auto 2rem;
+            line-height:1.6;
+        }
+        
+        /* Filter Pills */
+        .filter-pills{
+            display:flex;
+            flex-wrap:wrap;
+            gap:0.5rem;
+            justify-content:center;
+            margin-bottom:2rem;
+        }
+        .pill{
+            padding:0.5rem 1rem;
+            background:white;
+            border:1px solid var(--border);
+            border-radius:20px;
+            font-size:0.75rem;
+            font-weight:500;
+            color:var(--text-secondary);
+            transition:all 0.2s;
+            cursor:default;
+        }
+        .pill:hover{
+            border-color:var(--base-blue);
+            color:var(--base-blue);
+            transform:translateY(-1px);
+            box-shadow:var(--shadow-sm);
+        }
+        .pill.verified{
+            border-color:var(--base-blue);
+            color:var(--base-blue);
+            background:var(--base-blue-light);
+        }
+        
+        /* Scam Alert - Refined */
+        .scam-alert{
+            max-width:900px;
+            margin:0 auto 2rem;
+            padding:0 1.25rem;
+        }
+        .scam-box{
+            background:linear-gradient(135deg,#fef2f2 0%,#fff5f5 100%);
+            border:1px solid #fecaca;
+            border-radius:var(--radius);
+            padding:1.25rem;
+            position:relative;
+            overflow:hidden;
+        }
+        .scam-box::before{
+            content:'';
+            position:absolute;
+            top:0;
+            left:0;
+            width:4px;
+            height:100%;
+            background:var(--accent-red);
+        }
+        .scam-header{
+            display:flex;
+            align-items:center;
+            gap:0.5rem;
+            margin-bottom:1rem;
+            font-size:0.8rem;
+            font-weight:600;
+            color:var(--accent-red);
+        }
+        .scam-list{
+            list-style:none;
+            display:flex;
+            flex-direction:column;
+            gap:0.75rem;
+        }
+        .scam-item{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:0.75rem;
+            background:white;
+            border-radius:var(--radius-sm);
+            border:1px solid #fee2e2;
+            transition:all 0.2s;
+        }
+        .scam-item:hover{
+            transform:translateX(4px);
+            box-shadow:var(--shadow-sm);
+        }
+        .scam-info{
+            display:flex;
+            flex-direction:column;
+            gap:0.25rem;
+        }
+        .scam-name{
+            font-size:0.8rem;
+            font-weight:600;
+            color:var(--text);
+            font-family:'Space Grotesk',monospace;
+        }
+        .scam-type{
+            font-size:0.65rem;
+            color:var(--text-tertiary);
+            text-transform:uppercase;
+            letter-spacing:0.05em;
+        }
+        .risk-badge{
+            font-size:0.65rem;
+            font-weight:700;
+            padding:0.35rem 0.625rem;
+            border-radius:4px;
+            text-transform:uppercase;
+            letter-spacing:0.05em;
+        }
+        .risk-high{
+            background:#fee2e2;
+            color:#991b1b;
+        }
+        .risk-med{
+            background:#fef3c7;
+            color:#92400e;
+        }
+        
+        /* Navigation - Modern Tabs */
+        .category-nav{
+            max-width:900px;
+            margin:0 auto;
+            padding:0 1.25rem;
+            position:sticky;
+            top:101px;
+            z-index:50;
+            background:var(--bg);
+            padding-bottom:1rem;
+        }
+        .tabs{
+            display:flex;
+            gap:0.25rem;
+            background:white;
+            padding:0.375rem;
+            border-radius:var(--radius);
+            border:1px solid var(--border);
+            overflow-x:auto;
+            -webkit-overflow-scrolling:touch;
+            scrollbar-width:none;
+            box-shadow:var(--shadow-sm);
+        }
         .tabs::-webkit-scrollbar{display:none}
-        .tab-btn{padding:0.6rem 0.8rem;background:none;border:none;font-family:inherit;font-size:0.65rem;font-weight:500;color:var(--gray);cursor:pointer;transition:all 0.3s;border-bottom:2px solid transparent;white-space:nowrap;flex-shrink:0;position:relative}
-        .tab-btn:hover{color:var(--base-blue)}
-        .tab-btn.active{color:var(--base-blue);border-bottom-color:var(--base-blue)}
-        .tab-btn::after{content:'';position:absolute;bottom:-2px;left:0;width:100%;height:2px;background:var(--base-blue);transform:scaleX(0);transition:transform 0.3s}
-        .tab-btn:hover::after{transform:scaleX(0.5)}
-        .tab-btn.active::after{transform:scaleX(1)}
+        .tab-btn{
+            padding:0.625rem 1rem;
+            background:transparent;
+            border:none;
+            font-family:inherit;
+            font-size:0.75rem;
+            font-weight:500;
+            color:var(--text-secondary);
+            cursor:pointer;
+            transition:all 0.2s;
+            border-radius:var(--radius-sm);
+            white-space:nowrap;
+            flex-shrink:0;
+            position:relative;
+        }
+        .tab-btn:hover{
+            color:var(--text);
+            background:var(--bg);
+        }
+        .tab-btn.active{
+            color:var(--base-blue);
+            background:var(--base-blue-light);
+            font-weight:600;
+        }
         
         /* Content */
-        .content{max-width:900px;margin:0 auto;padding:1rem;min-height:400px}
+        .content{
+            max-width:900px;
+            margin:0 auto;
+            padding:1.25rem;
+            min-height:400px;
+        }
         .tab-content{display:none}
-        .tab-content.active{display:block;animation:fadeIn 0.4s ease}
-        @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+        .tab-content.active{display:block;animation:fadeIn 0.3s ease}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
         
-        .section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;padding-bottom:0.75rem;border-bottom:1px solid var(--light-gray);flex-wrap:wrap;gap:0.5rem}
-        .section-header h2{font-size:0.75rem;font-weight:600;letter-spacing:0.05em;color:var(--base-blue)}
+        .section-header{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:1.25rem;
+            padding-bottom:1rem;
+            border-bottom:1px solid var(--border);
+        }
+        .section-title{
+            font-family:'Space Grotesk',sans-serif;
+            font-size:1.125rem;
+            font-weight:600;
+            color:var(--text);
+            display:flex;
+            align-items:center;
+            gap:0.5rem;
+        }
         
-        .source-btn{display:inline-flex;align-items:center;gap:0.3rem;padding:0.4rem 0.8rem;background:white;border:1px solid var(--light-gray);color:var(--gray);font-family:inherit;font-size:0.65rem;text-decoration:none;border-radius:3px;transition:all 0.3s;cursor:pointer}
-        .source-btn:hover{border-color:var(--base-blue);color:var(--base-blue);background:rgba(0,0,255,0.03);transform:translateY(-1px)}
-        .source-btn::after{content:'↗';font-size:0.8rem;opacity:0.7;transition:transform 0.2s}
-        .source-btn:hover::after{transform:translate(2px,-2px)}
-        
-        /* Stats - Enhanced */
-        .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1rem}
-        .stat-card{border:1px solid var(--light-gray);padding:1rem;text-align:center;transition:all 0.3s;background:white;border-radius:4px;position:relative;overflow:hidden}
-        .stat-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:var(--base-blue);transform:scaleX(0);transition:transform 0.3s}
+        /* Stats Grid */
+        .stats-grid{
+            display:grid;
+            grid-template-columns:repeat(3,1fr);
+            gap:1rem;
+            margin-bottom:1.5rem;
+        }
+        .stat-card{
+            background:white;
+            border:1px solid var(--border);
+            padding:1.25rem;
+            text-align:center;
+            border-radius:var(--radius);
+            transition:all 0.2s;
+            position:relative;
+            overflow:hidden;
+        }
+        .stat-card:hover{
+            border-color:var(--base-blue);
+            transform:translateY(-2px);
+            box-shadow:var(--shadow);
+        }
+        .stat-card::before{
+            content:'';
+            position:absolute;
+            top:0;
+            left:0;
+            right:0;
+            height:3px;
+            background:var(--base-blue);
+            transform:scaleX(0);
+            transition:transform 0.3s;
+        }
         .stat-card:hover::before{transform:scaleX(1)}
-        .stat-card:hover{border-color:var(--base-blue);transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,255,0.08)}
-        .stat-value{font-size:1.2rem;font-weight:600;color:var(--base-blue);margin-bottom:0.25rem;transition:transform 0.3s}
-        .stat-card:hover .stat-value{transform:scale(1.05)}
-        .stat-label{font-size:0.55rem;color:var(--gray);letter-spacing:0.05em}
+        .stat-value{
+            font-family:'Space Grotesk',sans-serif;
+            font-size:1.5rem;
+            font-weight:700;
+            color:var(--base-blue);
+            margin-bottom:0.25rem;
+        }
+        .stat-label{
+            font-size:0.7rem;
+            color:var(--text-tertiary);
+            text-transform:uppercase;
+            letter-spacing:0.1em;
+            font-weight:600;
+        }
         
-        /* Feed - Enhanced Interactivity */
-        .feed{display:flex;flex-direction:column;gap:0.75rem}
-        .feed-item{border:1px solid var(--light-gray);padding:1.25rem;transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);position:relative;background:white;border-radius:6px;cursor:pointer}
-        .feed-item:hover{border-color:var(--base-blue);transform:translateY(-2px);box-shadow:0 8px 25px rgba(0,0,0,0.08)}
-        .feed-item:active{transform:translateY(0)}
+        /* Feed Cards - Modern & Varied */
+        .feed{
+            display:flex;
+            flex-direction:column;
+            gap:1rem;
+        }
         
-        .feed-item.sale{border-left:4px solid var(--green)}
-        .feed-item.mint{border-left:4px solid var(--blue)}
-        .feed-item.tweet{border-left:4px solid var(--base-blue)}
-        .feed-item.cast{border-left:4px solid #855DCD}
-        .feed-item.baseapp{border-left:4px solid #0052FF}
-        .feed-item.article{border-left:4px solid var(--red)}
-        .feed-item.publication{border-left:4px solid #ec4899}
-        .feed-item.verified{border-left:4px solid var(--blue)}
+        .feed-card{
+            background:white;
+            border:1px solid var(--border);
+            border-radius:var(--radius);
+            padding:1.25rem;
+            transition:all 0.2s;
+            cursor:pointer;
+            position:relative;
+            overflow:hidden;
+        }
+        .feed-card:hover{
+            border-color:var(--base-blue);
+            transform:translateY(-2px);
+            box-shadow:var(--shadow-lg);
+        }
         
-        .feed-header{display:flex;align-items:center;gap:0.5rem;margin-bottom:0.75rem;font-size:0.65rem;flex-wrap:wrap}
-        .feed-type{font-weight:600;text-transform:uppercase;color:var(--base-blue);display:flex;align-items:center;gap:0.3rem}
-        .feed-platform{color:var(--gray);background:var(--light-gray);padding:0.15rem 0.4rem;border-radius:3px;font-size:0.6rem}
-        .feed-time{color:var(--gray);margin-left:auto;font-size:0.6rem;font-family:monospace}
-        .verified-badge{color:var(--blue);font-size:0.8rem;background:rgba(59,130,246,0.1);padding:0.1rem 0.3rem;border-radius:3px}
+        /* Card Type Variants */
+        .feed-card.tweet{border-left:3px solid #000}
+        .feed-card.cast{border-left:3px solid #855DCD}
+        .feed-card.baseapp{border-left:3px solid var(--base-blue)}
+        .feed-card.article{border-left:3px solid var(--accent-purple)}
+        .feed-card.onchain{border-left:3px solid var(--accent-green)}
+        .feed-card.market{border-left:3px solid var(--accent-orange)}
+        .feed-card.drop{border-left:3px solid var(--accent-pink)}
         
-        .feed-title{font-size:0.95rem;font-weight:600;margin-bottom:0.5rem;line-height:1.4;transition:color 0.3s}
-        .feed-item:hover .feed-title{color:var(--base-blue)}
-        .feed-excerpt{font-size:0.8rem;color:var(--gray);line-height:1.6;margin-bottom:0.75rem}
-        .tweet-text,.cast-text{font-size:0.85rem;line-height:1.6;margin-bottom:0.75rem;color:var(--text)}
+        /* Project-specific card styles */
+        .feed-card.bankr{
+            border-left:3px solid #6366f1;
+            background:linear-gradient(135deg,#fff 0%,#eef2ff 100%);
+        }
+        .feed-card.clanker{
+            border-left:3px solid #f59e0b;
+            background:linear-gradient(135deg,#fff 0%,#fffbeb 100%);
+        }
+        .feed-card.builder{
+            border-left:3px solid #10b981;
+            background:linear-gradient(135deg,#fff 0%,#ecfdf5 100%);
+        }
+        .feed-card.openclaw{
+            border-left:3px solid #ec4899;
+            background:linear-gradient(135deg,#fff 0%,#fdf2f8 100%);
+        }
         
-        .tweet-stats,.cast-stats{display:flex;gap:1.25rem;font-size:0.7rem;color:var(--gray)}
-        .tweet-stats span,.cast-stats span{display:flex;align-items:center;gap:0.3rem;transition:color 0.3s}
-        .tweet-stats span:hover,.cast-stats span:hover{color:var(--base-blue)}
-        .feed-meta{display:flex;align-items:center;gap:0.75rem;font-size:0.65rem;color:var(--gray);font-family:monospace;flex-wrap:wrap}
-        .feed-value{color:var(--green);font-weight:600;font-size:0.9rem;background:rgba(16,185,129,0.1);padding:0.3rem 0.6rem;border-radius:4px;display:inline-block;margin-top:0.5rem}
+        .card-header{
+            display:flex;
+            align-items:flex-start;
+            justify-content:space-between;
+            margin-bottom:0.875rem;
+            gap:1rem;
+        }
+        .card-meta{
+            display:flex;
+            align-items:center;
+            gap:0.5rem;
+            font-size:0.75rem;
+        }
+        .card-avatar{
+            width:32px;
+            height:32px;
+            border-radius:50%;
+            background:var(--bg);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:1rem;
+            flex-shrink:0;
+        }
+        .card-author{
+            display:flex;
+            flex-direction:column;
+            gap:0.125rem;
+        }
+        .author-name{
+            font-weight:600;
+            color:var(--text);
+            font-size:0.875rem;
+            display:flex;
+            align-items:center;
+            gap:0.25rem;
+        }
+        .verified-check{
+            color:var(--base-blue);
+            font-size:0.875rem;
+        }
+        .author-handle{
+            color:var(--text-tertiary);
+            font-size:0.75rem;
+        }
+        .card-time{
+            color:var(--text-tertiary);
+            font-size:0.7rem;
+            font-family:'Space Grotesk',monospace;
+        }
         
-        .feed-link{position:absolute;top:1rem;right:1rem;opacity:0;transition:all 0.3s;text-decoration:none;color:var(--base-blue);font-size:1.1rem;background:rgba(0,0,255,0.05);padding:0.4rem;border-radius:4px}
-        .feed-item:hover .feed-link{opacity:1;transform:scale(1.1)}
-        .feed-index{position:absolute;bottom:0.5rem;right:0.5rem;font-size:0.6rem;color:#ccc;font-weight:600}
+        .card-badge{
+            padding:0.35rem 0.625rem;
+            border-radius:20px;
+            font-size:0.65rem;
+            font-weight:600;
+            text-transform:uppercase;
+            letter-spacing:0.05em;
+        }
+        .badge-bankr{background:#e0e7ff;color:#3730a3}
+        .badge-clanker{background:#fef3c7;color:#92400e}
+        .badge-builder{background:#d1fae5;color:#065f46}
+        .badge-openclaw{background:#fce7f3;color:#9d1746}
+        .badge-base{background:var(--base-blue-light);color:var(--base-blue)}
+        .badge-artist{background:#f3e8ff;color:#6b21a8}
         
-        /* Action buttons in feed */
-        .feed-actions{display:flex;gap:0.5rem;margin-top:0.75rem;opacity:0;transform:translateY(10px);transition:all 0.3s}
-        .feed-item:hover .feed-actions{opacity:1;transform:translateY(0)}
-        .feed-action-btn{padding:0.4rem 0.8rem;border:1px solid var(--light-gray);background:white;font-family:inherit;font-size:0.6rem;cursor:pointer;border-radius:4px;transition:all 0.3s;display:flex;align-items:center;gap:0.3rem}
-        .feed-action-btn:hover{border-color:var(--base-blue);color:var(--base-blue);background:rgba(0,0,255,0.03)}
+        .card-content{
+            margin-bottom:1rem;
+        }
+        .card-title{
+            font-family:'Space Grotesk',sans-serif;
+            font-size:1rem;
+            font-weight:600;
+            color:var(--text);
+            margin-bottom:0.5rem;
+            line-height:1.4;
+        }
+        .card-text{
+            font-size:0.875rem;
+            color:var(--text-secondary);
+            line-height:1.6;
+        }
         
-        /* Footer Docs */
-        .footer-docs{background:#f9fafb;border-top:1px solid var(--light-gray);padding:2rem 1rem;margin-top:2rem}
-        .docs-content{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:1.5rem}
-        @media(min-width:768px){.docs-content{grid-template-columns:repeat(3,1fr)}}
-        .doc-section h4{font-size:0.7rem;color:var(--text);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.1em}
-        .doc-section ul{list-style:none;font-size:0.7rem}
-        .doc-section li{margin-bottom:0.5rem}
-        .doc-section a{color:var(--gray);text-decoration:none;transition:all 0.3s;display:inline-block}
-        .doc-section a:hover{color:var(--base-blue);transform:translateX(3px)}
-        .doc-section p{font-size:0.7rem;color:var(--gray);line-height:1.6}
+        .card-stats{
+            display:flex;
+            gap:1.25rem;
+            padding-top:0.875rem;
+            border-top:1px solid var(--border-light);
+            font-size:0.75rem;
+            color:var(--text-tertiary);
+        }
+        .stat-item{
+            display:flex;
+            align-items:center;
+            gap:0.375rem;
+            transition:color 0.2s;
+        }
+        .stat-item:hover{
+            color:var(--base-blue);
+        }
         
-        /* Enhanced Footer with Social CTA */
-        .footer{border-top:1px solid var(--light-gray);padding:0;background:white}
-        .footer-social-cta{background:linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);padding:2rem 1rem;border-bottom:1px solid var(--light-gray)}
-        .social-cta-content{max-width:900px;margin:0 auto;text-align:center}
-        .social-cta-title{font-size:0.9rem;font-weight:600;margin-bottom:0.5rem;color:var(--text)}
-        .social-cta-text{font-size:0.75rem;color:var(--gray);margin-bottom:1.25rem;max-width:500px;margin-left:auto;margin-right:auto}
-        .social-buttons{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
-        .social-btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.75rem 1.25rem;border-radius:8px;font-family:inherit;font-size:0.75rem;font-weight:500;text-decoration:none;transition:all 0.3s;border:1px solid transparent}
-        .social-btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.15)}
-        .social-btn.x{background:#000;color:white}
-        .social-btn.x:hover{background:#1a1a1a}
-        .social-btn.base{background:#0052FF;color:white}
-        .social-btn.base:hover{background:#0043d1}
+        .card-footer{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-top:1rem;
+            padding-top:1rem;
+            border-top:1px solid var(--border-light);
+        }
+        .card-tags{
+            display:flex;
+            gap:0.5rem;
+            flex-wrap:wrap;
+        }
+        .tag{
+            padding:0.25rem 0.5rem;
+            background:var(--bg);
+            border-radius:4px;
+            font-size:0.65rem;
+            color:var(--text-tertiary);
+            font-weight:500;
+        }
         
-        .footer-main{padding:1.5rem 1rem}
-        .footer-content{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:0.75rem;font-size:0.7rem;color:var(--gray);text-align:center}
-        @media(min-width:768px){.footer-content{flex-direction:row;justify-content:space-between;text-align:left}}
-        .links{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap}
-        .links a{color:var(--gray);text-decoration:none;transition:color 0.3s}
-        .links a:hover{color:var(--base-blue)}
+        /* Value display */
+        .value-pill{
+            display:inline-flex;
+            align-items:center;
+            gap:0.375rem;
+            padding:0.5rem 0.875rem;
+            background:var(--bg);
+            border-radius:20px;
+            font-family:'Space Grotesk',monospace;
+            font-size:0.875rem;
+            font-weight:600;
+            color:var(--text);
+        }
+        .value-pill.positive{color:var(--accent-green)}
+        .value-pill.negative{color:var(--accent-red)}
         
-        /* Disclaimer Footer - Moved to bottom */
-        .disclaimer-footer{background:#fef3c7;border-top:1px solid #f59e0b;padding:1rem;text-align:center;font-size:0.65rem;color:#92400e}
-        .disclaimer-footer strong{color:#b45309}
-        .disclaimer-footer a{color:#b45309;text-decoration:underline;font-weight:500}
+        /* Footer */
+        .footer{
+            background:white;
+            border-top:1px solid var(--border);
+            margin-top:3rem;
+        }
+        .footer-cta{
+            background:var(--bg);
+            padding:3rem 1.25rem;
+            text-align:center;
+        }
+        .cta-title{
+            font-family:'Space Grotesk',sans-serif;
+            font-size:1.25rem;
+            font-weight:600;
+            margin-bottom:0.5rem;
+        }
+        .cta-text{
+            font-size:0.875rem;
+            color:var(--text-secondary);
+            margin-bottom:1.5rem;
+            max-width:400px;
+            margin-left:auto;
+            margin-right:auto;
+        }
+        .social-grid{
+            display:flex;
+            gap:1rem;
+            justify-content:center;
+            flex-wrap:wrap;
+        }
+        .social-link{
+            display:inline-flex;
+            align-items:center;
+            gap:0.5rem;
+            padding:0.75rem 1.25rem;
+            background:white;
+            border:1px solid var(--border);
+            border-radius:var(--radius-sm);
+            text-decoration:none;
+            color:var(--text);
+            font-size:0.8rem;
+            font-weight:500;
+            transition:all 0.2s;
+        }
+        .social-link:hover{
+            border-color:var(--base-blue);
+            color:var(--base-blue);
+            transform:translateY(-2px);
+            box-shadow:var(--shadow);
+        }
         
-        .copyright{font-size:0.65rem;color:#999;padding:1rem;text-align:center;background:#fafafa}
+        .footer-main{
+            padding:2rem 1.25rem;
+            max-width:900px;
+            margin:0 auto;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            flex-wrap:wrap;
+            gap:1rem;
+        }
+        .footer-brand{
+            display:flex;
+            align-items:center;
+            gap:0.75rem;
+        }
+        .footer-logo{
+            width:28px;
+            height:28px;
+            background:var(--base-blue);
+            border-radius:6px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            color:white;
+            font-weight:700;
+            font-size:0.875rem;
+        }
+        .footer-info{
+            font-size:0.75rem;
+            color:var(--text-tertiary);
+        }
+        .footer-links{
+            display:flex;
+            gap:1.5rem;
+        }
+        .footer-links a{
+            font-size:0.75rem;
+            color:var(--text-secondary);
+            text-decoration:none;
+            transition:color 0.2s;
+        }
+        .footer-links a:hover{color:var(--base-blue)}
+        
+        .disclaimer{
+            background:#fef3c7;
+            border-top:1px solid #fde68a;
+            padding:1rem 1.25rem;
+            text-align:center;
+            font-size:0.7rem;
+            color:#92400e;
+        }
         
         /* Modal */
-        .modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:10000;justify-content:center;align-items:center;padding:1rem;backdrop-filter:blur(4px)}
+        .modal-overlay{
+            display:none;
+            position:fixed;
+            top:0;
+            left:0;
+            right:0;
+            bottom:0;
+            background:rgba(0,0,0,0.5);
+            z-index:10000;
+            justify-content:center;
+            align-items:center;
+            padding:1rem;
+            backdrop-filter:blur(4px);
+        }
         .modal-overlay.active{display:flex}
-        .modal{background:white;max-width:600px;width:100%;max-height:85vh;overflow-y:auto;border-radius:8px;border:1px solid var(--light-gray);box-shadow:0 20px 60px rgba(0,0,0,0.3)}
-        .modal-header{padding:1.25rem;border-bottom:1px solid var(--light-gray);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:white;z-index:10}
-        .modal-header h3{font-size:0.9rem;font-weight:600}
-        .modal-close{background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--gray);line-height:1;transition:color 0.3s}
-        .modal-close:hover{color:var(--text)}
-        .modal-body{padding:1.5rem;font-size:0.75rem;line-height:1.8;color:var(--text)}
-        .modal-body h4{margin-top:1.25rem;margin-bottom:0.5rem;color:var(--base-blue);font-size:0.8rem}
-        .modal-body p{margin-bottom:0.75rem}
-        .modal-body ul{margin-left:1rem;margin-bottom:0.75rem}
-        .modal-body li{margin-bottom:0.25rem}
+        .modal{
+            background:white;
+            max-width:500px;
+            width:100%;
+            max-height:85vh;
+            overflow-y:auto;
+            border-radius:var(--radius);
+            border:1px solid var(--border);
+            box-shadow:var(--shadow-lg);
+        }
+        .modal-header{
+            padding:1.25rem;
+            border-bottom:1px solid var(--border);
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            position:sticky;
+            top:0;
+            background:white;
+            z-index:10;
+        }
+        .modal-title{
+            font-family:'Space Grotesk',sans-serif;
+            font-size:1.125rem;
+            font-weight:600;
+        }
+        .modal-close{
+            background:none;
+            border:none;
+            font-size:1.5rem;
+            cursor:pointer;
+            color:var(--text-tertiary);
+            line-height:1;
+            width:32px;
+            height:32px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            border-radius:var(--radius-sm);
+            transition:all 0.2s;
+        }
+        .modal-close:hover{
+            background:var(--bg);
+            color:var(--text);
+        }
+        .modal-body{
+            padding:1.5rem;
+            font-size:0.875rem;
+            line-height:1.7;
+            color:var(--text-secondary);
+        }
+        .modal-body h4{
+            margin-top:1.25rem;
+            margin-bottom:0.5rem;
+            color:var(--text);
+            font-size:0.875rem;
+            font-weight:600;
+        }
+        .modal-body ul{
+            margin-left:1.25rem;
+            margin-bottom:0.75rem;
+        }
+        .modal-body li{margin-bottom:0.375rem}
         
-        /* Mobile Optimizations */
+        /* Mobile */
         @media(max-width:640px){
-            .title{font-size:1.3rem}
-            .ticker-wrap{top:55px;height:28px}
-            .ticker-item{font-size:0.7rem;padding:0 1rem}
-            .main{padding-top:85px}
+            .title{font-size:1.75rem}
             .stats-grid{grid-template-columns:1fr}
-            .env-badge{font-size:0.55rem;padding:0.3rem 0.6rem;top:5px;right:5px}
-            .logo-img{height:28px}
-            .feed-actions{opacity:1;transform:none}
-            .feed-link{opacity:1;position:static;margin-top:0.5rem;display:inline-block}
-            .social-buttons{flex-direction:column;align-items:center}
-            .social-btn{width:100%;max-width:280px;justify-content:center}
+            .tabs{padding:0.25rem}
+            .tab-btn{padding:0.5rem 0.75rem;font-size:0.7rem}
+            .card-header{flex-direction:column;gap:0.75rem}
+            .section-header{flex-direction:column;align-items:flex-start;gap:0.75rem}
+            .footer-main{flex-direction:column;text-align:center}
         }
         
-        /* Tablet */
-        @media(min-width:641px) and (max-width:1024px){
-            .stats-grid{grid-template-columns:repeat(2,1fr)}
+        /* Loading states */
+        .skeleton{
+            background:linear-gradient(90deg,#f0f0f0 25%,#e5e5e5 50%,#f0f0f0 75%);
+            background-size:1000px 100%;
+            animation:shimmer 2s infinite;
+            border-radius:4px;
         }
-        
-        /* Frame Mode */
-        body.frame-mode .header,
-        body.frame-mode .ticker-wrap,
-        body.frame-mode .footer-docs,
-        body.frame-mode .footer,
-        body.frame-mode .category-nav,
-        body.frame-mode .scam-alert{display:none!important}
-        body.frame-mode .main{padding-top:20px}
-        body.frame-mode .hero{padding:1rem}
-        
-        /* Loading animation */
         @keyframes shimmer{
             0%{background-position:-1000px 0}
             100%{background-position:1000px 0}
         }
-        .loading{
-            background:linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size:1000px 100%;
-            animation:shimmer 2s infinite;
-        }
     </style>
 </head>
 <body>
-    <canvas id="bg-canvas"></canvas>
-    <div class="grain"></div>
-    
     <div class="env-badge web" id="env-badge">Web</div>
     
     <header class="header">
         <div class="header-content">
-            <div class="logo">
-                <img src="/mnt/kimi/upload/f0e9d5d0-2122-4da6-997a-f43be02c1580-wm-removebg-preview.png" alt="ARTHOUSE" class="logo-img">
-                <span class="version">v2.0</span>
-            </div>
+            <a href="#" class="logo">
+                <div class="logo-mark"></div>
+                <div>
+                    <div class="logo-text">ARTHOUSE</div>
+                    <div style="font-size:0.65rem;color:var(--text-tertiary);letter-spacing:0.1em;">INTELLIGENCE</div>
+                </div>
+            </a>
             <div class="header-actions">
                 <div class="status">
                     <span id="clock">00:00:00</span>
-                    <span class="live-indicator">●</span>
+                    <span class="live-dot"></span>
                 </div>
-                <button id="wallet-btn" class="base-wallet-btn" style="display:none">
-                    <span>🅱</span> <span id="wallet-text">Connect</span>
+                <button id="wallet-btn" class="btn btn-primary" style="display:none">
+                    <span>Connect</span>
                 </button>
-                <button id="cast-btn" class="cast-btn" style="display:none" onclick="cast()">
-                    <span>🟣</span> Cast
+                <button id="cast-btn" class="btn btn-secondary" style="display:none" onclick="cast()">
+                    <span>🟣 Cast</span>
                 </button>
             </div>
         </div>
     </header>
     
-    <!-- Ticker now at top without disclaimer blocking -->
     <div class="ticker-wrap">
         <div class="ticker-label">🔥 BASE ALPHA</div>
         <div class="ticker-container">
@@ -318,162 +1033,169 @@
     
     <main class="main">
         <section class="hero">
-            <h1 class="title"><span id="typewriter"></span><span class="cursor">_</span></h1>
-            <p class="subtitle">Verified art intelligence for Base ecosystem. <strong>Blue checks only.</strong></p>
-            <div class="badges">
-                <span class="badge verified">✓ VERIFIED</span>
-                <span class="badge">𝕏</span>
-                <span class="badge">🟣 Farcaster</span>
-                <span class="badge">🅱 Base</span>
-                <span class="badge scam">🛡️ SCAM FILTER</span>
-                <span class="badge live">● LIVE</span>
+            <div class="hero-badge">Verified Intelligence</div>
+            <h1 class="title">Curated Art <span>Alpha</span></h1>
+            <p class="subtitle">Real-time intelligence from verified creators, early-stage projects, and on-chain activity across the Base ecosystem.</p>
+            <div class="filter-pills">
+                <span class="pill verified">✓ Verified Only</span>
+                <span class="pill">Early Stage</span>
+                <span class="pill">On-Chain</span>
+                <span class="pill">Social</span>
+                <span class="pill">Market Data</span>
             </div>
         </section>
         
         <div class="scam-alert">
             <div class="scam-box">
-                <div class="scam-title">🛡️ POTENTIAL SCAM ALERTS — LAST 24H</div>
+                <div class="scam-header">
+                    <span>🛡️</span>
+                    <span>Security Alerts — Last 24h</span>
+                </div>
                 <ul class="scam-list" id="scam-list"></ul>
             </div>
         </div>
         
         <nav class="category-nav">
-            <div class="category-title">Select Feed</div>
             <div class="tabs">
-                <button class="tab-btn active" onclick="switchTab('xfeed',this)">𝕏 SOCIAL</button>
-                <button class="tab-btn" onclick="switchTab('farcaster',this)">🟣 FARCASTER</button>
-                <button class="tab-btn" onclick="switchTab('baseapp',this)">🅱 BASE.APP</button>
-                <button class="tab-btn" onclick="switchTab('paragraph',this)">📝 PARAGRAPH</button>
-                <button class="tab-btn" onclick="switchTab('onchain',this)">⛓ ONCHAIN</button>
-                <button class="tab-btn" onclick="switchTab('market',this)">📊 MARKET</button>
-                <button class="tab-btn" onclick="switchTab('drops',this)">🎨 DROPS</button>
+                <button class="tab-btn active" onclick="switchTab('xfeed',this)">𝕏 Social</button>
+                <button class="tab-btn" onclick="switchTab('farcaster',this)">🟣 Farcaster</button>
+                <button class="tab-btn" onclick="switchTab('early',this)">🚀 Early Projects</button>
+                <button class="tab-btn" onclick="switchTab('onchain',this)">⛓ On-Chain</button>
+                <button class="tab-btn" onclick="switchTab('market',this)">📊 Market</button>
+                <button class="tab-btn" onclick="switchTab('drops',this)">🎨 Drops</button>
             </div>
         </nav>
         
         <section class="content">
+            <!-- X Feed - Enhanced with Early Projects -->
             <div id="xfeed" class="tab-content active">
-                <div class="section-header"><h2>𝕏 VERIFIED ARTISTS</h2><a href="https://x.com/search?q=base%20nft%20art&f=live" target="_blank" class="source-btn">Open X</a></div>
+                <div class="section-header">
+                    <h2 class="section-title">𝕏 Ecosystem Feed</h2>
+                    <a href="https://x.com" target="_blank" class="btn btn-secondary">Open X ↗</a>
+                </div>
                 <div id="x-feed" class="feed"></div>
             </div>
             
+            <!-- Farcaster -->
             <div id="farcaster" class="tab-content">
-                <div class="section-header"><h2>🟣 VERIFIED CASTS</h2><a href="https://warpcast.com/~/search?q=base%20nft" target="_blank" class="source-btn">Open Warpcast</a></div>
+                <div class="section-header">
+                    <h2 class="section-title">🟣 Farcaster Casts</h2>
+                    <a href="https://warpcast.com" target="_blank" class="btn btn-secondary">Open Warpcast ↗</a>
+                </div>
                 <div id="farcaster-feed" class="feed"></div>
             </div>
             
-            <div id="baseapp" class="tab-content">
-                <div class="section-header"><h2>🅱 BASE.APP TRENDING</h2><a href="https://base.app" target="_blank" class="source-btn">Open Base.app</a></div>
-                <div id="baseapp-feed" class="feed"></div>
-            </div>
-            
-            <div id="paragraph" class="tab-content">
-                <div class="section-header"><h2>📝 VERIFIED PUBLICATIONS</h2><a href="https://paragraph.xyz" target="_blank" class="source-btn">Open Paragraph</a></div>
-                <div id="paragraph-feed" class="feed"></div>
-            </div>
-            
-            <div id="onchain" class="tab-content">
-                <div class="section-header"><h2>⛓ BASE ACTIVITY</h2><a href="https://basescan.org" target="_blank" class="source-btn">Open Basescan</a></div>
-                <div class="stats-grid">
-                    <div class="stat-card"><div class="stat-value" id="stat-sales">0</div><div class="stat-label">💰 SALES</div></div>
-                    <div class="stat-card"><div class="stat-value" id="stat-mints">0</div><div class="stat-label">✨ MINTS</div></div>
-                    <div class="stat-card"><div class="stat-value" id="stat-volume">0</div><div class="stat-label">⧫ VOLUME</div></div>
+            <!-- Early Projects - NEW -->
+            <div id="early" class="tab-content">
+                <div class="section-header">
+                    <h2 class="section-title">🚀 Early Stage Projects</h2>
+                    <a href="https://base.org/ecosystem" target="_blank" class="btn btn-secondary">Explore ↗</a>
                 </div>
-                <div id="onchain-feed" class="feed"></div>
+                <div class="stats-grid" style="margin-bottom:1.5rem;">
+                    <div class="stat-card">
+                        <div class="stat-value">4</div>
+                        <div class="stat-label">Active Projects</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">12.4K</div>
+                        <div class="stat-label">Total Users</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">$2.1M</div>
+                        <div class="stat-label">TVL</div>
+                    </div>
+                </div>
+                <div id="early-feed" class="feed"></div>
             </div>
             
-            <div id="market" class="tab-content">
-                <div class="section-header"><h2>📊 MARKET DATA</h2><a href="https://opensea.io/rankings?chain=base" target="_blank" class="source-btn">Open OpenSea</a></div>
+            <!-- On-Chain -->
+            <div id="onchain" class="tab-content">
+                <div class="section-header">
+                    <h2 class="section-title">⛓ Base Activity</h2>
+                    <a href="https://basescan.org" target="_blank" class="btn btn-secondary">Basescan ↗</a>
+                </div>
                 <div class="stats-grid">
-                    <div class="stat-card"><div class="stat-value">12.5</div><div class="stat-label">📈 FLOOR ETH</div></div>
-                    <div class="stat-card"><div class="stat-value">245</div><div class="stat-label">📊 VOL 24H</div></div>
-                    <div class="stat-card"><div class="stat-value">8.2K</div><div class="stat-label">👥 HOLDERS</div></div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-sales">0</div>
+                        <div class="stat-label">Sales 24h</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-mints">0</div>
+                        <div class="stat-label">Mints 24h</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-volume">0</div>
+                        <div class="stat-label">Volume (ETH)</div>
+                    </div>
+                </div>
+                <div id="onchain-feed" class="feed" style="margin-top:1.5rem;"></div>
+            </div>
+            
+            <!-- Market -->
+            <div id="market" class="tab-content">
+                <div class="section-header">
+                    <h2 class="section-title">📊 Market Data</h2>
+                    <a href="https://opensea.io/rankings?chain=base" target="_blank" class="btn btn-secondary">OpenSea ↗</a>
                 </div>
                 <div id="market-feed" class="feed"></div>
             </div>
             
+            <!-- Drops -->
             <div id="drops" class="tab-content">
-                <div class="section-header"><h2>🎨 VERIFIED DROPS</h2><a href="https://paragraph.xyz/@basednfts" target="_blank" class="source-btn">View Calendar</a></div>
+                <div class="section-header">
+                    <h2 class="section-title">🎨 Upcoming Drops</h2>
+                    <a href="https://paragraph.xyz" target="_blank" class="btn btn-secondary">Calendar ↗</a>
+                </div>
                 <div id="drops-feed" class="feed"></div>
             </div>
         </section>
     </main>
     
-    <div class="footer-docs">
-        <div class="docs-content">
-            <div class="doc-section">
-                <h4>Documentation</h4>
-                <ul>
-                    <li><a href="#" onclick="openModal('about');return false">About ARTHOUSE</a></li>
-                    <li><a href="#" onclick="openModal('methodology');return false">Data Methodology</a></li>
-                    <li><a href="#" onclick="openModal('verified');return false">Verification Standards</a></li>
-                </ul>
-            </div>
-            <div class="doc-section">
-                <h4>Legal & Safety</h4>
-                <ul>
-                    <li><a href="#" onclick="openModal('terms');return false">Terms of Service</a></li>
-                    <li><a href="#" onclick="openModal('privacy');return false">Privacy Policy</a></li>
-                    <li><a href="#" onclick="openModal('cookies');return false">Cookie Policy</a></li>
-                    <li><a href="#" onclick="openModal('disclaimer');return false">Financial Disclaimer</a></li>
-                    <li><a href="#" onclick="openModal('scam');return false">Report Scam</a></li>
-                </ul>
-            </div>
-            <div class="doc-section">
-                <h4>Verification</h4>
-                <p><strong>✓ Blue Check:</strong> Platform-verified accounts only.</p>
-                <p style="margin-top:0.5rem"><strong>🛡️ Scam Filter:</strong> Community + AI detection.</p>
-                <p style="margin-top:0.5rem"><strong>⚠️ DYOR:</strong> Always verify independently.</p>
-            </div>
-        </div>
-    </div>
-    
     <footer class="footer">
-        <!-- New Social CTA Section -->
-        <div class="footer-social-cta">
-            <div class="social-cta-content">
-                <div class="social-cta-title">Stay Connected with ARTHOUSE</div>
-                <div class="social-cta-text">Get real-time updates, verified drops, and exclusive alpha directly from our official channels.</div>
-                <div class="social-buttons">
-                    <a href="https://x.com/arthousebase" target="_blank" class="social-btn x">
-                        <span>𝕏</span>
-                        <span>Follow @arthousebase</span>
-                    </a>
-                    <a href="https://base.app/profile/arthouse" target="_blank" class="social-btn base">
-                        <span>🅱</span>
-                        <span>Follow on Base.app</span>
-                    </a>
-                </div>
+        <div class="footer-cta">
+            <div class="cta-title">Stay in the loop</div>
+            <div class="cta-text">Get real-time alpha from verified sources across the Base ecosystem.</div>
+            <div class="social-grid">
+                <a href="https://x.com/arthousebase" target="_blank" class="social-link">
+                    <span>𝕏</span>
+                    <span>Follow @arthousebase</span>
+                </a>
+                <a href="https://warpcast.com/arthouse" target="_blank" class="social-link">
+                    <span>🟣</span>
+                    <span>Follow on Farcaster</span>
+                </a>
+                <a href="https://base.app/profile/arthouse" target="_blank" class="social-link">
+                    <span>🅱</span>
+                    <span>Base Profile</span>
+                </a>
             </div>
         </div>
         
         <div class="footer-main">
-            <div class="footer-content">
-                <div><strong>ARTHOUSE</strong> // Verified Intelligence</div>
-                <div class="links">
-                    <a href="https://x.com" target="_blank">𝕏</a>
-                    <a href="https://warpcast.com" target="_blank">Farcaster</a>
-                    <a href="https://base.app" target="_blank">Base</a>
-                    <a href="https://paragraph.xyz" target="_blank">Paragraph</a>
+            <div class="footer-brand">
+                <div class="footer-logo">A</div>
+                <div class="footer-info">
+                    <div style="font-weight:600;color:var(--text);">ARTHOUSE</div>
+                    <div>Verified Intelligence v2.0</div>
                 </div>
+            </div>
+            <div class="footer-links">
+                <a href="#" onclick="openModal('about');return false">About</a>
+                <a href="#" onclick="openModal('methodology');return false">Methodology</a>
+                <a href="#" onclick="openModal('privacy');return false">Privacy</a>
+                <a href="#" onclick="openModal('terms');return false">Terms</a>
             </div>
         </div>
         
-        <!-- Disclaimer moved to bottom -->
-        <div class="disclaimer-footer">
-            <strong>NOT FINANCIAL ADVICE</strong> — DYOR. All data for informational purposes only. 
-            <a href="#" onclick="openModal('terms');return false">Read Terms</a>
-        </div>
-        
-        <div class="copyright">
-            © 2024 ARTHOUSE. Not financial advice. DYOR. | 
-            <a href="#" onclick="openModal('cookies');return false" style="color:#999">Manage Cookies</a>
+        <div class="disclaimer">
+            <strong>NOT FINANCIAL ADVICE</strong> — Always DYOR. Data for informational purposes only.
         </div>
     </footer>
     
     <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
         <div class="modal" onclick="event.stopPropagation()">
             <div class="modal-header">
-                <h3 id="modal-title">Title</h3>
+                <h3 class="modal-title" id="modal-title">Title</h3>
                 <button class="modal-close" onclick="closeModal()">×</button>
             </div>
             <div class="modal-body" id="modal-body"></div>
@@ -491,11 +1213,10 @@
         const badge=document.getElementById('env-badge');
         if(ENV.isFrame()){
             badge.className='env-badge farcaster';
-            badge.textContent='Farcaster Frame';
-            document.body.classList.add('frame-mode');
+            badge.textContent='Frame';
         }else if(ENV.isBase()){
             badge.className='env-badge base';
-            badge.textContent='Base Mini App';
+            badge.textContent='Base';
             document.getElementById('wallet-btn').style.display='flex';
         }else if(ENV.isFarcaster()){
             badge.className='env-badge farcaster';
@@ -503,83 +1224,290 @@
             document.getElementById('cast-btn').style.display='flex';
         }
         
-        // Data
+        // Enhanced Data with Early Projects
         const TICKER_DATA=[
-            {text:"Blooze AI launching art curator on Base",tag:"agent",type:"agent",url:"https://x.com/search?q=Blooze+AI"},
-            {text:"Based Fellas hits 1M volume",tag:"early",type:"early",url:"https://x.com/search?q=Based+Fellas"},
-            {text:"Agent XYZ gallery protocol",tag:"agent",type:"agent",url:"https://x.com/search?q=Agent+XYZ"},
-            {text:"Early Birds sold out 4min",tag:"early",type:"early",url:"https://x.com/search?q=Early+Birds"},
-            {text:"BasePaint auction 2.5 ETH",tag:"early",type:"early",url:"https://x.com/search?q=BasePaint"},
-            {text:"ArtBot v2.0 generative mint",tag:"agent",type:"agent",url:"https://x.com/search?q=ArtBot"},
-            {text:"Farcaster Frames instant mint",tag:"farcaster",type:"farcaster",url:"https://warpcast.com"},
-            {text:"Base.app NFT viewer launch",tag:"early",type:"early",url:"https://base.app"}
+            {text:"Bankr AI launches art curation agent",tag:"agent",type:"agent",url:"https://x.com/bankrbot"},
+            {text:"Clanker hits 500k transactions",tag:"early",type:"early",url:"https://x.com/clankeronbase"},
+            {text:"Base Builder Grant Round #3 open",tag:"builder",type:"builder",url:"https://x.com/base"},
+            {text:"OpenClaw autonomous art collection",tag:"agent",type:"agent",url:"https://x.com/openclawagent"},
+            {text:"Bankr social trading volume +340%",tag:"early",type:"early",url:"https://x.com/bankrbot"},
+            {text:"Clanker token launchpad upgrades",tag:"early",type:"early",url:"https://x.com/clankeronbase"},
+            {text:"Builder Sessions: AI x NFTs",tag:"builder",type:"builder",url:"https://x.com/base"},
+            {text:"OpenClaw integrates with Zora",tag:"agent",type:"agent",url:"https://x.com/openclawagent"}
         ];
         
         const SCAM_DATA=[
-            {name:"fake-basepaint.eth",risk:"HIGH",type:"Impersonation",reported:"2h ago"},
-            {name:"based-fellas-copy.xyz",risk:"HIGH",type:"Phishing",reported:"4h ago"},
-            {name:"@BaseNFT_Official (fake)",risk:"MEDIUM",type:"Fake Account",reported:"6h ago"},
-            {name:"early-birds-premint.xyz",risk:"HIGH",type:"Drainer",reported:"8h ago"}
+            {name:"fake-bankr.eth",risk:"HIGH",type:"Impersonation"},
+            {name:"clanker-airdrop.xyz",risk:"HIGH",type:"Phishing"},
+            {name:"@OpenClaw_Official (fake)",risk:"MEDIUM",type:"Fake Account"},
+            {name:"base-builder-reward.com",risk:"HIGH",type:"Drainer"}
         ];
         
+        // Enhanced X Data with Project Variations
         const X_DATA=[
-            {id:'x1',handle:'@digital_art_daily',name:'Digital Art Daily ✓',verified:true,text:'Just discovered an incredible generative art collection on Base. The intersection of code and creativity continues to evolve. Thread below 👇',likes:234,retweets:45,time:'15m ago',url:'https://x.com/digital_art_daily/status/1'},
-            {id:'x2',handle:'@nftcollector',name:'NFT Collector ✓',verified:true,text:'Floor prices on Base NFTs showing steady growth this week. Blue-chip collections holding strong despite market volatility.',likes:567,retweets:89,time:'42m ago',url:'https://x.com/nftcollector/status/2'},
-            {id:'x3',handle:'@artblocks',name:'Art Blocks ✓',verified:true,text:'New Curated drop announcement: Tyler Hobbs returns with Fidenza-inspired collection. Minting exclusively on Base next week.',likes:1203,retweets:234,time:'1h ago',url:'https://x.com/artblocks/status/3'},
-            {id:'x4',handle:'@basenft',name:'Base NFTs ✓',verified:true,text:'Weekly recap: 12K new wallets, $2.4M volume, 45 new collections. The Base art ecosystem is thriving. Data below 📊',likes:892,retweets:156,time:'3h ago',url:'https://x.com/basenft/status/4'}
+            // Bankr Project
+            {
+                id:'bankr1',
+                project:'bankr',
+                handle:'@bankrbot',
+                name:'Bankr',
+                avatar:'🏦',
+                verified:true,
+                badge:'Bankr AI',
+                badgeClass:'badge-bankr',
+                title:'Smart Art Portfolios',
+                text:'Just deployed our new AI curator for Base NFTs. The agent analyzes on-chain history to suggest pieces matching your taste. Early access for first 100 users. 🎨🤖',
+                stats:[{icon:'♥',val:'1.2K'},{icon:'↻',val:'234'},{icon:'💬',val:'89'}],
+                time:'12m ago',
+                url:'https://x.com/bankrbot/status/1',
+                tags:['AI','Curation','Early']
+            },
+            // Clanker Project
+            {
+                id:'clanker1',
+                project:'clanker',
+                handle:'@clankeronbase',
+                name:'Clanker',
+                avatar:'⚙️',
+                verified:true,
+                badge:'Clanker',
+                badgeClass:'badge-clanker',
+                title:'New Token Standard',
+                text:'Introducing ERC-404c for fractional art ownership. Testnet live on Base Sepolia. Artists can now launch liquid NFT collections in one click. 🛠️',
+                stats:[{icon:'♥',val:'892'},{icon:'↻',val:'156'},{icon:'💬',val:'45'}],
+                time:'34m ago',
+                url:'https://x.com/clankeronbase/status/2',
+                tags:['Infrastructure','Token','Testnet']
+            },
+            // Base Builder
+            {
+                id:'builder1',
+                project:'builder',
+                handle:'@base',
+                name:'Base',
+                avatar:'🅱️',
+                verified:true,
+                badge:'Builder',
+                badgeClass:'badge-builder',
+                title:'Builder Grant Wave 3',
+                text:'$100k in grants for AI-generated art projects on Base. Applications open until Feb 28. Previous recipients include @openclawagent and @artbotxyz. 🚀',
+                stats:[{icon:'♥',val:'3.4K'},{icon:'↻',val:'567'},{icon:'💬',val:'234'}],
+                time:'1h ago',
+                url:'https://x.com/base/status/3',
+                tags:['Grant','Builder','AI']
+            },
+            // OpenClaw Agent
+            {
+                id:'claw1',
+                project:'openclaw',
+                handle:'@openclawagent',
+                name:'OpenClaw',
+                avatar:'🦾',
+                verified:true,
+                badge:'OpenClaw',
+                badgeClass:'badge-openclaw',
+                title:'Autonomous Collection #7',
+                text:'Agent just acquired 3 pieces from emerging Base artists. Collection value up 23% this week. Fully on-chain decision making via GPT-4 + market data. 📈',
+                stats:[{icon:'♥',val:'567'},{icon:'↻',val:'89'},{icon:'💬',val:'34'}],
+                time:'2h ago',
+                url:'https://x.com/openclawagent/status/4',
+                tags:['Agent','Collection','Autonomous']
+            },
+            // Regular Art Accounts
+            {
+                id:'x1',
+                project:'base',
+                handle:'@jessepollak',
+                name:'Jesse Pollak',
+                avatar:'🅱️',
+                verified:true,
+                badge:'Base',
+                badgeClass:'badge-base',
+                title:'Art on Base',
+                text:'The creativity coming out of the Base ecosystem right now is incredible. From generative art to AI curation agents, builders are pushing boundaries. 🎨',
+                stats:[{icon:'♥',val:'12.5K'},{icon:'↻',val:'2.1K'},{icon:'💬',val:'456'}],
+                time:'3h ago',
+                url:'https://x.com/jessepollak/status/5',
+                tags:['Ecosystem','Art','Base']
+            },
+            {
+                id:'x2',
+                project:'artist',
+                handle:'@tylerxhobbs',
+                name:'Tyler Hobbs',
+                avatar:'🎨',
+                verified:true,
+                badge:'Artist',
+                badgeClass:'badge-artist',
+                title:'Fidenza on Base',
+                text:'Exploring new distribution mechanisms for generative art. Base offers the perfect infrastructure for programmable royalties and dynamic NFTs. Thread 👇',
+                stats:[{icon:'♥',val:'2.3K'},{icon:'↻',val:'445'},{icon:'💬',val:'123'}],
+                time:'4h ago',
+                url:'https://x.com/tylerxhobbs/status/6',
+                tags:['Generative','Art Blocks','Base']
+            },
+            {
+                id:'bankr2',
+                project:'bankr',
+                handle:'@bankrbot',
+                name:'Bankr',
+                avatar:'🏦',
+                verified:true,
+                badge:'Bankr AI',
+                badgeClass:'badge-bankr',
+                title:'Social Trading Live',
+                text:'You can now copy-trade top NFT collectors on Base automatically. Set your budget, pick a curator, let the agent work. Beta open. 📊',
+                stats:[{icon:'♥',val:'892'},{icon:'↻',val:'167'},{icon:'💬',val:'56'}],
+                time:'5h ago',
+                url:'https://x.com/bankrbot/status/7',
+                tags:['Trading','Social','Beta']
+            },
+            {
+                id:'clanker2',
+                project:'clanker',
+                handle:'@clankeronbase',
+                name:'Clanker',
+                avatar:'⚙️',
+                verified:true,
+                badge:'Clanker',
+                badgeClass:'badge-clanker',
+                title:'Partnership Announcement',
+                text:'Teaming up with @zora to enable instant tokenization of NFT collections. Launch your art as a liquid token with built-in AMM. Coming next week. 🤝',
+                stats:[{icon:'♥',val:'1.1K'},{icon:'↻',val:'234'},{icon:'💬',val:'78'}],
+                time:'6h ago',
+                url:'https://x.com/clankeronbase/status/8',
+                tags:['Partnership','Zora','Tokenization']
+            }
         ];
         
         const FARCASTER_DATA=[
-            {id:'f1',username:'jesse',displayName:'Jesse Pollak ✓',verified:true,text:'Base is for the artists. Every day we see incredible creativity onchain. Keep building, keep creating. 🎨',likes:342,recasts:56,time:'12m ago',url:'https://warpcast.com/jesse/1',channel:'/base'},
-            {id:'f2',username:'artcollector',displayName:'Art Collector ✓',verified:true,text:'Just minted my first Farcaster Frame NFT. The seamless experience from social to ownership is the future.',likes:128,recasts:23,time:'34m ago',url:'https://warpcast.com/artcollector/2',channel:'/nft'},
-            {id:'f3',username:'generative',displayName:'Generative Art ✓',verified:true,text:'New drop: Algorithmic Dreams #47 now live on Zora Base. 0.01 ETH, open edition for 24 hours.',likes:567,recasts:89,time:'1h ago',url:'https://warpcast.com/generative/3',channel:'/art'},
-            {id:'f4',username:'basedartist',displayName:'Based Artist ✓',verified:true,text:'The Base community hits different. Builders actually support each other here. Rare in this space.',likes:892,recasts:134,time:'2h ago',url:'https://warpcast.com/basedartist/4',channel:'/base'}
+            {
+                id:'f1',
+                username:'jesse',
+                displayName:'Jesse Pollak',
+                avatar:'🅱️',
+                verified:true,
+                text:'Base is becoming the home for on-chain creativity. Seeing incredible experiments with AI agents curating art collections autonomously.',
+                likes:'342',
+                recasts:'56',
+                time:'12m ago',
+                url:'https://warpcast.com/jesse/1',
+                channel:'/base'
+            },
+            {
+                id:'f2',
+                username:'bankr',
+                displayName:'Bankr Bot',
+                avatar:'🏦',
+                verified:true,
+                text:'New feature: Get art recommendations based on your Farcaster taste graph. Connect your wallet and let our agent analyze your style.',
+                likes:'128',
+                recasts:'23',
+                time:'45m ago',
+                url:'https://warpcast.com/bankr/2',
+                channel:'/art'
+            },
+            {
+                id:'f3',
+                username:'openclaw',
+                displayName:'OpenClaw Agent',
+                avatar:'🦾',
+                verified:true,
+                text:'Collection Update: Just minted "Neon Dreams #42" by @baseartist. Agent detected high engagement + creator consistency. Score: 8.7/10',
+                likes:'567',
+                recasts:'89',
+                time:'1h ago',
+                url:'https://warpcast.com/openclaw/3',
+                channel:'/nft'
+            },
+            {
+                id:'f4',
+                username:'clanker',
+                displayName:'Clanker',
+                avatar:'⚙️',
+                verified:true,
+                text:'Builder tip: Use our new SDK to add liquid NFT markets to your app. One line of code for instant tokenization.',
+                likes:'892',
+                recasts:'134',
+                time:'2h ago',
+                url:'https://warpcast.com/clanker/4',
+                channel:'/dev'
+            }
         ];
         
-        const BASEAPP_DATA=[
-            {id:'ba1',type:'trending',title:'Based Fellas',subtitle:'Trending',stat:'+24%',desc:'24h volume up 24% with 156 new holders',time:'Live',verified:true,url:'https://base.app/nft/based-fellas'},
-            {id:'ba2',type:'new',title:'BasePaint #892',subtitle:'New Mint',stat:'0.01 ETH',desc:'Daily collaborative canvas now live',time:'Just now',verified:true,url:'https://base.app/nft/basepaint-892'},
-            {id:'ba3',type:'top',title:'Fidenza #780',subtitle:'Top Sale',stat:'12.5 ETH',desc:'Rare trait combination sold',time:'5m ago',verified:true,url:'https://base.app/nft/fidenza-780'},
-            {id:'ba4',type:'trending',title:'Early Birds',subtitle:'Minting',stat:'78%',desc:'78% minted, 0.005 ETH per mint',time:'Live',verified:true,url:'https://base.app/nft/early-birds'}
-        ];
-        
-        const PARAGRAPH_DATA=[
-            {id:'p1',author:'0xArt ✓',title:'The Future of On-Chain Publishing',verified:true,excerpt:'How Paragraph.xyz is revolutionizing long-form content for crypto-native writers and artists.',readTime:'5 min',time:'2h ago',url:'https://paragraph.xyz/@0xart/future-publishing',category:'article'},
-            {id:'p2',author:'Base Daily ✓',title:'Weekly On-Chain Art Review',verified:true,excerpt:'Curated selection of the best generative art mints this week. Featuring works from emerging artists on Base.',readTime:'8 min',time:'5h ago',url:'https://paragraph.xyz/@basedaily/weekly-review',category:'publication'},
-            {id:'p3',author:'AI Art Labs ✓',title:'Training Models on NFT Metadata',verified:true,excerpt:'Technical exploration of using on-chain art metadata to train generative AI models.',readTime:'12 min',time:'1d ago',url:'https://paragraph.xyz/@aiartlabs/training-models',category:'article'}
+        // Early Projects Data - NEW
+        const EARLY_DATA=[
+            {
+                id:'e1',
+                project:'bankr',
+                name:'Bankr',
+                tagline:'AI-Powered Art Curation',
+                description:'Autonomous agent that curates NFT collections based on on-chain behavior and social signals. Currently in beta with 2,400+ users.',
+                metrics:{users:'2.4K',tvl:'$450K',status:'Beta'},
+                tags:['AI','Curation','Social'],
+                url:'https://bankr.bot',
+                update:'Just shipped social trading features'
+            },
+            {
+                id:'e2',
+                project:'clanker',
+                name:'Clanker',
+                tagline:'NFT Tokenization Infrastructure',
+                description:'ERC-404c standard for fractional art ownership. Enable liquid markets for illiquid NFTs with built-in AMM support.',
+                metrics:{users:'5.1K',tvl:'$1.2M',status:'Live'},
+                tags:['Infrastructure','Tokenization','DeFi'],
+                url:'https://clanker.xyz',
+                update:'New SDK released for developers'
+            },
+            {
+                id:'e3',
+                project:'openclaw',
+                name:'OpenClaw',
+                tagline:'Autonomous Art Collector',
+                description:'Fully autonomous AI agent that collects and trades art on Base. Uses GPT-4 for analysis and on-chain data for decisions.',
+                metrics:{users:'890',tvl:'$320K',status:'Alpha'},
+                tags:['Agent','Autonomous','AI'],
+                url:'https://openclaw.io',
+                update:'Collection value up 23% this month'
+            },
+            {
+                id:'e4',
+                project:'builder',
+                name:'Base Builder',
+                tagline:'Ecosystem Grant Program',
+                description:'Official Base initiative funding early-stage art and AI projects. $100k per wave, 3 waves per year.',
+                metrics:{users:'12K',tvl:'$300K',status:'Active'},
+                tags:['Grant','Ecosystem','Funding'],
+                url:'https://base.org/builder',
+                update:'Wave 3 applications now open'
+            }
         ];
         
         const ONCHAIN_DATA=[
-            {id:'oc1',type:'sale',platform:'ZORA',tokenId:'042',from:'0x742d...',to:'0x8ba1...',value:'0.0500',time:'12m ago',tx:'0xabc...',verified:true},
-            {id:'oc2',type:'mint',platform:'BASEPAINT',tokenId:'1337',from:'0x0000...',to:'0x1111...',time:'45m ago',tx:'0xdef...',verified:true},
-            {id:'oc3',type:'sale',platform:'FOUNDATION',tokenId:'007',from:'0x7777...',to:'0x9999...',value:'0.1200',time:'2h ago',tx:'0xjkl...',verified:true},
-            {id:'oc4',type:'transfer',platform:'ZORA',tokenId:'999',from:'0xaaaa...',to:'0xffff...',time:'3h ago',tx:'0xpqr...',verified:true}
+            {id:'oc1',type:'sale',platform:'ZORA',tokenId:'#42069',from:'0x742d...',to:'0x8ba1...',value:'0.1500',time:'2m ago',verified:true},
+            {id:'oc2',type:'mint',platform:'Bankr Curated',tokenId:'#007',from:'0x0000...',to:'0x1111...',time:'5m ago',verified:true},
+            {id:'oc3',type:'sale',platform:'Clanker Market',tokenId:'#1337',from:'0x7777...',to:'0x9999...',value:'0.4200',time:'12m ago',verified:true},
+            {id:'oc4',type:'transfer',platform:'OpenClaw',tokenId:'#888',from:'0xaaaa...',to:'0xffff...',time:'18m ago',verified:true}
         ];
         
         const MARKET_DATA=[
-            {id:'m1',collection:'Fidenza',metric:'Floor Price',value:'12.5 ETH',change:'+5.2%',trend:'up',time:'Live',verified:true},
-            {id:'m2',collection:'Ringers',metric:'24h Volume',value:'45.2 ETH',change:'+12.8%',trend:'up',time:'Live',verified:true},
-            {id:'m3',collection:'Chromie Squiggle',metric:'Floor Price',value:'8.1 ETH',change:'-2.1%',trend:'down',time:'Live',verified:true},
-            {id:'m4',collection:'BasePaint',metric:'Daily Active',value:'1,234',change:'+23.5%',trend:'up',time:'24h',verified:true},
-            {id:'m5',collection:'Based Fellas',metric:'Floor Price',value:'0.45 ETH',change:'+18.4%',trend:'up',time:'Live',verified:true}
+            {collection:'Fidenza',metric:'Floor',value:'12.5 ETH',change:'+5.2%',trend:'up',time:'Live'},
+            {collection:'Bankr Pass',metric:'Floor',value:'0.85 ETH',change:'+12.8%',trend:'up',time:'Live'},
+            {collection:'Clanker NFT',metric:'Volume 24h',value:'45 ETH',change:'+23.5%',trend:'up',time:'24h'},
+            {collection:'OpenClaw Pieces',metric:'Avg Sale',value:'0.12 ETH',change:'+8.1%',trend:'up',time:'7d'}
         ];
         
         const DROPS_DATA=[
-            {id:'d1',artist:'XCOPY ✓',title:'TRAITORS #2',verified:true,platform:'SuperRare',type:'auction',price:'5.0 ETH',time:'LIVE',supply:'1/1',url:'https://superrare.com/xcopy'},
-            {id:'d2',artist:'Pak ✓',title:'Merge [phase 2]',verified:true,platform:'Foundation',type:'drop',price:'0.5 ETH',time:'In 2h',supply:'Dynamic',url:'https://foundation.app/pak'},
-            {id:'d3',artist:'Tyler Hobbs ✓',title:'Fidenza: Echoes',verified:true,platform:'Art Blocks',type:'mint',price:'0.25 ETH',time:'Tomorrow',supply:'500',url:'https://artblocks.io/tyler-hobbs'},
-            {id:'d4',artist:'Dmitri Cherniak ✓',title:'Ringers: Remix',verified:true,platform:'ZORA',type:'mint',price:'0.05 ETH',time:'In 3d',supply:'1000',url:'https://zora.co/cherniak'}
+            {artist:'XCOPY',title:'TRAITORS #2',platform:'SuperRare',type:'auction',price:'5.0 ETH',time:'LIVE',supply:'1/1'},
+            {artist:'Bankr AI',title:'Genesis Collection',platform:'Bankr',type:'mint',price:'0.05 ETH',time:'In 2h',supply:'500'},
+            {artist:'OpenClaw',title:'Autonomous Series #1',platform:'ZORA',type:'drop',price:'0.01 ETH',time:'Tomorrow',supply:'Open'}
         ];
         
         const MODAL_CONTENT={
-            about:{title:'About ARTHOUSE',body:'<p><strong>ARTHOUSE v2.0</strong> is a verified intelligence layer for digital art on Base.</p><h4>Features</h4><ul><li>✓ Verified accounts only</li><li>🛡️ Real-time scam alerts</li><li>⛓ Multi-source aggregation</li><li>⚡ Live on-chain data</li></ul><h4>Platforms</h4><p>Available on Web, Base Mini App, and Farcaster Frame.</p>'},
-            terms:{title:'Terms of Service',body:'<h4>NOT FINANCIAL ADVICE</h4><p>All content is for informational purposes only. We do not provide investment advice.</p><h4>DYOR Required</h4><p>Verify all information independently before any financial decisions.</p><h4>Liability</h4><p>ARTHOUSE is not liable for any losses. Use at your own risk.</p>'},
-            privacy:{title:'Privacy Policy',body:'<p>We collect minimal anonymous data only. No wallet data stored.</p><h4>No Tracking</h4><p>No advertising cookies or third-party trackers.</p>'},
-            cookies:{title:'Cookie Policy',body:'<p><strong>Essential only:</strong> Site functionality and preferences.</p><p><strong>We don\'t use:</strong> Advertising cookies, third-party trackers, or personal data collection.</p>'},
-            disclaimer:{title:'Financial Disclaimer',body:'<p style="color:var(--red);font-weight:600">⚠️ NOT FINANCIAL ADVICE</p><p>NFTs and crypto are highly volatile. Never invest more than you can afford to lose.</p><h4>Risk Warning</h4><ul><li>Always verify contract addresses</li><li>Check official sources</li><li>Beware of impersonators</li></ul>'},
-            scam:{title:'Report Scam',body:'<p>Help keep the community safe:</p><ul><li>Email: security@arthouse.example</li><li>DM @arthouse on X</li></ul><h4>Red Flags</h4><ul><li>Unsolicited DMs with links</li><li>"Act fast" pressure</li><li>Requests for seed phrases</li><li>Similar but wrong URLs</li></ul>'},
-            verified:{title:'Verification Standards',body:'<h4>Blue Check Requirements</h4><ul><li>Platform-native verification</li><li>6+ months active history</li><li>No scam reports</li><li>Established reputation</li></ul><p>Status can be revoked for suspicious activity.</p>'},
-            methodology:{title:'Data Methodology',body:'<h4>Sources</h4><ul><li>X API (verified only)</li><li>Farcaster Hubs</li><li>Base.app APIs</li><li>Direct Base indexing</li></ul><p>Update frequency: Social 5min | On-chain real-time | Market 1min</p>'}
+            about:{title:'About ARTHOUSE',body:'<p><strong>ARTHOUSE v2.0</strong> is a verified intelligence layer for digital art on Base.</p><h4>Features</h4><ul><li>✓ Verified accounts only</li><li>🛡️ Real-time scam alerts</li><li>🚀 Early project tracking</li><li>⛓ Multi-source aggregation</li></ul><p>Covering Bankr, Clanker, OpenClaw, Base Builder, and more.</p>'},
+            terms:{title:'Terms of Service',body:'<h4>NOT FINANCIAL ADVICE</h4><p>All content is for informational purposes only.</p><h4>DYOR Required</h4><p>Verify all information independently.</p>'},
+            privacy:{title:'Privacy Policy',body:'<p>We collect minimal anonymous data only. No wallet data stored.</p>'},
+            methodology:{title:'Data Methodology',body:'<h4>Sources</h4><ul><li>X API (verified only)</li><li>Farcaster Hubs</li><li>On-chain indexing</li><li>Project APIs (Bankr, Clanker, etc)</li></ul>'}
         };
         
         // Functions
@@ -589,13 +1517,11 @@
             document.getElementById('modal-title').textContent=c.title;
             document.getElementById('modal-body').innerHTML=c.body;
             document.getElementById('modal-overlay').classList.add('active');
-            document.body.style.overflow='hidden';
         }
         
         function closeModal(e){
             if(!e||e.target.id==='modal-overlay'||e.target.classList.contains('modal-close')){
                 document.getElementById('modal-overlay').classList.remove('active');
-                document.body.style.overflow='';
             }
         }
         
@@ -606,23 +1532,9 @@
             document.getElementById(tabName).classList.add('active');
         }
         
-        function typeWriter(text,el,speed=50){
-            let i=0;
-            el.textContent='';
-            el.style.color='#0000ff';
-            const type=()=>{
-                if(i<text.length){
-                    el.textContent+=text.charAt(i);
-                    i++;
-                    setTimeout(type,speed);
-                }
-            };
-            type();
-        }
-        
         function updateClock(){
             const now=new Date();
-            document.getElementById('clock').textContent=now.toLocaleTimeString('en-US',{hour12:false})+' UTC';
+            document.getElementById('clock').textContent=now.toLocaleTimeString('en-US',{hour12:false,hour:'2-digit',minute:'2-digit'})+' UTC';
         }
         
         async function connectWallet(){
@@ -630,13 +1542,10 @@
                 try{
                     const accounts=await window.ethereum.request({method:'eth_requestAccounts'});
                     const address=accounts[0];
-                    document.getElementById('wallet-btn').classList.add('connected');
-                    document.getElementById('wallet-text').textContent=`${address.slice(0,6)}...${address.slice(-4)}`;
+                    document.getElementById('wallet-btn').innerHTML=`<span>${address.slice(0,6)}...${address.slice(-4)}</span>`;
                 }catch(err){
                     console.error('Wallet connect failed:',err);
                 }
-            }else{
-                alert('Please install Coinbase Wallet or MetaMask');
             }
         }
         
@@ -646,98 +1555,130 @@
             window.open(`https://warpcast.com/~/compose?text=${encodeURIComponent(text)}&embeds[]=${url}`,'_blank');
         }
         
-        // Renderers with enhanced interactivity
+        // Renderers
         function renderScam(){
-            document.getElementById('scam-list').innerHTML=SCAM_DATA.map(s=>`<li><span>${s.name} <span style="color:#9ca3af">(${s.type})</span></span><span class="${s.risk==='HIGH'?'risk-high':'risk-med'}">${s.risk} — ${s.reported}</span></li>`).join('');
+            document.getElementById('scam-list').innerHTML=SCAM_DATA.map(s=>`
+                <li class="scam-item">
+                    <div class="scam-info">
+                        <div class="scam-name">${s.name}</div>
+                        <div class="scam-type">${s.type}</div>
+                    </div>
+                    <span class="risk-badge ${s.risk==='HIGH'?'risk-high':'risk-med'}">${s.risk}</span>
+                </li>
+            `).join('');
         }
         
         function renderTicker(){
             const items=[...TICKER_DATA,...TICKER_DATA];
-            document.getElementById('ticker-track').innerHTML=items.map(i=>`<a href="${i.url}" target="_blank" class="ticker-item"><span class="ticker-tag ${i.type}">${i.tag}</span><span>${i.text}</span></a>`).join('');
+            document.getElementById('ticker-track').innerHTML=items.map(i=>`
+                <a href="${i.url}" target="_blank" class="ticker-item">
+                    <span class="ticker-tag ${i.type}">${i.tag}</span>
+                    <span>${i.text}</span>
+                </a>
+            `).join('');
         }
         
         function renderX(){
-            document.getElementById('x-feed').innerHTML=X_DATA.map((item,idx)=>`
-                <div class="feed-item tweet ${item.verified?'verified':''}" onclick="window.open('${item.url}','_blank')">
-                    <div class="feed-header">
-                        <span class="feed-type">𝕏 ${item.name} ${item.verified?'<span class="verified-badge">✓</span>':''}</span>
-                        <span class="feed-platform">${item.handle}</span>
-                        <span class="feed-time">${item.time}</span>
+            document.getElementById('x-feed').innerHTML=X_DATA.map(item=>`
+                <div class="feed-card ${item.project}" onclick="window.open('${item.url}','_blank')">
+                    <div class="card-header">
+                        <div class="card-meta">
+                            <div class="card-avatar">${item.avatar}</div>
+                            <div class="card-author">
+                                <div class="author-name">
+                                    ${item.name}
+                                    ${item.verified?'<span class="verified-check">✓</span>':''}
+                                </div>
+                                <div class="author-handle">${item.handle}</div>
+                            </div>
+                        </div>
+                        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.5rem;">
+                            <span class="card-badge ${item.badgeClass}">${item.badge}</span>
+                            <span class="card-time">${item.time}</span>
+                        </div>
                     </div>
-                    <p class="tweet-text">${item.text}</p>
-                    <div class="tweet-stats">
-                        <span>♥ ${item.likes}</span>
-                        <span>↻ ${item.retweets}</span>
+                    <div class="card-content">
+                        <div class="card-title">${item.title}</div>
+                        <div class="card-text">${item.text}</div>
                     </div>
-                    <div class="feed-actions">
-                        <button class="feed-action-btn" onclick="event.stopPropagation();window.open('${item.url}','_blank')">View on X ↗</button>
-                        <button class="feed-action-btn" onclick="event.stopPropagation();navigator.clipboard.writeText('${item.url}')">Copy Link</button>
+                    <div class="card-stats">
+                        ${item.stats.map(s=>`<span class="stat-item"><span>${s.icon}</span><span>${s.val}</span></span>`).join('')}
                     </div>
-                    <div class="feed-index">${String(idx+1).padStart(2,'0')}/${String(X_DATA.length).padStart(2,'0')}</div>
+                    <div class="card-footer">
+                        <div class="card-tags">
+                            ${item.tags.map(t=>`<span class="tag">${t}</span>`).join('')}
+                        </div>
+                        <button class="btn btn-ghost" onclick="event.stopPropagation();window.open('${item.url}','_blank')">View ↗</button>
+                    </div>
                 </div>
             `).join('');
         }
         
         function renderFarcaster(){
-            document.getElementById('farcaster-feed').innerHTML=FARCASTER_DATA.map((item,idx)=>`
-                <div class="feed-item cast ${item.verified?'verified':''}" onclick="window.open('${item.url}','_blank')">
-                    <div class="feed-header">
-                        <span class="feed-type">🟣 ${item.displayName} ${item.verified?'<span class="verified-badge">✓</span>':''}</span>
-                        <span class="feed-platform">@${item.username}</span>
-                        <span class="feed-time">${item.time}</span>
+            document.getElementById('farcaster-feed').innerHTML=FARCASTER_DATA.map(item=>`
+                <div class="feed-card cast" onclick="window.open('${item.url}','_blank')">
+                    <div class="card-header">
+                        <div class="card-meta">
+                            <div class="card-avatar">${item.avatar}</div>
+                            <div class="card-author">
+                                <div class="author-name">${item.displayName} ${item.verified?'<span class="verified-check">✓</span>':''}</div>
+                                <div class="author-handle">@${item.username}</div>
+                            </div>
+                        </div>
+                        <span class="card-time">${item.time}</span>
                     </div>
-                    <p class="cast-text">${item.text}</p>
-                    <div class="cast-stats">
-                        <span>❤️ ${item.likes}</span>
-                        <span>🔄 ${item.recasts}</span>
-                        <span>in ${item.channel}</span>
+                    <div class="card-content">
+                        <div class="card-text">${item.text}</div>
                     </div>
-                    <div class="feed-actions">
-                        <button class="feed-action-btn" onclick="event.stopPropagation();window.open('${item.url}','_blank')">View Cast ↗</button>
-                        <button class="feed-action-btn" onclick="event.stopPropagation();navigator.clipboard.writeText('${item.url}')">Copy Link</button>
+                    <div class="card-footer">
+                        <div class="card-tags">
+                            <span class="tag">🟣 ${item.channel}</span>
+                        </div>
+                        <div class="card-stats" style="border:none;padding:0;">
+                            <span class="stat-item">❤️ ${item.likes}</span>
+                            <span class="stat-item">🔄 ${item.recasts}</span>
+                        </div>
                     </div>
-                    <div class="feed-index">${String(idx+1).padStart(2,'0')}/${String(FARCASTER_DATA.length).padStart(2,'0')}</div>
                 </div>
             `).join('');
         }
         
-        function renderBaseApp(){
-            document.getElementById('baseapp-feed').innerHTML=BASEAPP_DATA.map((item,idx)=>`
-                <div class="feed-item ${item.type} baseapp ${item.verified?'verified':''}" onclick="window.open('${item.url}','_blank')">
-                    <div class="feed-header">
-                        <span class="feed-type">${item.subtitle==='Trending'?'📈':item.subtitle==='New Mint'?'✨':'👑'} ${item.subtitle} ${item.verified?'<span class="verified-badge">✓</span>':''}</span>
-                        <span class="feed-platform">Base.app</span>
-                        <span class="feed-time">${item.time}</span>
+        function renderEarly(){
+            document.getElementById('early-feed').innerHTML=EARLY_DATA.map(item=>`
+                <div class="feed-card ${item.project}" onclick="window.open('${item.url}','_blank')">
+                    <div class="card-header">
+                        <div class="card-meta">
+                            <div class="card-avatar">${item.name[0]}</div>
+                            <div class="card-author">
+                                <div class="author-name">${item.name}</div>
+                                <div class="author-handle">${item.tagline}</div>
+                            </div>
+                        </div>
+                        <span class="card-badge badge-${item.project}">${item.metrics.status}</span>
                     </div>
-                    <h3 class="feed-title">${item.title}</h3>
-                    <p class="feed-excerpt">${item.desc}</p>
-                    <div class="feed-value">${item.stat}</div>
-                    <div class="feed-actions">
-                        <button class="feed-action-btn" onclick="event.stopPropagation();window.open('${item.url}','_blank')">View NFT ↗</button>
-                        <button class="feed-action-btn" onclick="event.stopPropagation()">Track</button>
+                    <div class="card-content">
+                        <div class="card-text">${item.description}</div>
+                        <div style="display:flex;gap:1rem;margin-top:1rem;padding:0.75rem;background:var(--bg);border-radius:var(--radius-sm);">
+                            <div style="text-align:center;">
+                                <div style="font-family:Space Grotesk;font-weight:700;color:var(--base-blue);">${item.metrics.users}</div>
+                                <div style="font-size:0.65rem;color:var(--text-tertiary);">Users</div>
+                            </div>
+                            <div style="text-align:center;">
+                                <div style="font-family:Space Grotesk;font-weight:700;color:var(--base-blue);">${item.metrics.tvl}</div>
+                                <div style="font-size:0.65rem;color:var(--text-tertiary);">TVL</div>
+                            </div>
+                        </div>
+                        <div style="margin-top:0.75rem;font-size:0.8rem;color:var(--accent-green);font-weight:500;">
+                            📢 ${item.update}
+                        </div>
                     </div>
-                    <div class="feed-index">${String(idx+1).padStart(2,'0')}/${String(BASEAPP_DATA.length).padStart(2,'0')}</div>
+                    <div class="card-footer">
+                        <div class="card-tags">
+                            ${item.tags.map(t=>`<span class="tag">${t}</span>`).join('')}
+                        </div>
+                        <button class="btn btn-primary" style="padding:0.5rem 1rem;font-size:0.7rem;" onclick="event.stopPropagation();window.open('${item.url}','_blank')">Explore ↗</button>
+                    </div>
                 </div>
-            `).join('');
-        }
-        
-        function renderParagraph(){
-            document.getElementById('paragraph-feed').innerHTML=PARAGRAPH_DATA.map((item,idx)=>`
-                <article class="feed-item ${item.category} ${item.verified?'verified':''}" onclick="window.open('${item.url}','_blank')">
-                    <div class="feed-header">
-                        <span class="feed-type">${item.category==='article'?'📝':'📰'} ${item.author} ${item.verified?'<span class="verified-badge">✓</span>':''}</span>
-                        <span class="feed-platform">${item.readTime} read</span>
-                        <span class="feed-time">${item.time}</span>
-                    </div>
-                    <h3 class="feed-title">${item.title}</h3>
-                    <p class="feed-excerpt">${item.excerpt}</p>
-                    <div class="feed-meta">Type: ${item.category}</div>
-                    <div class="feed-actions">
-                        <button class="feed-action-btn" onclick="event.stopPropagation();window.open('${item.url}','_blank')">Read Article ↗</button>
-                        <button class="feed-action-btn" onclick="event.stopPropagation()">Save</button>
-                    </div>
-                    <div class="feed-index">${String(idx+1).padStart(2,'0')}/${String(PARAGRAPH_DATA.length).padStart(2,'0')}</div>
-                </article>
             `).join('');
         }
         
@@ -748,67 +1689,85 @@
             document.getElementById('stat-sales').textContent=sales;
             document.getElementById('stat-mints').textContent=mints;
             document.getElementById('stat-volume').textContent=vol;
-            document.getElementById('onchain-feed').innerHTML=ONCHAIN_DATA.map((item,idx)=>`
-                <div class="feed-item ${item.type} ${item.verified?'verified':''}" onclick="window.open('https://basescan.org/tx/${item.tx}','_blank')">
-                    <div class="feed-header">
-                        <span class="feed-type">${item.type==='sale'?'💰':item.type==='mint'?'✨':'↗️'} ${item.type.toUpperCase()} ${item.verified?'<span class="verified-badge">✓</span>':''}</span>
-                        <span class="feed-platform">${item.platform}</span>
-                        <span class="feed-time">${item.time}</span>
+            
+            document.getElementById('onchain-feed').innerHTML=ONCHAIN_DATA.map(item=>`
+                <div class="feed-card onchain" onclick="window.open('https://basescan.org/tx/${item.tx}','_blank')">
+                    <div class="card-header">
+                        <div class="card-meta">
+                            <div class="card-avatar" style="background:var(--accent-green);color:white;font-size:0.875rem;">
+                                ${item.type==='sale'?'💰':item.type==='mint'?'✨':'↗'}
+                            </div>
+                            <div class="card-author">
+                                <div class="author-name" style="text-transform:uppercase;">${item.type}</div>
+                                <div class="author-handle">${item.platform}</div>
+                            </div>
+                        </div>
+                        <span class="card-time">${item.time}</span>
                     </div>
-                    <div class="feed-title" style="font-family:monospace;font-size:0.85rem">TOKEN: <strong>${item.tokenId}</strong></div>
-                    <div class="feed-meta"><span>${item.from}</span><span>→</span><span>${item.to}</span></div>
-                    ${item.value?`<div class="feed-value">${item.value} ETH</div>`:''}
-                    <div class="feed-actions">
-                        <button class="feed-action-btn" onclick="event.stopPropagation();window.open('https://basescan.org/tx/${item.tx}','_blank')">View Tx ↗</button>
-                        <button class="feed-action-btn" onclick="event.stopPropagation()">Copy</button>
+                    <div class="card-content">
+                        <div style="font-family:Space Grotesk,monospace;font-size:0.875rem;margin-bottom:0.5rem;">
+                            Token: <strong>${item.tokenId}</strong>
+                        </div>
+                        <div style="font-size:0.8rem;color:var(--text-tertiary);">
+                            ${item.from} → ${item.to}
+                        </div>
+                        ${item.value?`<div class="value-pill" style="margin-top:0.75rem;">${item.value} ETH</div>`:''}
                     </div>
-                    <div class="feed-index">${String(idx+1).padStart(2,'0')}/${String(ONCHAIN_DATA.length).padStart(2,'0')}</div>
                 </div>
             `).join('');
         }
         
         function renderMarket(){
-            document.getElementById('market-feed').innerHTML=MARKET_DATA.map((item,idx)=>`
-                <div class="feed-item ${item.trend==='up'?'sale':'mint'} ${item.verified?'verified':''}">
-                    <div class="feed-header">
-                        <span class="feed-type">${item.trend==='up'?'📈':'📉'} ${item.collection} ${item.verified?'<span class="verified-badge">✓</span>':''}</span>
-                        <span class="feed-platform">${item.metric}</span>
-                        <span class="feed-time">${item.time}</span>
+            document.getElementById('market-feed').innerHTML=MARKET_DATA.map(item=>`
+                <div class="feed-card market">
+                    <div class="card-header">
+                        <div class="card-meta">
+                            <div class="card-author">
+                                <div class="author-name">${item.collection}</div>
+                                <div class="author-handle">${item.metric}</div>
+                            </div>
+                        </div>
+                        <span class="card-time">${item.time}</span>
                     </div>
-                    <div class="feed-title">${item.value}</div>
-                    <div class="feed-value">${item.change} ${item.trend==='up'?'📈':'📉'}</div>
-                    <div class="feed-actions">
-                        <button class="feed-action-btn">View Chart</button>
-                        <button class="feed-action-btn">Alert</button>
+                    <div class="card-content">
+                        <div class="value-pill ${item.trend==='up'?'positive':'negative'}">
+                            ${item.value}
+                            <span style="font-size:0.75rem;">${item.change}</span>
+                        </div>
                     </div>
-                    <div class="feed-index">${String(idx+1).padStart(2,'0')}/${String(MARKET_DATA.length).padStart(2,'0')}</div>
                 </div>
             `).join('');
         }
         
         function renderDrops(){
-            document.getElementById('drops-feed').innerHTML=DROPS_DATA.map((item,idx)=>`
-                <div class="feed-item ${item.type} ${item.verified?'verified':''}" onclick="window.open('${item.url}','_blank')">
-                    <div class="feed-header">
-                        <span class="feed-type">${item.type==='auction'?'🔨':item.type==='drop'?'🎨':'🖼️'} ${item.artist} ${item.verified?'<span class="verified-badge">✓</span>':''}</span>
-                        <span class="feed-platform">${item.platform}</span>
-                        <span class="feed-time">${item.time}</span>
+            document.getElementById('drops-feed').innerHTML=DROPS_DATA.map(item=>`
+                <div class="feed-card drop" onclick="window.open('https://paragraph.xyz','_blank')">
+                    <div class="card-header">
+                        <div class="card-meta">
+                            <div class="card-author">
+                                <div class="author-name">${item.artist}</div>
+                                <div class="author-handle">${item.platform}</div>
+                            </div>
+                        </div>
+                        <span class="card-badge badge-artist">${item.type}</span>
                     </div>
-                    <h3 class="feed-title">${item.title}</h3>
-                    <div class="feed-meta">Supply: ${item.supply}</div>
-                    <div class="feed-value">${item.price}</div>
-                    <div class="feed-actions">
-                        <button class="feed-action-btn" onclick="event.stopPropagation();window.open('${item.url}','_blank')">View Drop ↗</button>
-                        <button class="feed-action-btn" onclick="event.stopPropagation()">Remind Me</button>
+                    <div class="card-content">
+                        <div class="card-title">${item.title}</div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.75rem;">
+                            <div class="value-pill">${item.price}</div>
+                            <div style="font-size:0.8rem;color:var(--text-tertiary);">Supply: ${item.supply}</div>
+                        </div>
                     </div>
-                    <div class="feed-index">${String(idx+1).padStart(2,'0')}/${String(DROPS_DATA.length).padStart(2,'0')}</div>
+                    <div class="card-footer">
+                        <span class="tag">⏰ ${item.time}</span>
+                        <button class="btn btn-secondary" style="padding:0.4rem 0.875rem;font-size:0.7rem;">Remind Me</button>
+                    </div>
                 </div>
             `).join('');
         }
         
         // Init
         document.addEventListener('DOMContentLoaded',()=>{
-            typeWriter('ARTHOUSE INTELLIGENCE',document.getElementById('typewriter'));
             updateClock();
             setInterval(updateClock,1000);
             
@@ -816,67 +1775,12 @@
             renderTicker();
             renderX();
             renderFarcaster();
-            renderBaseApp();
-            renderParagraph();
+            renderEarly();
             renderOnchain();
             renderMarket();
             renderDrops();
             
             document.getElementById('wallet-btn')?.addEventListener('click',connectWallet);
-            
-            // Canvas background
-            const canvas=document.getElementById('bg-canvas');
-            const ctx=canvas.getContext('2d');
-            let w,h,dots=[];
-            
-            const resize=()=>{
-                w=canvas.width=window.innerWidth;
-                h=canvas.height=window.innerHeight;
-            };
-            
-            const initDots=()=>{
-                dots=Array.from({length:12},()=>({
-                    x:Math.random()*w,
-                    y:Math.random()*h,
-                    vx:(Math.random()-0.5)*0.3,
-                    vy:(Math.random()-0.5)*0.3,
-                    r:Math.random()*2+1
-                }));
-            };
-            
-            const animate=()=>{
-                ctx.clearRect(0,0,w,h);
-                dots.forEach(d=>{
-                    d.x+=d.vx;d.y+=d.vy;
-                    if(d.x<0||d.x>w)d.vx*=-1;
-                    if(d.y<0||d.y>h)d.vy*=-1;
-                    ctx.beginPath();
-                    ctx.arc(d.x,d.y,d.r,0,Math.PI*2);
-                    ctx.fillStyle='rgba(0,0,255,0.06)';
-                    ctx.fill();
-                });
-                for(let i=0;i<dots.length;i++){
-                    for(let j=i+1;j<dots.length;j++){
-                        const dx=dots[i].x-dots[j].x,dy=dots[i].y-dots[j].y;
-                        const dist=Math.sqrt(dx*dx+dy*dy);
-                        if(dist<120){
-                            ctx.beginPath();
-                            ctx.moveTo(dots[i].x,dots[i].y);
-                            ctx.lineTo(dots[j].x,dots[j].y);
-                            ctx.strokeStyle=`rgba(0,0,255,${0.04*(1-dist/120)})`;
-                            ctx.stroke();
-                        }
-                    }
-                }
-                requestAnimationFrame(animate);
-            };
-            
-            resize();
-            initDots();
-            animate();
-            window.addEventListener('resize',()=>{resize();initDots()});
-            
-            console.log('ARTHOUSE v2.0 // Env:',ENV.isBase()?'Base':ENV.isFarcaster()?'Farcaster':'Web');
         });
     </script>
 </body>
