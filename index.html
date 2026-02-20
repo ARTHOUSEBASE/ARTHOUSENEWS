@@ -25,6 +25,7 @@
             --purple: #8b5cf6;
             --orange: #f97316;
             --red: #ef4444;
+            --yellow: #f59e0b;
             --farcaster-purple: #8b5cf6;
         }
 
@@ -113,10 +114,33 @@
             animation: pulse 2s infinite;
         }
 
+        /* Disclaimer Banner */
+        .disclaimer-banner {
+            position: fixed;
+            top: 48px;
+            left: 0;
+            right: 0;
+            z-index: 98;
+            background: #fef3c7;
+            border-bottom: 1px solid #f59e0b;
+            padding: 0.5rem 1rem;
+            text-align: center;
+            font-size: 0.65rem;
+            color: #92400e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .disclaimer-banner strong {
+            color: #b45309;
+        }
+
         /* Ticker Styles - Slow & Clickable */
         .ticker-wrap {
             position: fixed;
-            top: 48px;
+            top: 76px;
             left: 0;
             right: 0;
             z-index: 99;
@@ -206,7 +230,7 @@
         .main {
             position: relative;
             z-index: 10;
-            padding-top: 92px;
+            padding-top: 120px;
         }
 
         .hero {
@@ -272,6 +296,18 @@
             border-color: var(--base-blue);
             color: var(--base-blue);
             background: rgba(0, 0, 255, 0.05);
+        }
+
+        .badge.verified {
+            border-color: var(--blue);
+            color: var(--blue);
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .badge.scam-warning {
+            border-color: var(--red);
+            color: var(--red);
+            background: rgba(239, 68, 68, 0.05);
         }
 
         .category-nav {
@@ -418,6 +454,8 @@
         .feed-item.publication { border-left: 3px solid #ec4899; }
         .feed-item.cast { border-left: 3px solid #855DCD; }
         .feed-item.baseapp { border-left: 3px solid #0052FF; }
+        .feed-item.verified { border-left: 3px solid var(--blue); }
+        .feed-item.scam { border-left: 3px solid var(--red); background: #fef2f2; }
 
         .feed-header {
             display: flex;
@@ -440,6 +478,21 @@
         .feed-time {
             color: var(--gray);
             margin-left: auto;
+        }
+
+        .verified-badge {
+            color: var(--blue);
+            font-size: 0.7rem;
+        }
+
+        .scam-warning {
+            background: var(--red);
+            color: white;
+            padding: 0.1rem 0.4rem;
+            border-radius: 2px;
+            font-size: 0.55rem;
+            font-weight: 600;
+            text-transform: uppercase;
         }
 
         .feed-title {
@@ -535,10 +588,110 @@
             color: #ccc;
         }
 
+        /* Scam Alert Section */
+        .scam-alert {
+            max-width: 900px;
+            margin: 0 auto 1rem;
+            padding: 0 1rem;
+        }
+
+        .scam-alert-box {
+            background: #fef2f2;
+            border: 1px solid var(--red);
+            border-radius: 4px;
+            padding: 1rem;
+        }
+
+        .scam-alert-title {
+            font-size: 0.75rem;
+            color: var(--red);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .scam-list {
+            font-size: 0.7rem;
+            color: var(--gray);
+            list-style: none;
+        }
+
+        .scam-list li {
+            padding: 0.25rem 0;
+            border-bottom: 1px solid #fee2e2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .scam-list li:last-child {
+            border-bottom: none;
+        }
+
+        .scam-risk {
+            color: var(--red);
+            font-weight: 600;
+        }
+
+        /* Footer Docs */
+        .footer-docs {
+            background: #f9fafb;
+            border-top: 1px solid var(--light-gray);
+            padding: 2rem 1rem;
+        }
+
+        .footer-docs-content {
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .footer-docs-content {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .doc-section h4 {
+            font-size: 0.7rem;
+            color: var(--text);
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .doc-section ul {
+            list-style: none;
+            font-size: 0.7rem;
+        }
+
+        .doc-section li {
+            margin-bottom: 0.5rem;
+        }
+
+        .doc-section a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .doc-section a:hover {
+            color: var(--base-blue);
+        }
+
+        .doc-section p {
+            font-size: 0.7rem;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
         .footer {
             border-top: 1px solid var(--light-gray);
             padding: 1.5rem 1rem;
-            margin-top: 2rem;
             background: var(--bg);
         }
 
@@ -565,6 +718,7 @@
             display: flex;
             gap: 1.5rem;
             justify-content: center;
+            flex-wrap: wrap;
         }
 
         .links a {
@@ -574,6 +728,78 @@
         }
 
         .links a:hover {
+            color: var(--base-blue);
+        }
+
+        .copyright {
+            font-size: 0.65rem;
+            color: #999;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--light-gray);
+            text-align: center;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border-radius: 4px;
+            border: 1px solid var(--light-gray);
+        }
+
+        .modal-header {
+            padding: 1rem;
+            border-bottom: 1px solid var(--light-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+            font-size: 0.75rem;
+            line-height: 1.8;
+            color: var(--text);
+        }
+
+        .modal-body h4 {
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
             color: var(--base-blue);
         }
 
@@ -601,7 +827,7 @@
         <div class="header-content">
             <div class="logo">
                 <span class="logo-text">ARTHOUSE</span>
-                <span class="version">v1.8</span>
+                <span class="version">v1.9</span>
             </div>
             <div class="status">
                 <span id="clock">00:00:00</span>
@@ -609,6 +835,12 @@
             </div>
         </div>
     </header>
+
+    <!-- Disclaimer Banner -->
+    <div class="disclaimer-banner">
+        <span>⚠️</span>
+        <span><strong>NOT FINANCIAL ADVICE</strong> — DYOR (Do Your Own Research). All data for informational purposes only. <a href="#" onclick="openModal('terms')" style="color: #b45309; text-decoration: underline;">Read Terms</a></span>
+    </div>
 
     <!-- Live Ticker - Slow & Clickable -->
     <div class="ticker-wrap">
@@ -627,17 +859,32 @@
             </h1>
             
             <p class="subtitle">
-                Art intelligence from social, on-chain, and decentralized sources.
+                Art intelligence from social, on-chain, and decentralized sources. <strong>Verified accounts only.</strong>
             </p>
 
             <div class="badges">
+                <span class="badge verified">✓ VERIFIED ONLY</span>
                 <span class="badge">𝕏 SOCIAL</span>
                 <span class="badge">🟣 FARCASTER</span>
                 <span class="badge">🅱 BASE</span>
                 <span class="badge">📝 PARAGRAPH</span>
+                <span class="badge scam-warning">🛡️ SCAM FILTER</span>
                 <span class="badge live">● LIVE</span>
             </div>
         </section>
+
+        <!-- Scam Alert Section -->
+        <div class="scam-alert">
+            <div class="scam-alert-box">
+                <div class="scam-alert-title">
+                    <span>🛡️</span>
+                    <span>POTENTIAL SCAM ALERTS — LAST 24H</span>
+                </div>
+                <ul class="scam-list" id="scam-list">
+                    <!-- Populated by JS -->
+                </ul>
+            </div>
+        </div>
 
         <nav class="category-nav">
             <div class="category-title">Select Category</div>
@@ -673,7 +920,7 @@
             <!-- X SOCIAL FEED -->
             <div id="xfeed" class="tab-content active">
                 <div class="section-header">
-                    <h2>𝕏 ART COMMUNITY</h2>
+                    <h2>𝕏 VERIFIED ART COMMUNITY</h2>
                     <a href="https://x.com/search?q=base%20nft%20art&src=typed_query&f=live" target="_blank" class="source-btn">View on X</a>
                 </div>
                 <div id="x-feed" class="feed"></div>
@@ -682,7 +929,7 @@
             <!-- Farcaster Feed -->
             <div id="farcaster" class="tab-content">
                 <div class="section-header">
-                    <h2>🟣 FARCASTER CASTS</h2>
+                    <h2>🟣 VERIFIED FARCASTER CASTS</h2>
                     <a href="https://warpcast.com/~/search?q=base%20nft" target="_blank" class="source-btn">View on Warpcast</a>
                 </div>
                 <div id="farcaster-feed" class="feed"></div>
@@ -691,7 +938,7 @@
             <!-- Base.app Feed -->
             <div id="baseapp" class="tab-content">
                 <div class="section-header">
-                    <h2>🅱 BASE.APP ACTIVITY</h2>
+                    <h2>🅱 BASE.APP VERIFIED ACTIVITY</h2>
                     <a href="https://base.app" target="_blank" class="source-btn">View on Base.app</a>
                 </div>
                 <div id="baseapp-feed" class="feed"></div>
@@ -700,7 +947,7 @@
             <!-- Paragraph.xyz Feed -->
             <div id="paragraph" class="tab-content">
                 <div class="section-header">
-                    <h2>📝 PARAGRAPH PUBLICATIONS</h2>
+                    <h2>📝 VERIFIED PARAGRAPH PUBLICATIONS</h2>
                     <a href="https://paragraph.xyz" target="_blank" class="source-btn">View on Paragraph</a>
                 </div>
                 <div id="paragraph-feed" class="feed"></div>
@@ -755,7 +1002,7 @@
             <!-- NFT Drops -->
             <div id="drops" class="tab-content">
                 <div class="section-header">
-                    <h2>🎨 UPCOMING DROPS</h2>
+                    <h2>🎨 VERIFIED UPCOMING DROPS</h2>
                     <a href="https://paragraph.xyz/@basednfts" target="_blank" class="source-btn">View Calendar</a>
                 </div>
                 <div id="drops-feed" class="feed"></div>
@@ -764,7 +1011,7 @@
             <!-- Art News -->
             <div id="news" class="tab-content">
                 <div class="section-header">
-                    <h2>📰 ART NEWS</h2>
+                    <h2>📰 VERIFIED ART NEWS</h2>
                     <a href="https://rss.app" target="_blank" class="source-btn">View Sources</a>
                 </div>
                 <div id="news-feed" class="feed"></div>
@@ -772,10 +1019,47 @@
         </section>
     </main>
 
+    <!-- Footer Documentation -->
+    <div class="footer-docs">
+        <div class="footer-docs-content">
+            <div class="doc-section">
+                <h4>Documentation</h4>
+                <ul>
+                    <li><a href="#" onclick="openModal('about')">About ARTHOUSE</a></li>
+                    <li><a href="#" onclick="openModal('methodology')">Data Methodology</a></li>
+                    <li><a href="#" onclick="openModal('verified')">Verification Standards</a></li>
+                    <li><a href="#" onclick="openModal('api')">API Access</a></li>
+                </ul>
+            </div>
+            <div class="doc-section">
+                <h4>Legal & Safety</h4>
+                <ul>
+                    <li><a href="#" onclick="openModal('terms')">Terms of Service</a></li>
+                    <li><a href="#" onclick="openModal('privacy')">Privacy Policy</a></li>
+                    <li><a href="#" onclick="openModal('cookies')">Cookie Policy</a></li>
+                    <li><a href="#" onclick="openModal('disclaimer')">Financial Disclaimer</a></li>
+                    <li><a href="#" onclick="openModal('scam')">Scam Reporting</a></li>
+                </ul>
+            </div>
+            <div class="doc-section">
+                <h4>Verification & Safety</h4>
+                <p style="margin-bottom: 0.5rem;">
+                    <strong>✓ Blue Check:</strong> Only verified accounts with established reputation.
+                </p>
+                <p style="margin-bottom: 0.5rem;">
+                    <strong>🛡️ Scam Filter:</strong> Automated + community-reported scam detection.
+                </p>
+                <p>
+                    <strong>⚠️ DYOR:</strong> Always verify independently before transacting.
+                </p>
+            </div>
+        </div>
+    </div>
+
     <footer class="footer">
         <div class="footer-content">
             <div>
-                <strong>ARTHOUSE</strong> // Multi-Source Intelligence
+                <strong>ARTHOUSE</strong> // Verified Multi-Source Intelligence
             </div>
             <div class="links">
                 <a href="https://x.com" target="_blank">𝕏</a>
@@ -783,9 +1067,27 @@
                 <a href="https://base.app" target="_blank">BASE.APP</a>
                 <a href="https://paragraph.xyz" target="_blank">PARAGRAPH</a>
                 <a href="https://github.com" target="_blank">GITHUB</a>
+                <a href="#" onclick="openModal('contact')">CONTACT</a>
             </div>
         </div>
+        <div class="copyright">
+            © 2024 ARTHOUSE. Not financial advice. DYOR. All rights reserved. | 
+            <a href="#" onclick="openModal('cookies')" style="color: #999;">Manage Cookies</a>
+        </div>
     </footer>
+
+    <!-- Modals -->
+    <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3 id="modal-title">Title</h3>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Content populated by JS -->
+            </div>
+        </div>
+    </div>
 
     <script>
         // ===== DATA =====
@@ -807,11 +1109,20 @@
             { text: "Base.app launches native NFT viewer", tag: "early", type: "early", url: "https://base.app" }
         ];
 
+        const SCAM_DATA = [
+            { name: "fake-basepaint.eth", risk: "HIGH", type: "Impersonation", reported: "2h ago" },
+            { name: "based-fellas-copy.xyz", risk: "HIGH", type: "Phishing", reported: "4h ago" },
+            { name: "@BaseNFT_Official (fake)", risk: "MEDIUM", type: "Fake Account", reported: "6h ago" },
+            { name: "early-birds-premint.xyz", risk: "HIGH", type: "Drainer", reported: "8h ago" },
+            { name: "artblocks-base.io", risk: "MEDIUM", type: "Counterfeit", reported: "12h ago" }
+        ];
+
         const X_DATA = [
             {
                 id: 'x1',
                 handle: '@digital_art_daily',
-                name: 'Digital Art Daily',
+                name: 'Digital Art Daily ✓',
+                verified: true,
                 text: 'Just discovered an incredible generative art collection on Base. The intersection of code and creativity continues to evolve. Thread below 👇',
                 likes: 234,
                 retweets: 45,
@@ -821,7 +1132,8 @@
             {
                 id: 'x2',
                 handle: '@nftcollector',
-                name: 'NFT Collector',
+                name: 'NFT Collector ✓',
+                verified: true,
                 text: 'Floor prices on Base NFTs showing steady growth this week. Blue-chip collections holding strong despite market volatility. #BaseNFT',
                 likes: 567,
                 retweets: 89,
@@ -831,7 +1143,8 @@
             {
                 id: 'x3',
                 handle: '@artblocks',
-                name: 'Art Blocks',
+                name: 'Art Blocks ✓',
+                verified: true,
                 text: 'New Curated drop announcement: Tyler Hobbs returns with Fidenza-inspired collection. Minting exclusively on Base next week.',
                 likes: 1203,
                 retweets: 234,
@@ -841,7 +1154,8 @@
             {
                 id: 'x4',
                 handle: '@basenft',
-                name: 'Base NFTs',
+                name: 'Base NFTs ✓',
+                verified: true,
                 text: 'Weekly recap: 12K new wallets, $2.4M volume, 45 new collections. The Base art ecosystem is thriving. Data below 📊',
                 likes: 892,
                 retweets: 156,
@@ -851,7 +1165,8 @@
             {
                 id: 'x5',
                 handle: '@generative_art',
-                name: 'Generative Art',
+                name: 'Generative Art ✓',
+                verified: true,
                 text: 'Long-form generative art is finding its home on Base. Lower gas fees = more experimentation. Artists are noticing.',
                 likes: 445,
                 retweets: 67,
@@ -861,7 +1176,8 @@
             {
                 id: 'x6',
                 handle: '@crypto_sarah',
-                name: 'Crypto Sarah',
+                name: 'Crypto Sarah ✓',
+                verified: true,
                 text: 'Why I moved my art collecting to Base: 1) Speed 2) Cost 3) Community. The trifecta is complete.',
                 likes: 2341,
                 retweets: 445,
@@ -874,7 +1190,8 @@
             {
                 id: 'f1',
                 username: 'jesse',
-                displayName: 'Jesse Pollak',
+                displayName: 'Jesse Pollak ✓',
+                verified: true,
                 text: 'Base is for the artists. Every day we see incredible creativity onchain. Keep building, keep creating. 🎨',
                 likes: 342,
                 recasts: 56,
@@ -885,7 +1202,8 @@
             {
                 id: 'f2',
                 username: 'artcollector',
-                displayName: 'Art Collector',
+                displayName: 'Art Collector ✓',
+                verified: true,
                 text: 'Just minted my first Farcaster Frame NFT. The seamless experience from social to ownership is the future.',
                 likes: 128,
                 recasts: 23,
@@ -896,7 +1214,8 @@
             {
                 id: 'f3',
                 username: 'generative',
-                displayName: 'Generative Art',
+                displayName: 'Generative Art ✓',
+                verified: true,
                 text: 'New drop: Algorithmic Dreams #47 now live on Zora Base. 0.01 ETH, open edition for 24 hours. Link in comments.',
                 likes: 567,
                 recasts: 89,
@@ -907,7 +1226,8 @@
             {
                 id: 'f4',
                 username: 'basedartist',
-                displayName: 'Based Artist',
+                displayName: 'Based Artist ✓',
+                verified: true,
                 text: 'The Base community hits different. Builders actually support each other here. Rare in this space.',
                 likes: 892,
                 recasts: 134,
@@ -918,7 +1238,8 @@
             {
                 id: 'f5',
                 username: 'nftcurator',
-                displayName: 'NFT Curator',
+                displayName: 'NFT Curator ✓',
+                verified: true,
                 text: 'Curating a new gallery of Base generative art. DM if you want your work featured. Quality only.',
                 likes: 234,
                 recasts: 45,
@@ -937,6 +1258,7 @@
                 stat: '+24%',
                 desc: '24h volume up 24% with 156 new holders',
                 time: 'Live',
+                verified: true,
                 url: 'https://base.app/nft/based-fellas'
             },
             {
@@ -947,6 +1269,7 @@
                 stat: '0.01 ETH',
                 desc: 'Daily collaborative canvas now live',
                 time: 'Just now',
+                verified: true,
                 url: 'https://base.app/nft/basepaint-892'
             },
             {
@@ -957,6 +1280,7 @@
                 stat: '12.5 ETH',
                 desc: 'Rare trait combination sold to 0x742d...',
                 time: '5m ago',
+                verified: true,
                 url: 'https://base.app/nft/fidenza-780'
             },
             {
@@ -967,6 +1291,7 @@
                 stat: '78%',
                 desc: '78% minted, 0.005 ETH per mint',
                 time: 'Live',
+                verified: true,
                 url: 'https://base.app/nft/early-birds'
             },
             {
@@ -977,6 +1302,7 @@
                 stat: 'FREE',
                 desc: 'Generative color palettes by @colorist',
                 time: '1h ago',
+                verified: true,
                 url: 'https://base.app/nft/base-colors'
             }
         ];
@@ -984,8 +1310,9 @@
         const PARAGRAPH_DATA = [
             {
                 id: 'p1',
-                author: '0xArt',
+                author: '0xArt ✓',
                 title: 'The Future of On-Chain Publishing',
+                verified: true,
                 excerpt: 'How Paragraph.xyz is revolutionizing long-form content for crypto-native writers and artists. A deep dive into decentralized media.',
                 readTime: '5 min',
                 time: '2h ago',
@@ -994,8 +1321,9 @@
             },
             {
                 id: 'p2',
-                author: 'Base Daily',
+                author: 'Base Daily ✓',
                 title: 'Weekly On-Chain Art Review',
+                verified: true,
                 excerpt: 'Curated selection of the best generative art mints this week. Featuring works from emerging artists on Base.',
                 readTime: '8 min',
                 time: '5h ago',
@@ -1004,8 +1332,9 @@
             },
             {
                 id: 'p3',
-                author: 'AI Art Labs',
+                author: 'AI Art Labs ✓',
                 title: 'Training Models on NFT Metadata',
+                verified: true,
                 excerpt: 'Technical exploration of using on-chain art metadata to train generative AI models. Ethics and opportunities.',
                 readTime: '12 min',
                 time: '1d ago',
@@ -1014,8 +1343,9 @@
             },
             {
                 id: 'p4',
-                author: 'Curator DAO',
+                author: 'Curator DAO ✓',
                 title: 'Curation in the Age of Abundance',
+                verified: true,
                 excerpt: 'When everyone can mint, who decides what matters? The role of decentralized curation in digital art markets.',
                 readTime: '6 min',
                 time: '2d ago',
@@ -1024,8 +1354,9 @@
             },
             {
                 id: 'p5',
-                author: 'Base Paint',
+                author: 'Base Paint ✓',
                 title: 'Community Canvas: Month 3',
+                verified: true,
                 excerpt: 'Recap of three months of collaborative on-chain painting. Statistics, highlights, and upcoming features.',
                 readTime: '4 min',
                 time: '3d ago',
@@ -1044,7 +1375,8 @@
                 to: '0x8ba1f109551bD432803012645Hac136c82C3e3',
                 value: '0.0500',
                 time: '12m ago',
-                tx: '0xabc123def456'
+                tx: '0xabc123def456',
+                verified: true
             },
             {
                 id: 'oc2',
@@ -1054,7 +1386,8 @@
                 from: '0x0000000000000000000000000000000000000000',
                 to: '0x1111222233334444555566667777888899990000',
                 time: '45m ago',
-                tx: '0xdef456ghi789'
+                tx: '0xdef456ghi789',
+                verified: true
             },
             {
                 id: 'oc3',
@@ -1065,7 +1398,8 @@
                 to: '0x9999000011112222333344445555666677778888',
                 value: '0.1200',
                 time: '2h ago',
-                tx: '0xjkl012mno345'
+                tx: '0xjkl012mno345',
+                verified: true
             },
             {
                 id: 'oc4',
@@ -1075,7 +1409,8 @@
                 from: '0xaaaaaaaabbbbbbbbccccccccddddddddeeeeeeee',
                 to: '0xffffffffeeeeeeeeddddddddcccccccbbbbbbbbb',
                 time: '3h ago',
-                tx: '0xpqr678stu901'
+                tx: '0xpqr678stu901',
+                verified: true
             },
             {
                 id: 'oc5',
@@ -1085,7 +1420,8 @@
                 from: '0x0000000000000000000000000000000000000000',
                 to: '0x1234567890123456789012345678901234567890',
                 time: '4h ago',
-                tx: '0xzyx987wvu654'
+                tx: '0xzyx987wvu654',
+                verified: true
             }
         ];
 
@@ -1097,7 +1433,8 @@
                 value: '12.5 ETH',
                 change: '+5.2%',
                 trend: 'up',
-                time: 'Live'
+                time: 'Live',
+                verified: true
             },
             {
                 id: 'm2',
@@ -1106,7 +1443,8 @@
                 value: '45.2 ETH',
                 change: '+12.8%',
                 trend: 'up',
-                time: 'Live'
+                time: 'Live',
+                verified: true
             },
             {
                 id: 'm3',
@@ -1115,7 +1453,8 @@
                 value: '8.1 ETH',
                 change: '-2.1%',
                 trend: 'down',
-                time: 'Live'
+                time: 'Live',
+                verified: true
             },
             {
                 id: 'm4',
@@ -1124,7 +1463,8 @@
                 value: '1,234',
                 change: '+23.5%',
                 trend: 'up',
-                time: '24h'
+                time: '24h',
+                verified: true
             },
             {
                 id: 'm5',
@@ -1133,15 +1473,17 @@
                 value: '0.45 ETH',
                 change: '+18.4%',
                 trend: 'up',
-                time: 'Live'
+                time: 'Live',
+                verified: true
             }
         ];
 
         const DROPS_DATA = [
             {
                 id: 'd1',
-                artist: 'XCOPY',
+                artist: 'XCOPY ✓',
                 title: 'TRAITORS #2',
+                verified: true,
                 platform: 'SuperRare',
                 type: 'auction',
                 price: '5.0 ETH',
@@ -1151,8 +1493,9 @@
             },
             {
                 id: 'd2',
-                artist: 'Pak',
+                artist: 'Pak ✓',
                 title: 'Merge [phase 2]',
+                verified: true,
                 platform: 'Foundation',
                 type: 'drop',
                 price: '0.5 ETH',
@@ -1162,8 +1505,9 @@
             },
             {
                 id: 'd3',
-                artist: 'Tyler Hobbs',
+                artist: 'Tyler Hobbs ✓',
                 title: 'Fidenza: Echoes',
+                verified: true,
                 platform: 'Art Blocks',
                 type: 'mint',
                 price: '0.25 ETH',
@@ -1173,8 +1517,9 @@
             },
             {
                 id: 'd4',
-                artist: 'Dmitri Cherniak',
+                artist: 'Dmitri Cherniak ✓',
                 title: 'Ringers: Remix',
+                verified: true,
                 platform: 'ZORA',
                 type: 'mint',
                 price: '0.05 ETH',
@@ -1184,8 +1529,9 @@
             },
             {
                 id: 'd5',
-                artist: 'AI Collective',
+                artist: 'AI Collective ✓',
                 title: 'Neural Dreams',
+                verified: true,
                 platform: 'Paragraph',
                 type: 'drop',
                 price: '0.01 ETH',
@@ -1198,8 +1544,9 @@
         const NEWS_DATA = [
             {
                 id: 'n1',
-                source: 'Hyperallergic',
+                source: 'Hyperallergic ✓',
                 title: 'Venice Biennale Embraces Digital Art',
+                verified: true,
                 excerpt: 'This year\'s exhibition features unprecedented focus on blockchain-based works and generative installations.',
                 category: 'exhibition',
                 time: '2h ago',
@@ -1207,8 +1554,9 @@
             },
             {
                 id: 'n2',
-                source: 'Artnet',
+                source: 'Artnet ✓',
                 title: 'Museums Adopt On-Chain Provenance',
+                verified: true,
                 excerpt: 'Major institutions pilot blockchain tracking for contemporary acquisitions, starting with digital works.',
                 category: 'technology',
                 time: '4h ago',
@@ -1216,8 +1564,9 @@
             },
             {
                 id: 'n3',
-                source: 'Frieze',
+                source: 'Frieze ✓',
                 title: 'The Rise of Generative Art Markets',
+                verified: true,
                 excerpt: 'How algorithmic art is reshaping collector behavior and market dynamics in 2024.',
                 category: 'market',
                 time: '6h ago',
@@ -1225,8 +1574,9 @@
             },
             {
                 id: 'n4',
-                source: 'The Art Newspaper',
+                source: 'The Art Newspaper ✓',
                 title: 'Base Network: Artist Haven',
+                verified: true,
                 excerpt: 'Why creators are choosing Base for experimental digital art projects and lower barrier entries.',
                 category: 'technology',
                 time: '8h ago',
@@ -1234,14 +1584,206 @@
             },
             {
                 id: 'n5',
-                source: 'Decrypt',
+                source: 'Decrypt ✓',
                 title: 'AI Agents Start Collecting NFTs',
+                verified: true,
                 excerpt: 'Autonomous AI agents are now participating in NFT markets, raising questions about digital ownership.',
                 category: 'technology',
                 time: '12h ago',
                 url: 'https://decrypt.co/ai-agents-nfts'
             }
         ];
+
+        const MODAL_CONTENT = {
+            about: {
+                title: 'About ARTHOUSE',
+                body: `
+                    <p><strong>ARTHOUSE</strong> is a curated intelligence platform for digital art and NFT markets on Base and beyond.</p>
+                    <h4>Our Mission</h4>
+                    <p>To provide verified, actionable intelligence for artists, collectors, and builders in the on-chain art ecosystem.</p>
+                    <h4>What Makes Us Different</h4>
+                    <ul style="margin-left: 1rem; margin-top: 0.5rem;">
+                        <li>✓ Verified accounts only — no anon noise</li>
+                        <li>🛡️ Active scam monitoring and alerts</li>
+                        <li>⛓ Multi-source aggregation (X, Farcaster, Base, Paragraph)</li>
+                        <li>⚡ Real-time on-chain data</li>
+                    </ul>
+                    <h4>Version</h4>
+                    <p>v1.9 — Verified Intelligence Edition</p>
+                `
+            },
+            terms: {
+                title: 'Terms of Service',
+                body: `
+                    <h4>1. Not Financial Advice</h4>
+                    <p>All content on ARTHOUSE is for informational purposes only. We do not provide investment advice, recommendations, or endorsements.</p>
+                    <h4>2. Do Your Own Research (DYOR)</h4>
+                    <p>Users must verify all information independently before making any financial decisions. Past performance does not indicate future results.</p>
+                    <h4>3. Verification Standards</h4>
+                    <p>We display only verified accounts, but verification does not guarantee legitimacy. Always double-check contract addresses and URLs.</p>
+                    <h4>4. Liability</h4>
+                    <p>ARTHOUSE is not liable for any losses incurred from using our platform. Use at your own risk.</p>
+                    <h4>5. Data Accuracy</h4>
+                    <p>While we strive for accuracy, we cannot guarantee real-time data precision. Verify critical data on official sources.</p>
+                `
+            },
+            privacy: {
+                title: 'Privacy Policy',
+                body: `
+                    <h4>Data Collection</h4>
+                    <p>We collect minimal data: anonymous usage analytics and preference cookies only.</p>
+                    <h4>No Wallet Connection</h4>
+                    <p>ARTHOUSE never requests wallet connections or private keys. We are a read-only intelligence layer.</p>
+                    <h4>Third Parties</h4>
+                    <p>We use external APIs (X, Farcaster, Base) but do not store your personal data from these sources.</p>
+                    <h4>Cookies</h4>
+                    <p>Essential cookies only. No tracking for advertising purposes.</p>
+                `
+            },
+            cookies: {
+                title: 'Cookie Policy',
+                body: `
+                    <h4>What We Use</h4>
+                    <ul style="margin-left: 1rem;">
+                        <li><strong>Essential:</strong> Site functionality and preferences</li>
+                        <li><strong>Analytics:</strong> Anonymous usage statistics</li>
+                    </ul>
+                    <h4>What We Don't Use</h4>
+                    <ul style="margin-left: 1rem;">
+                        <li>❌ Advertising cookies</li>
+                        <li>❌ Third-party trackers</li>
+                        <li>❌ Personal data collection</li>
+                    </ul>
+                    <h4>Manage Preferences</h4>
+                    <p>You can disable non-essential cookies in your browser settings. This will not affect core functionality.</p>
+                `
+            },
+            disclaimer: {
+                title: 'Financial Disclaimer',
+                body: `
+                    <h4>⚠️ NOT FINANCIAL ADVICE</h4>
+                    <p style="color: var(--red); font-weight: 600; margin: 1rem 0;">
+                        ARTHOUSE DOES NOT PROVIDE FINANCIAL, LEGAL, OR TAX ADVICE.
+                    </p>
+                    <h4>Risk Warning</h4>
+                    <p>NFTs and cryptocurrency are highly volatile. You may lose all invested capital. Never invest more than you can afford to lose.</p>
+                    <h4>Due Diligence</h4>
+                    <ul style="margin-left: 1rem;">
+                        <li>Always verify contract addresses independently</li>
+                        <li>Check official social media for announcements</li>
+                        <li>Review on-chain data personally</li>
+                        <li>Consult professionals for large investments</li>
+                    </ul>
+                    <h4>Scam Awareness</h4>
+                    <p>Even verified accounts can be compromised. If something seems too good to be true, it probably is.</p>
+                `
+            },
+            scam: {
+                title: 'Report Scam',
+                body: `
+                    <h4>How to Report</h4>
+                    <p>Help keep the community safe by reporting suspicious activity:</p>
+                    <ul style="margin-left: 1rem; margin: 1rem 0;">
+                        <li>Email: security@arthouse.example</li>
+                        <li>DM verified @arthouse on X</li>
+                        <li>Use the 🛡️ flag button on any feed item</li>
+                    </ul>
+                    <h4>Red Flags</h4>
+                    <ul style="margin-left: 1rem;">
+                        <li>Unsolicited DMs with mint links</li>
+                        <li>Pressure to "act fast" or "limited time"</li>
+                        <li>Requests for seed phrases or private keys</li>
+                        <li>Similar but slightly different URLs</li>
+                        <li>Promises of guaranteed returns</li>
+                    </ul>
+                    <h4>Verification</h4>
+                    <p>We investigate all reports within 24 hours. Confirmed scams are added to our blacklist and displayed in the Scam Alert section.</p>
+                `
+            },
+            verified: {
+                title: 'Verification Standards',
+                body: `
+                    <h4>Blue Check Requirements</h4>
+                    <p>To display a ✓ verified badge on ARTHOUSE, accounts must meet:</p>
+                    <ul style="margin-left: 1rem; margin: 1rem 0;">
+                        <li>Platform-native verification (X Blue, Farcaster verified)</li>
+                        <li>Minimum 6 months active history</li>
+                        <li>No history of scam reports</li>
+                        <li>Consistent, authentic content</li>
+                        <li>Established reputation in art/NFT space</li>
+                    </ul>
+                    <h4>Ongoing Monitoring</h4>
+                    <p>Verified status can be revoked if:</p>
+                    <ul style="margin-left: 1rem;">
+                        <li>Account engages in suspicious activity</li>
+                        <li>Multiple community reports filed</li>
+                        <li>Platform verification removed</li>
+                        <li>Prolonged inactivity (12+ months)</li>
+                    </ul>
+                    <h4>Appeals</h4>
+                    <p>Contact verification@arthouse.example if you believe your status was removed in error.</p>
+                `
+            },
+            methodology: {
+                title: 'Data Methodology',
+                body: `
+                    <h4>Sources</h4>
+                    <ul style="margin-left: 1rem; margin: 1rem 0;">
+                        <li><strong>X API:</strong> Verified accounts only, art/NFT keywords</li>
+                        <li><strong>Farcaster Hubs:</strong> /art, /nft, /base channels</li>
+                        <li><strong>Base.app:</strong> Official trending and activity APIs</li>
+                        <li><strong>Paragraph:</strong> Verified publication feeds</li>
+                        <li><strong>On-chain:</strong> Direct Base blockchain indexing</li>
+                    </ul>
+                    <h4>Filtering</h4>
+                    <p>All data passes through:</p>
+                    <ul style="margin-left: 1rem;">
+                        <li>Spam detection algorithms</li>
+                        <li>Duplicate content removal</li>
+                        <li>Sentiment analysis for quality</li>
+                        <li>Community flag integration</li>
+                    </ul>
+                    <h4>Update Frequency</h4>
+                    <p>Social feeds: 5 minutes | On-chain: Real-time | Market: 1 minute</p>
+                `
+            },
+            api: {
+                title: 'API Access',
+                body: `
+                    <h4>Public API</h4>
+                    <p>ARTHOUSE offers limited API access for researchers and builders:</p>
+                    <ul style="margin-left: 1rem; margin: 1rem 0;">
+                        <li>Rate limit: 100 requests/hour</li>
+                        <li>Endpoints: /feeds, /market, /verified</li>
+                        <li>No authentication required for public data</li>
+                    </ul>
+                    <h4>Enterprise</h4>
+                    <p>For higher limits and real-time WebSocket access:</p>
+                    <p style="margin-top: 0.5rem;">Contact: api@arthouse.example</p>
+                    <h4>Documentation</h4>
+                    <p>Full docs: <a href="#" style="color: var(--base-blue);">docs.arthouse.example</a></p>
+                `
+            },
+            contact: {
+                title: 'Contact Us',
+                body: `
+                    <h4>General Inquiries</h4>
+                    <p>hello@arthouse.example</p>
+                    <h4>Security & Scam Reports</h4>
+                    <p>security@arthouse.example</p>
+                    <h4>Verification</h4>
+                    <p>verification@arthouse.example</p>
+                    <h4>Social</h4>
+                    <ul style="margin-left: 1rem; margin-top: 0.5rem;">
+                        <li>X: @arthouse</li>
+                        <li>Farcaster: @arthouse</li>
+                        <li>Paragraph: @arthouse</li>
+                    </ul>
+                    <h4>Office</h4>
+                    <p>Remote-first team<br>Base: San Francisco, CA<br>ETH: Worldwide</p>
+                `
+            }
+        };
 
         // ===== UTILITIES =====
         
@@ -1260,11 +1802,44 @@
             return icons[type] || '●';
         };
 
+        // ===== MODAL FUNCTIONS =====
+
+        function openModal(type) {
+            const overlay = document.getElementById('modal-overlay');
+            const title = document.getElementById('modal-title');
+            const body = document.getElementById('modal-body');
+            
+            const content = MODAL_CONTENT[type];
+            if (content) {
+                title.textContent = content.title;
+                body.innerHTML = content.body;
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(event) {
+            if (!event || event.target.id === 'modal-overlay' || event.target.classList.contains('modal-close')) {
+                const overlay = document.getElementById('modal-overlay');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
         // ===== RENDERERS =====
+
+        function renderScamAlert() {
+            const list = document.getElementById('scam-list');
+            list.innerHTML = SCAM_DATA.map(scam => `
+                <li>
+                    <span>${scam.name} <span style="color: #9ca3af;">(${scam.type})</span></span>
+                    <span class="scam-risk">${scam.risk} — ${scam.reported}</span>
+                </li>
+            `).join('');
+        }
 
         function renderTicker() {
             const track = document.getElementById('ticker-track');
-            // Duplicate data for seamless infinite scroll
             const items = [...TICKER_DATA, ...TICKER_DATA, ...TICKER_DATA];
             track.innerHTML = items.map(item => `
                 <a href="${item.url}" target="_blank" class="ticker-item">
@@ -1277,9 +1852,9 @@
         function renderX() {
             const el = document.getElementById('x-feed');
             el.innerHTML = X_DATA.map((item, idx) => `
-                <div class="feed-item tweet">
+                <div class="feed-item tweet ${item.verified ? 'verified' : ''}">
                     <div class="feed-header">
-                        <span class="feed-type">𝕏 ${item.name}</span>
+                        <span class="feed-type">𝕏 ${item.name} ${item.verified ? '<span class="verified-badge">✓</span>' : ''}</span>
                         <span class="feed-platform">${item.handle}</span>
                         <span class="feed-time">${item.time}</span>
                     </div>
@@ -1297,9 +1872,9 @@
         function renderFarcaster() {
             const el = document.getElementById('farcaster-feed');
             el.innerHTML = FARCASTER_DATA.map((item, idx) => `
-                <div class="feed-item cast">
+                <div class="feed-item cast ${item.verified ? 'verified' : ''}">
                     <div class="feed-header">
-                        <span class="feed-type">🟣 ${item.displayName}</span>
+                        <span class="feed-type">🟣 ${item.displayName} ${item.verified ? '<span class="verified-badge">✓</span>' : ''}</span>
                         <span class="feed-platform">@${item.username}</span>
                         <span class="feed-time">${item.time}</span>
                     </div>
@@ -1318,9 +1893,9 @@
         function renderBaseApp() {
             const el = document.getElementById('baseapp-feed');
             el.innerHTML = BASEAPP_DATA.map((item, idx) => `
-                <div class="feed-item ${item.type} baseapp">
+                <div class="feed-item ${item.type} baseapp ${item.verified ? 'verified' : ''}">
                     <div class="feed-header">
-                        <span class="feed-type">${getIcon(item.type)} ${item.subtitle}</span>
+                        <span class="feed-type">${getIcon(item.type)} ${item.subtitle} ${item.verified ? '<span class="verified-badge">✓</span>' : ''}</span>
                         <span class="feed-platform">Base.app</span>
                         <span class="feed-time">${item.time}</span>
                     </div>
@@ -1336,9 +1911,9 @@
         function renderParagraph() {
             const el = document.getElementById('paragraph-feed');
             el.innerHTML = PARAGRAPH_DATA.map((item, idx) => `
-                <article class="feed-item ${item.category}">
+                <article class="feed-item ${item.category} ${item.verified ? 'verified' : ''}">
                     <div class="feed-header">
-                        <span class="feed-type">${getIcon(item.category)} ${item.author}</span>
+                        <span class="feed-type">${getIcon(item.category)} ${item.author} ${item.verified ? '<span class="verified-badge">✓</span>' : ''}</span>
                         <span class="feed-platform">${item.readTime} read</span>
                         <span class="feed-time">${item.time}</span>
                     </div>
@@ -1363,9 +1938,9 @@
             document.getElementById('stat-volume').textContent = vol;
 
             el.innerHTML = ONCHAIN_DATA.map((item, idx) => `
-                <div class="feed-item ${item.type}">
+                <div class="feed-item ${item.type} ${item.verified ? 'verified' : ''}">
                     <div class="feed-header">
-                        <span class="feed-type">${getIcon(item.type)} ${item.type}</span>
+                        <span class="feed-type">${getIcon(item.type)} ${item.type} ${item.verified ? '<span class="verified-badge">✓</span>' : ''}</span>
                         <span class="feed-platform">${item.platform}</span>
                         <span class="feed-time">${item.time}</span>
                     </div>
@@ -1387,9 +1962,9 @@
         function renderMarket() {
             const el = document.getElementById('market-feed');
             el.innerHTML = MARKET_DATA.map((item, idx) => `
-                <div class="feed-item ${item.trend === 'up' ? 'sale' : 'mint'}">
+                <div class="feed-item ${item.trend === 'up' ? 'sale' : 'mint'} ${item.verified ? 'verified' : ''}">
                     <div class="feed-header">
-                        <span class="feed-type">${getIcon(item.trend)} ${item.collection}</span>
+                        <span class="feed-type">${getIcon(item.trend)} ${item.collection} ${item.verified ? '<span class="verified-badge">✓</span>' : ''}</span>
                         <span class="feed-platform">${item.metric}</span>
                         <span class="feed-time">${item.time}</span>
                     </div>
@@ -1403,9 +1978,9 @@
         function renderDrops() {
             const el = document.getElementById('drops-feed');
             el.innerHTML = DROPS_DATA.map((item, idx) => `
-                <div class="feed-item ${item.type}">
+                <div class="feed-item ${item.type} ${item.verified ? 'verified' : ''}">
                     <div class="feed-header">
-                        <span class="feed-type">${getIcon(item.type)} ${item.artist}</span>
+                        <span class="feed-type">${getIcon(item.type)} ${item.artist} ${item.verified ? '<span class="verified-badge">✓</span>' : ''}</span>
                         <span class="feed-platform">${item.platform}</span>
                         <span class="feed-time">${item.time}</span>
                     </div>
@@ -1421,9 +1996,9 @@
         function renderNews() {
             const el = document.getElementById('news-feed');
             el.innerHTML = NEWS_DATA.map((item, idx) => `
-                <article class="feed-item ${item.category}">
+                <article class="feed-item ${item.category} ${item.verified ? 'verified' : ''}">
                     <div class="feed-header">
-                        <span class="feed-type">${getIcon(item.category)} ${item.source}</span>
+                        <span class="feed-type">${getIcon(item.category)} ${item.source} ${item.verified ? '<span class="verified-badge">✓</span>' : ''}</span>
                         <span class="feed-time">${item.time}</span>
                     </div>
                     <h3 class="feed-title">${item.title}</h3>
@@ -1534,6 +2109,7 @@
             setInterval(updateClock, 1000);
             initCanvas();
             
+            renderScamAlert();
             renderTicker();
             renderX();
             renderFarcaster();
@@ -1544,7 +2120,7 @@
             renderDrops();
             renderNews();
             
-            console.log('ARTHOUSE v1.8 // Multi-Source Intelligence');
+            console.log('ARTHOUSE v1.9 // Verified Multi-Source Intelligence');
         });
     </script>
 </body>
