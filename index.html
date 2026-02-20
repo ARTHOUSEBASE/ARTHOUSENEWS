@@ -31,21 +31,22 @@
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
         :root{
-            --bg:#0a0a0a;
-            --surface:#111111;
-            --surface-hover:#1a1a1a;
-            --text:#e5e5e5;
-            --text-secondary:#888888;
-            --text-tertiary:#666666;
-            --border:#222222;
-            --border-light:#2a2a2a;
-            --accent-blue:#3b82f6;
-            --accent-green:#10b981;
-            --accent-orange:#f59e0b;
-            --accent-red:#ef4444;
-            --accent-purple:#8b5cf6;
-            --accent-cyan:#06b6d4;
-            --accent-yellow:#eab308;
+            --bg:#ffffff;
+            --surface:#fafafa;
+            --surface-hover:#f5f5f5;
+            --text:#0a0a0a;
+            --text-secondary:#525252;
+            --text-tertiary:#737373;
+            --border:#e5e5e5;
+            --border-light:#f0f0f0;
+            --primary:#0000ff;
+            --primary-light:#e8e8ff;
+            --primary-dark:#0000cc;
+            --accent-green:#059669;
+            --accent-orange:#d97706;
+            --accent-red:#dc2626;
+            --accent-purple:#7c3aed;
+            --accent-cyan:#0891b2;
             --radius:4px;
             --radius-sm:2px;
             --mono:'JetBrains Mono', 'IBM Plex Mono', 'Courier New', monospace;
@@ -78,10 +79,10 @@
             color:var(--text-secondary);
             font-family:var(--mono);
         }
-        .env-badge.base{border-color:var(--accent-blue);color:var(--accent-blue)}
+        .env-badge.base{border-color:var(--primary);color:var(--primary)}
         .env-badge.farcaster{border-color:#855DCD;color:#855DCD}
         
-        /* Header - Terminal Style */
+        /* Header - Programmer Style */
         .header{
             position:fixed;
             top:0;
@@ -111,25 +112,37 @@
         .logo-mark{
             width:32px;
             height:32px;
-            border:1px solid var(--border);
+            border:2px solid var(--primary);
             display:flex;
             align-items:center;
             justify-content:center;
             font-family:var(--mono);
             font-weight:700;
             font-size:1rem;
-            background:var(--surface);
+            background:var(--bg);
             position:relative;
+            animation:borderPulse 3s infinite;
+        }
+        @keyframes borderPulse{
+            0%,100%{border-color:var(--primary)}
+            50%{border-color:var(--primary-light)}
         }
         .logo-mark::before{
             content:'[A]';
-            color:var(--accent-blue);
+            color:var(--primary);
+            font-weight:700;
         }
         .logo-text{
             font-family:var(--mono);
             font-weight:700;
-            font-size:1rem;
+            font-size:1.125rem;
             letter-spacing:-0.02em;
+            color:var(--primary);
+            animation:textGlow 3s infinite;
+        }
+        @keyframes textGlow{
+            0%,100%{color:var(--primary)}
+            50%{color:var(--primary-dark)}
         }
         .logo-sub{
             font-size:0.65rem;
@@ -148,7 +161,7 @@
             gap:0.75rem;
         }
         
-        /* Buttons - Terminal Style */
+        /* Buttons - IDE Style */
         .btn{
             display:inline-flex;
             align-items:center;
@@ -166,20 +179,22 @@
             text-decoration:none;
         }
         .btn:hover{
-            border-color:var(--accent-blue);
-            color:var(--accent-blue);
-            background:var(--surface-hover);
+            border-color:var(--primary);
+            color:var(--primary);
+            background:var(--primary-light);
         }
         .btn-primary{
-            border-color:var(--accent-blue);
-            color:var(--accent-blue);
+            border-color:var(--primary);
+            color:var(--primary);
+            background:var(--primary-light);
+            animation:btnPulse 2s infinite;
         }
-        .btn-primary:hover{
-            background:var(--accent-blue);
-            color:var(--bg);
+        @keyframes btnPulse{
+            0%,100%{box-shadow:0 0 0 0 rgba(0,0,255,0.1)}
+            50%{box-shadow:0 0 0 4px rgba(0,0,255,0.05)}
         }
         .btn-secondary{
-            border-color:var(--border-light);
+            border-color:var(--border);
             color:var(--text-secondary);
         }
         .btn-ghost{
@@ -204,6 +219,7 @@
             width:6px;
             height:6px;
             background:var(--accent-green);
+            border-radius:50%;
             animation:pulse 2s infinite;
         }
         @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
@@ -223,7 +239,8 @@
             overflow:hidden;
         }
         .ticker-label{
-            background:var(--border);
+            background:var(--primary);
+            color:white;
             padding:0 1rem;
             font-size:0.65rem;
             font-weight:600;
@@ -235,7 +252,6 @@
             flex-shrink:0;
             z-index:2;
             font-family:var(--mono);
-            color:var(--accent-green);
         }
         .ticker-container{
             flex:1;
@@ -250,7 +266,7 @@
             top:0;
             height:100%;
             align-items:center;
-            animation:ticker 35s linear infinite;
+            animation:ticker 30s linear infinite;
             will-change:transform;
         }
         .ticker-track:hover{animation-play-state:paused}
@@ -270,7 +286,7 @@
             font-family:var(--mono);
         }
         .ticker-item:hover{
-            color:var(--text);
+            color:var(--primary);
             background:var(--surface-hover);
         }
         .ticker-tag{
@@ -282,11 +298,10 @@
             border:1px solid;
             letter-spacing:0.05em;
         }
+        .ticker-tag.official{border-color:var(--primary);color:var(--primary)}
         .ticker-tag.early{border-color:var(--accent-green);color:var(--accent-green)}
         .ticker-tag.agent{border-color:var(--accent-purple);color:var(--accent-purple)}
         .ticker-tag.builder{border-color:var(--accent-orange);color:var(--accent-orange)}
-        .ticker-tag.token{border-color:var(--accent-cyan);color:var(--accent-cyan)}
-        .ticker-tag.official{border-color:var(--accent-blue);color:var(--accent-blue)}
         
         @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
         
@@ -297,7 +312,7 @@
             padding-top:90px;
         }
         
-        /* Hero - Terminal Style */
+        /* Hero - IDE Style */
         .hero{
             max-width:900px;
             margin:0 auto;
@@ -309,15 +324,16 @@
             align-items:center;
             gap:0.5rem;
             padding:0.3rem 0.75rem;
-            border:1px solid var(--accent-green);
+            border:1px solid var(--primary);
             border-radius:var(--radius-sm);
             font-size:0.65rem;
             font-weight:600;
-            color:var(--accent-green);
+            color:var(--primary);
             margin-bottom:1.25rem;
             text-transform:uppercase;
             letter-spacing:0.1em;
             font-family:var(--mono);
+            animation:borderPulse 3s infinite;
         }
         .title{
             font-family:var(--mono);
@@ -326,9 +342,8 @@
             letter-spacing:-0.02em;
             margin-bottom:0.5rem;
             line-height:1.2;
-        }
-        .title span{
-            color:var(--accent-blue);
+            color:var(--primary);
+            animation:textGlow 3s infinite;
         }
         .subtitle{
             font-size:0.875rem;
@@ -339,7 +354,7 @@
             font-family:var(--mono);
         }
         
-        /* Filter Pills - Terminal Tags */
+        /* Filter Pills - IDE Tags */
         .filter-pills{
             display:flex;
             flex-wrap:wrap;
@@ -360,15 +375,16 @@
             font-family:var(--mono);
         }
         .pill:hover{
-            border-color:var(--accent-blue);
-            color:var(--accent-blue);
+            border-color:var(--primary);
+            color:var(--primary);
         }
         .pill.verified{
-            border-color:var(--accent-green);
-            color:var(--accent-green);
+            border-color:var(--primary);
+            color:var(--primary);
+            background:var(--primary-light);
         }
         
-        /* Scam Alert - Terminal Warning */
+        /* Scam Alert - IDE Warning */
         .scam-alert{
             max-width:900px;
             margin:0 auto 1.5rem;
@@ -454,7 +470,7 @@
             color:var(--accent-orange);
         }
         
-        /* Navigation - Terminal Tabs */
+        /* Navigation - IDE Tabs */
         .category-nav{
             max-width:900px;
             margin:0 auto;
@@ -495,13 +511,14 @@
             letter-spacing:0.05em;
         }
         .tab-btn:hover{
-            color:var(--text);
-            border-color:var(--border-light);
+            color:var(--primary);
+            border-color:var(--border);
         }
         .tab-btn.active{
-            color:var(--accent-blue);
-            border-color:var(--accent-blue);
+            color:var(--primary);
+            border-color:var(--primary);
             background:var(--bg);
+            font-weight:600;
         }
         
         /* Content */
@@ -527,7 +544,7 @@
             font-family:var(--mono);
             font-size:0.875rem;
             font-weight:700;
-            color:var(--text);
+            color:var(--primary);
             text-transform:uppercase;
             letter-spacing:0.05em;
             display:flex;
@@ -552,14 +569,14 @@
             position:relative;
         }
         .stat-card:hover{
-            border-color:var(--accent-blue);
+            border-color:var(--primary);
             background:var(--surface-hover);
         }
         .stat-value{
             font-family:var(--mono);
             font-size:1.25rem;
             font-weight:700;
-            color:var(--accent-blue);
+            color:var(--primary);
             margin-bottom:0.25rem;
         }
         .stat-label{
@@ -570,7 +587,7 @@
             font-weight:600;
         }
         
-        /* Feed Cards - Terminal Blocks */
+        /* Feed Cards - IDE Panels */
         .feed{
             display:flex;
             flex-direction:column;
@@ -588,26 +605,61 @@
             overflow:hidden;
         }
         .feed-card:hover{
-            border-color:var(--border-light);
+            border-color:var(--primary);
             background:var(--surface-hover);
+            transform:translateX(2px);
         }
         
-        /* Card Type Variants - Left Border */
-        .feed-card.tweet{border-left:2px solid #000}
+        /* Card Type Variants - Left Border Priority */
+        .feed-card.official-team{
+            border-left:3px solid var(--primary);
+            background:linear-gradient(90deg,var(--surface) 0%,rgba(0,0,255,0.03) 100%);
+        }
+        .feed-card.official-reply{
+            border-left:3px solid var(--accent-cyan);
+            background:linear-gradient(90deg,var(--surface) 0%,rgba(8,145,178,0.03) 100%);
+        }
+        .feed-card.alpha-noticed{
+            border-left:3px solid var(--accent-green);
+            background:linear-gradient(90deg,var(--surface) 0%,rgba(5,150,105,0.03) 100%);
+        }
+        .feed-card.tweet{border-left:2px solid var(--text-tertiary)}
         .feed-card.cast{border-left:2px solid #855DCD}
-        .feed-card.baseapp{border-left:2px solid var(--accent-blue)}
-        .feed-card.article{border-left:2px solid var(--accent-purple)}
         .feed-card.onchain{border-left:2px solid var(--accent-green)}
         .feed-card.market{border-left:2px solid var(--accent-orange)}
-        .feed-card.drop{border-left:2px solid var(--accent-cyan)}
-        .feed-card.official{border-left:2px solid var(--accent-yellow)}
-        .feed-card.verified-user{border-left:2px solid var(--accent-green)}
+        .feed-card.drop{border-left:2px solid var(--accent-purple)}
         
-        /* Category Badges */
-        .feed-card.category-update{background:var(--bg)}
-        .feed-card.category-official{background:linear-gradient(90deg,var(--surface) 0%,rgba(234,179,8,0.05) 100%)}
-        .feed-card.category-verified{background:linear-gradient(90deg,var(--surface) 0%,rgba(16,185,129,0.05) 100%)}
-        .feed-card.category-project{background:linear-gradient(90deg,var(--surface) 0%,rgba(59,130,246,0.05) 100%)}
+        /* Priority Indicators */
+        .priority-badge{
+            display:inline-flex;
+            align-items:center;
+            gap:0.375rem;
+            font-size:0.6rem;
+            text-transform:uppercase;
+            letter-spacing:0.1em;
+            font-weight:700;
+            margin-bottom:0.5rem;
+            padding:0.2rem 0.5rem;
+            border-radius:var(--radius-sm);
+            border:1px solid;
+            font-family:var(--mono);
+        }
+        .priority-official{
+            border-color:var(--primary);
+            color:var(--primary);
+            background:rgba(0,0,255,0.05);
+            animation:borderPulse 2s infinite;
+        }
+        .priority-reply{
+            border-color:var(--accent-cyan);
+            color:var(--accent-cyan);
+            background:rgba(8,145,178,0.05);
+        }
+        .priority-alpha{
+            border-color:var(--accent-green);
+            color:var(--accent-green);
+            background:rgba(5,150,105,0.05);
+        }
         
         .card-header{
             display:flex;
@@ -633,6 +685,7 @@
             font-size:0.875rem;
             flex-shrink:0;
             border:1px solid var(--border);
+            font-family:var(--mono);
         }
         .card-author{
             display:flex;
@@ -649,8 +702,9 @@
             font-family:var(--mono);
         }
         .verified-check{
-            color:var(--accent-blue);
+            color:var(--primary);
             font-size:0.875rem;
+            animation:textGlow 2s infinite;
         }
         .author-handle{
             color:var(--text-tertiary);
@@ -673,12 +727,11 @@
             border:1px solid;
             font-family:var(--mono);
         }
-        .badge-official{border-color:var(--accent-yellow);color:var(--accent-yellow)}
-        .badge-verified{border-color:var(--accent-green);color:var(--accent-green)}
-        .badge-project{border-color:var(--accent-blue);color:var(--accent-blue)}
-        .badge-artist{border-color:var(--accent-purple);color:var(--accent-purple)}
-        .badge-update{border-color:var(--accent-cyan);color:var(--accent-cyan)}
+        .badge-official{border-color:var(--primary);color:var(--primary)}
+        .badge-reply{border-color:var(--accent-cyan);color:var(--accent-cyan)}
+        .badge-alpha{border-color:var(--accent-green);color:var(--accent-green)}
         .badge-team{border-color:var(--accent-orange);color:var(--accent-orange)}
+        .badge-dev{border-color:var(--accent-purple);color:var(--accent-purple)}
         
         .card-content{
             margin-bottom:0.75rem;
@@ -714,7 +767,7 @@
             transition:color 0.2s;
         }
         .stat-item:hover{
-            color:var(--accent-blue);
+            color:var(--primary);
         }
         
         .card-footer{
@@ -758,7 +811,28 @@
         .value-pill.positive{color:var(--accent-green);border-color:var(--accent-green)}
         .value-pill.negative{color:var(--accent-red);border-color:var(--accent-red)}
         
-        /* Footer - Terminal Style */
+        /* Section Dividers */
+        .section-divider{
+            display:flex;
+            align-items:center;
+            gap:0.75rem;
+            margin:1.5rem 0 1rem;
+            padding:0.5rem 0;
+            border-bottom:1px solid var(--border);
+            font-family:var(--mono);
+            font-size:0.75rem;
+            font-weight:600;
+            text-transform:uppercase;
+            letter-spacing:0.05em;
+            color:var(--text-tertiary);
+        }
+        .section-divider::before{
+            content:'//';
+            color:var(--primary);
+            font-weight:700;
+        }
+        
+        /* Footer - IDE Style */
         .footer{
             background:var(--surface);
             border-top:1px solid var(--border);
@@ -776,6 +850,8 @@
             margin-bottom:0.5rem;
             text-transform:uppercase;
             letter-spacing:0.05em;
+            color:var(--primary);
+            animation:textGlow 3s infinite;
         }
         .cta-text{
             font-size:0.8rem;
@@ -808,8 +884,9 @@
             font-family:var(--mono);
         }
         .social-link:hover{
-            border-color:var(--accent-blue);
-            color:var(--accent-blue);
+            border-color:var(--primary);
+            color:var(--primary);
+            background:var(--primary-light);
         }
         
         .footer-main{
@@ -831,15 +908,16 @@
             width:24px;
             height:24px;
             background:var(--surface);
-            border:1px solid var(--border);
+            border:1px solid var(--primary);
             border-radius:var(--radius-sm);
             display:flex;
             align-items:center;
             justify-content:center;
-            color:var(--accent-blue);
+            color:var(--primary);
             font-weight:700;
             font-size:0.75rem;
             font-family:var(--mono);
+            animation:borderPulse 3s infinite;
         }
         .footer-info{
             font-size:0.7rem;
@@ -858,7 +936,7 @@
             font-family:var(--mono);
             text-transform:uppercase;
         }
-        .footer-links a:hover{color:var(--accent-blue)}
+        .footer-links a:hover{color:var(--primary)}
         
         .disclaimer{
             background:var(--bg);
@@ -870,7 +948,7 @@
             font-family:var(--mono);
         }
         
-        /* Modal - Terminal Overlay */
+        /* Modal - IDE Overlay */
         .modal-overlay{
             display:none;
             position:fixed;
@@ -878,21 +956,23 @@
             left:0;
             right:0;
             bottom:0;
-            background:rgba(0,0,0,0.8);
+            background:rgba(255,255,255,0.9);
             z-index:10000;
             justify-content:center;
             align-items:center;
             padding:1rem;
+            backdrop-filter:blur(4px);
         }
         .modal-overlay.active{display:flex}
         .modal{
-            background:var(--surface);
+            background:var(--bg);
             max-width:500px;
             width:100%;
             max-height:85vh;
             overflow-y:auto;
             border-radius:var(--radius);
-            border:1px solid var(--border);
+            border:1px solid var(--primary);
+            box-shadow:0 0 0 1px rgba(0,0,255,0.1),0 10px 25px rgba(0,0,0,0.1);
         }
         .modal-header{
             padding:1rem;
@@ -902,7 +982,7 @@
             align-items:center;
             position:sticky;
             top:0;
-            background:var(--surface);
+            background:var(--bg);
             z-index:10;
         }
         .modal-title{
@@ -910,6 +990,7 @@
             font-size:0.875rem;
             font-weight:700;
             text-transform:uppercase;
+            color:var(--primary);
         }
         .modal-close{
             background:none;
@@ -928,8 +1009,8 @@
             font-family:var(--mono);
         }
         .modal-close:hover{
-            background:var(--bg);
-            color:var(--text);
+            background:var(--surface);
+            color:var(--primary);
         }
         .modal-body{
             padding:1.25rem;
@@ -941,7 +1022,7 @@
         .modal-body h4{
             margin-top:1rem;
             margin-bottom:0.5rem;
-            color:var(--text);
+            color:var(--primary);
             font-size:0.8rem;
             font-weight:600;
             text-transform:uppercase;
@@ -963,27 +1044,35 @@
             .footer-main{flex-direction:column;text-align:center}
         }
         
-        /* Syntax Highlighting Simulation */
-        .syntax-keyword{color:var(--accent-purple)}
-        .syntax-string{color:var(--accent-green)}
-        .syntax-comment{color:var(--text-tertiary)}
-        .syntax-function{color:var(--accent-blue)}
+        /* Reply Context */
+        .reply-context{
+            font-size:0.7rem;
+            color:var(--text-tertiary);
+            margin-bottom:0.5rem;
+            padding:0.375rem 0.625rem;
+            background:var(--bg);
+            border-radius:var(--radius-sm);
+            border-left:2px solid var(--accent-cyan);
+            font-family:var(--mono);
+        }
+        .reply-context strong{
+            color:var(--accent-cyan);
+        }
         
-        /* Category Indicators */
-        .category-indicator{
+        /* Noticed By Badge */
+        .noticed-badge{
             display:inline-flex;
             align-items:center;
             gap:0.375rem;
             font-size:0.6rem;
-            text-transform:uppercase;
-            letter-spacing:0.1em;
-            color:var(--text-tertiary);
-            margin-bottom:0.5rem;
+            color:var(--accent-green);
+            margin-top:0.5rem;
+            font-family:var(--mono);
         }
-        .cat-official{color:var(--accent-yellow)}
-        .cat-verified{color:var(--accent-green)}
-        .cat-project{color:var(--accent-blue)}
-        .cat-update{color:var(--accent-cyan)}
+        .noticed-badge::before{
+            content:'→';
+            color:var(--accent-green);
+        }
     </style>
 </head>
 <body>
@@ -1023,7 +1112,7 @@
     <main class="main">
         <section class="hero">
             <div class="hero-badge">Verified_Only</div>
-            <h1 class="title">Curated_Art_<span>Alpha</span></h1>
+            <h1 class="title">ARTHOUSE_INTELLIGENCE</h1>
             <p class="subtitle">Real-time intelligence from verified creators, early-stage projects, and on-chain activity across the Base ecosystem.</p>
             <div class="filter-pills">
                 <span class="pill verified">Verified_Only</span>
@@ -1057,13 +1146,24 @@
         </nav>
         
         <section class="content">
-            <!-- X Feed - Enhanced with Random Categories -->
+            <!-- X Feed - Hierarchical by Official Priority -->
             <div id="xfeed" class="tab-content active">
                 <div class="section-header">
                     <h2 class="section-title">X_Ecosystem_Feed</h2>
                     <a href="https://x.com" target="_blank" class="btn btn-secondary">Open_X →</a>
                 </div>
-                <div id="x-feed" class="feed"></div>
+                
+                <!-- Official Team Section -->
+                <div class="section-divider">Official_Base_Team</div>
+                <div id="x-feed-official" class="feed"></div>
+                
+                <!-- Noticed by Official Section -->
+                <div class="section-divider">Noticed_By_Official</div>
+                <div id="x-feed-noticed" class="feed"></div>
+                
+                <!-- Alpha Projects Noticed by Trusted Devs -->
+                <div class="section-divider">Alpha_Noticed_By_Trusted_Devs</div>
+                <div id="x-feed-alpha" class="feed"></div>
             </div>
             
             <!-- Farcaster -->
@@ -1166,7 +1266,7 @@
                 <div class="footer-logo">A</div>
                 <div class="footer-info">
                     <div style="font-weight:600;color:var(--text);">ARTHOUSE</div>
-                    <div>v2.0.1 // Terminal</div>
+                    <div>v2.0.1 // Intelligence</div>
                 </div>
             </div>
             <div class="footer-links">
@@ -1214,18 +1314,16 @@
             document.getElementById('cast-btn').style.display='flex';
         }
         
-        // Enhanced Data with Categories
+        // Enhanced Data with Hierarchical Categories
         const TICKER_DATA=[
             {text:"Base transitions to proprietary architecture",tag:"official",type:"official",url:"https://x.com/base"},
             {text:"Jesse Pollak: L2s must evolve beyond execution layers",tag:"team",type:"official",url:"https://x.com/jessepollak"},
-            {text:"Bankr AI launches art curation agent",tag:"agent",type:"agent",url:"https://x.com/bankrbot"},
+            {text:"Bankr AI launches art curation agent",tag:"early",type:"early",url:"https://x.com/bankrbot"},
             {text:"Clanker hits 500k transactions",tag:"early",type:"early",url:"https://x.com/clankeronbase"},
             {text:"Base Builder Grant Round #3 open",tag:"builder",type:"builder",url:"https://x.com/base"},
             {text:"OpenClaw autonomous art collection",tag:"agent",type:"agent",url:"https://x.com/openclawagent"},
             {text:"Bankr social trading volume +340%",tag:"early",type:"early",url:"https://x.com/bankrbot"},
-            {text:"Clanker token launchpad upgrades",tag:"early",type:"early",url:"https://x.com/clankeronbase"},
-            {text:"Builder Sessions: AI x NFTs",tag:"builder",type:"builder",url:"https://x.com/base"},
-            {text:"OpenClaw integrates with Zora",tag:"agent",type:"agent",url:"https://x.com/openclawagent"}
+            {text:"Clanker token launchpad upgrades",tag:"early",type:"early",url:"https://x.com/clankeronbase"}
         ];
         
         const SCAM_DATA=[
@@ -1235,284 +1333,256 @@
             {name:"base-builder-reward.com",risk:"HIGH",type:"Drainer"}
         ];
         
-        // Enhanced X Data with Random Categories
-        const X_DATA=[
-            // OFFICIAL BASE TEAM RESPONSES
+        // HIERARCHICAL X DATA
+        
+        // 1. OFFICIAL BASE TEAM (Top Priority)
+        const X_OFFICIAL=[
             {
                 id:'official1',
-                category:'official',
                 handle:'@jessepollak',
                 name:'Jesse Pollak',
-                avatar:'👨‍💻',
+                avatar:'JP',
                 verified:true,
                 badge:'Base_Team',
                 badgeClass:'badge-official',
+                priorityClass:'priority-official',
+                cardClass:'official-team',
                 title:'On L1 Scaling and L2 Evolution',
                 text:'Expanding Ethereum layer 1 is positive for the entire ecosystem. Going forward, layer 2 cannot remain merely a cheaper execution layer. Base is evolving.',
                 stats:[{icon:'♥',val:'2.4K'},{icon:'↻',val:'567'},{icon:'💬',val:'234'}],
                 time:'12m ago',
                 url:'https://x.com/jessepollak/status/1',
-                tags:['Base_Team','Architecture','L2'],
-                cardClass:'category-official official'
+                tags:['Base_Team','Architecture','L2']
             },
             {
                 id:'official2',
-                category:'official',
                 handle:'@base',
                 name:'Base',
-                avatar:'🅱️',
+                avatar:'B',
                 verified:true,
                 badge:'Official',
                 badgeClass:'badge-official',
+                priorityClass:'priority-official',
+                cardClass:'official-team',
                 title:'Base Independence Announcement',
                 text:'We are transitioning from Optimism stack to proprietary architecture. Four-stage roadmap published. Node operators: switch to new Base client over coming months.',
                 stats:[{icon:'♥',val:'5.1K'},{icon:'↻',val:'1.2K'},{icon:'💬',val:'456'}],
                 time:'45m ago',
                 url:'https://x.com/base/status/2',
-                tags:['Official','Infrastructure','Update'],
-                cardClass:'category-official official'
+                tags:['Official','Infrastructure','Update']
             },
             {
                 id:'official3',
-                category:'official',
                 handle:'@jessepollak',
                 name:'Jesse Pollak',
-                avatar:'👨‍💻',
+                avatar:'JP',
                 verified:true,
                 badge:'Base_Team',
                 badgeClass:'badge-official',
+                priorityClass:'priority-official',
+                cardClass:'official-team',
                 title:'No Behind-the-Scenes Support',
                 text:'Base core team will not "support charts" behind the scenes. We operate transparently. No market manipulation. Organic growth only.',
                 stats:[{icon:'♥',val:'3.2K'},{icon:'↻',val:'890'},{icon:'💬',val:'312'}],
                 time:'2h ago',
                 url:'https://x.com/jessepollak/status/3',
-                tags:['Transparency','Team','Policy'],
-                cardClass:'category-official official'
+                tags:['Transparency','Team','Policy']
             },
             {
                 id:'official4',
-                category:'official',
                 handle:'@base',
                 name:'Base',
-                avatar:'🅱️',
+                avatar:'B',
                 verified:true,
                 badge:'Official',
                 badgeClass:'badge-official',
+                priorityClass:'priority-official',
+                cardClass:'official-team',
                 title:'Creator Priority Statement',
                 text:'Our north star is helping creators and developers build their dreams. Everything else is downstream of that. Trading follows creativity.',
                 stats:[{icon:'♥',val:'4.5K'},{icon:'↻',val:'678'},{icon:'💬',val:'289'}],
                 time:'3h ago',
                 url:'https://x.com/base/status/4',
-                tags:['Creators','Mission','Official'],
-                cardClass:'category-official official'
-            },
-            
-            // VERIFIED USERS - RANDOM ECOSYSTEM
+                tags:['Creators','Mission','Official']
+            }
+        ];
+        
+        // 2. NOTICED BY OFFICIAL (Replied/Commented by Base Team)
+        const X_NOTICED=[
             {
-                id:'verified1',
-                category:'verified',
+                id:'noticed1',
                 handle:'@0xDesigner',
                 name:'0xDesigner',
-                avatar:'🎨',
+                avatar:'0x',
                 verified:true,
-                badge:'Verified',
-                badgeClass:'badge-verified',
+                badge:'Noticed',
+                badgeClass:'badge-reply',
+                priorityClass:'priority-reply',
+                cardClass:'official-reply',
+                replyContext:'Replied by @jessepollak',
                 title:'New Generative Drop on Base',
                 text:'Just deployed my latest generative series on Base. Gas so cheap I could iterate 50 times. L2s are the future of digital art.',
                 stats:[{icon:'♥',val:'892'},{icon:'↻',val:'156'},{icon:'💬',val:'67'}],
                 time:'15m ago',
                 url:'https://x.com/0xDesigner/status/5',
                 tags:['Generative','Art','Base'],
-                cardClass:'category-verified verified-user'
+                replyBy:'jessepollak'
             },
             {
-                id:'verified2',
-                category:'verified',
+                id:'noticed2',
                 handle:'@CryptoCobain',
                 name:'Crypto Cobain',
-                avatar:'🦇',
+                avatar:'CC',
                 verified:true,
-                badge:'Verified',
-                badgeClass:'badge-verified',
+                badge:'Noticed',
+                badgeClass:'badge-reply',
+                priorityClass:'priority-reply',
+                cardClass:'official-reply',
+                replyContext:'Liked by @base',
                 title:'Base NFTs hitting different',
                 text:'The velocity of quality projects launching on Base right now is unmatched. Bankr, Clanker, OpenClaw - all shipping fast.',
                 stats:[{icon:'♥',val:'1.2K'},{icon:'↻',val:'234'},{icon:'💬',val:'89'}],
                 time:'28m ago',
                 url:'https://x.com/CryptoCobain/status/6',
                 tags:['Ecosystem','NFTs','Alpha'],
-                cardClass:'category-verified verified-user'
+                replyBy:'base'
             },
             {
-                id:'verified3',
-                category:'verified',
+                id:'noticed3',
                 handle:'@punk6529',
                 name:'punk6529',
-                avatar:'👤',
+                avatar:'6529',
                 verified:true,
-                badge:'Verified',
-                badgeClass:'badge-verified',
+                badge:'Noticed',
+                badgeClass:'badge-reply',
+                priorityClass:'priority-reply',
+                cardClass:'official-reply',
+                replyContext:'Quoted by @jessepollak',
                 title:'Open Metaverse on Base',
-                text:'OM is expanding to Base. The combination of low fees and Coinbase distribution is too strong to ignore. Thread on architecture decisions 👇',
+                text:'OM is expanding to Base. The combination of low fees and Coinbase distribution is too strong to ignore.',
                 stats:[{icon:'♥',val:'3.4K'},{icon:'↻',val:'567'},{icon:'💬',val:'234'}],
                 time:'1h ago',
                 url:'https://x.com/punk6529/status/7',
                 tags:['OM','Metaverse','Base'],
-                cardClass:'category-verified verified-user'
-            },
+                replyBy:'jessepollak'
+            }
+        ];
+        
+        // 3. ALPHA PROJECTS NOTICED BY TRUSTED DEVS
+        const X_ALPHA=[
             {
-                id:'verified4',
-                category:'verified',
-                handle:'@Farokh',
-                name:'Farokh',
-                avatar:'🎙️',
-                verified:true,
-                badge:'Verified',
-                badgeClass:'badge-verified',
-                title:'Rug Radio x Base Integration',
-                text:'Working with the Base team on something special for creators. More details next week. The focus on builders is real.',
-                stats:[{icon:'♥',val:'567'},{icon:'↻',val:'89'},{icon:'💬',val:'45'}],
-                time:'1.5h ago',
-                url:'https://x.com/Farokh/status/8',
-                tags:['Rug_Radio','Integration','Creators'],
-                cardClass:'category-verified verified-user'
-            },
-            
-            // PROJECT UPDATES - LATEST NEWS
-            {
-                id:'project1',
-                category:'project',
+                id:'alpha1',
                 handle:'@bankrbot',
                 name:'Bankr',
-                avatar:'🏦',
+                avatar:'BK',
                 verified:true,
-                badge:'Project',
-                badgeClass:'badge-project',
+                badge:'Alpha',
+                badgeClass:'badge-alpha',
+                priorityClass:'priority-alpha',
+                cardClass:'alpha-noticed',
+                noticedContext:'Endorsed by @jessepollak & @base',
                 title:'Smart Art Portfolios v2',
                 text:'Just deployed our new AI curator for Base NFTs. The agent analyzes on-chain history to suggest pieces matching your taste. Early access for first 100 users.',
                 stats:[{icon:'♥',val:'1.2K'},{icon:'↻',val:'234'},{icon:'💬',val:'89'}],
                 time:'12m ago',
-                url:'https://x.com/bankrbot/status/9',
+                url:'https://x.com/bankrbot/status/8',
                 tags:['AI','Curation','Beta'],
-                cardClass:'category-project baseapp'
+                noticedBy:['jessepollak','base']
             },
             {
-                id:'project2',
-                category:'project',
+                id:'alpha2',
                 handle:'@clankeronbase',
                 name:'Clanker',
-                avatar:'⚙️',
+                avatar:'CL',
                 verified:true,
-                badge:'Project',
-                badgeClass:'badge-project',
+                badge:'Alpha',
+                badgeClass:'badge-alpha',
+                priorityClass:'priority-alpha',
+                cardClass:'alpha-noticed',
+                noticedContext:'Featured by @base',
                 title:'ERC-404c Standard Live',
                 text:'Introducing ERC-404c for fractional art ownership. Testnet live on Base Sepolia. Artists can now launch liquid NFT collections in one click.',
                 stats:[{icon:'♥',val:'892'},{icon:'↻',val:'156'},{icon:'💬',val:'45'}],
                 time:'34m ago',
-                url:'https://x.com/clankeronbase/status/10',
+                url:'https://x.com/clankeronbase/status/9',
                 tags:['Infrastructure','Token','Testnet'],
-                cardClass:'category-project baseapp'
+                noticedBy:['base']
             },
             {
-                id:'project3',
-                category:'project',
+                id:'alpha3',
                 handle:'@openclawagent',
                 name:'OpenClaw',
-                avatar:'🦾',
+                avatar:'OC',
                 verified:true,
-                badge:'Project',
-                badgeClass:'badge-project',
+                badge:'Alpha',
+                badgeClass:'badge-alpha',
+                priorityClass:'priority-alpha',
+                cardClass:'alpha-noticed',
+                noticedContext:'Retweeted by @jessepollak',
                 title:'Autonomous Collection #7',
                 text:'Agent just acquired 3 pieces from emerging Base artists. Collection value up 23% this week. Fully on-chain decision making via GPT-4 + market data.',
                 stats:[{icon:'♥',val:'567'},{icon:'↻',val:'89'},{icon:'💬',val:'34'}],
                 time:'2h ago',
-                url:'https://x.com/openclawagent/status/11',
+                url:'https://x.com/openclawagent/status/10',
                 tags:['Agent','Collection','Autonomous'],
-                cardClass:'category-project baseapp'
+                noticedBy:['jessepollak']
             },
             {
-                id:'project4',
-                category:'project',
-                handle:'@zora',
-                name:'Zora',
-                avatar:'Z',
+                id:'alpha4',
+                handle:'@aixbt',
+                name:'AIXBT',
+                avatar:'AI',
                 verified:true,
-                badge:'Project',
-                badgeClass:'badge-project',
-                title:'Zora Token Launch',
-                text:'Token launching this week. Base minting campaign went 0 to 1 in a day. No coordination with Base team - organic growth.',
+                badge:'Alpha',
+                badgeClass:'badge-alpha',
+                priorityClass:'priority-alpha',
+                cardClass:'alpha-noticed',
+                noticedContext:'Mentioned by @base ecosystem',
+                title:'Base AI Agent Analysis',
+                text:'Real-time analysis of Base ecosystem projects. Our agent detected 3 high-potential art projects this week. Data-driven alpha for holders.',
                 stats:[{icon:'♥',val:'2.1K'},{icon:'↻',val:'445'},{icon:'💬',val:'178'}],
                 time:'4h ago',
-                url:'https://x.com/zora/status/12',
-                tags:['Token','Launch','Base'],
-                cardClass:'category-project baseapp'
+                url:'https://x.com/aixbt/status/11',
+                tags:['AI_Agent','Analysis','Base'],
+                noticedBy:['base']
             },
             {
-                id:'project5',
-                category:'project',
-                handle:'@tylerxhobbs',
-                name:'Tyler Hobbs',
-                avatar:'🎨',
+                id:'alpha5',
+                handle:'@HeyElsa',
+                name:'HeyElsa',
+                avatar:'EL',
                 verified:true,
-                badge:'Artist',
-                badgeClass:'badge-artist',
-                title:'Fidenza on Base',
-                text:'Exploring new distribution mechanisms for generative art. Base offers the perfect infrastructure for programmable royalties and dynamic NFTs.',
-                stats:[{icon:'♥',val:'2.3K'},{icon:'↻',val:'445'},{icon:'💬',val:'123'}],
-                time:'4h ago',
-                url:'https://x.com/tylerxhobbs/status/13',
-                tags:['Generative','Art_Blocks','Base'],
-                cardClass:'category-project baseapp'
-            },
-            {
-                id:'project6',
-                category:'project',
-                handle:'@bankrbot',
-                name:'Bankr',
-                avatar:'🏦',
-                verified:true,
-                badge:'Project',
-                badgeClass:'badge-project',
-                title:'Social Trading Live',
-                text:'You can now copy-trade top NFT collectors on Base automatically. Set your budget, pick a curator, let the agent work. Beta open.',
+                badge:'Alpha',
+                badgeClass:'badge-alpha',
+                priorityClass:'priority-alpha',
+                cardClass:'alpha-noticed',
+                noticedContext:'Featured in Base ecosystem',
+                title:'AI Superverse for Base',
+                text:'Processed 18.9M prompts, $503M transaction volume. Multi-model architecture for gasless execution. The primary AI co-pilot for Base ecosystem.',
                 stats:[{icon:'♥',val:'892'},{icon:'↻',val:'167'},{icon:'💬',val:'56'}],
                 time:'5h ago',
-                url:'https://x.com/bankrbot/status/14',
-                tags:['Trading','Social','Beta'],
-                cardClass:'category-project baseapp'
+                url:'https://x.com/HeyElsa/status/12',
+                tags:['AI','Superverse','Base'],
+                noticedBy:['base','jessepollak']
             },
             {
-                id:'project7',
-                category:'project',
-                handle:'@clankeronbase',
-                name:'Clanker',
-                avatar:'⚙️',
+                id:'alpha6',
+                handle:'@OdosProtocol',
+                name:'Odos',
+                avatar:'OD',
                 verified:true,
-                badge:'Project',
-                badgeClass:'badge-project',
-                title:'Zora Partnership',
-                text:'Teaming up with @zora to enable instant tokenization of NFT collections. Launch your art as a liquid token with built-in AMM. Coming next week.',
-                stats:[{icon:'♥',val:'1.1K'},{icon:'↻',val:'234'},{icon:'💬',val:'78'}],
-                time:'6h ago',
-                url:'https://x.com/clankeronbase/status/15',
-                tags:['Partnership','Zora','Tokenization'],
-                cardClass:'category-project baseapp'
-            },
-            {
-                id:'project8',
-                category:'project',
-                handle:'@openclawagent',
-                name:'OpenClaw',
-                avatar:'🦾',
-                verified:true,
-                badge:'Project',
-                badgeClass:'badge-project',
-                title:'New Acquisition Strategy',
-                text:'Updated algorithm to focus on emerging artists with <1000 followers but high engagement rates. Supporting the next generation of Base creators.',
+                badge:'Alpha',
+                badgeClass:'badge-alpha',
+                priorityClass:'priority-alpha',
+                cardClass:'alpha-noticed',
+                noticedContext:'New on Base',
+                title:'DEX Aggregation on Base',
+                text:'Next-gen DEX aggregation live on Base. Smart order routing across all Base DEXs. Best rates, lowest slippage for NFT traders.',
                 stats:[{icon:'♥',val:'445'},{icon:'↻',val:'67'},{icon:'💬',val:'23'}],
-                time:'7h ago',
-                url:'https://x.com/openclawagent/status/16',
-                tags:['Strategy','Emerging','Support'],
-                cardClass:'category-project baseapp'
+                time:'6h ago',
+                url:'https://x.com/OdosProtocol/status/13',
+                tags:['DEX','Aggregation','Base'],
+                noticedBy:['base']
             }
         ];
         
@@ -1521,7 +1591,7 @@
                 id:'f1',
                 username:'jesse',
                 displayName:'Jesse Pollak',
-                avatar:'👨‍💻',
+                avatar:'JP',
                 verified:true,
                 text:'Base is becoming the home for on-chain creativity. Seeing incredible experiments with AI agents curating art collections autonomously.',
                 likes:'342',
@@ -1534,7 +1604,7 @@
                 id:'f2',
                 username:'bankr',
                 displayName:'Bankr Bot',
-                avatar:'🏦',
+                avatar:'BK',
                 verified:true,
                 text:'New feature: Get art recommendations based on your Farcaster taste graph. Connect your wallet and let our agent analyze your style.',
                 likes:'128',
@@ -1547,7 +1617,7 @@
                 id:'f3',
                 username:'openclaw',
                 displayName:'OpenClaw Agent',
-                avatar:'🦾',
+                avatar:'OC',
                 verified:true,
                 text:'Collection Update: Just minted "Neon Dreams #42" by @baseartist. Agent detected high engagement + creator consistency. Score: 8.7/10',
                 likes:'567',
@@ -1560,7 +1630,7 @@
                 id:'f4',
                 username:'clanker',
                 displayName:'Clanker',
-                avatar:'⚙️',
+                avatar:'CL',
                 verified:true,
                 text:'Builder tip: Use our new SDK to add liquid NFT markets to your app. One line of code for instant tokenization.',
                 likes:'892',
@@ -1608,14 +1678,14 @@
             },
             {
                 id:'e4',
-                project:'builder',
-                name:'Base Builder',
-                tagline:'Ecosystem Grant Program',
-                description:'Official Base initiative funding early-stage art and AI projects. $100k per wave, 3 waves per year.',
-                metrics:{users:'12K',tvl:'$300K',status:'Active'},
-                tags:['Grant','Ecosystem','Funding'],
-                url:'https://base.org/builder',
-                update:'Wave 3 applications now open'
+                project:'heylsa',
+                name:'HeyElsa',
+                tagline:'AI Superverse for Base',
+                description:'Primary AI co-pilot for Base ecosystem. 18.9M prompts processed, $503M transaction volume. Multi-model architecture.',
+                metrics:{users:'945K',tvl:'$18.3M',status:'Live'},
+                tags:['AI','Superverse','Base'],
+                url:'https://heylsa.xyz',
+                update:'BingX listing achieved'
             }
         ];
         
@@ -1691,15 +1761,6 @@
             window.open(`https://warpcast.com/~/compose?text=${encodeURIComponent(text)}&embeds[]=${url}`,'_blank');
         }
         
-        // Utility: Shuffle Array
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
-        
         // Renderers
         function renderScam(){
             document.getElementById('scam-list').innerHTML=SCAM_DATA.map(s=>`
@@ -1723,15 +1784,50 @@
             `).join('');
         }
         
+        // Render Hierarchical X Feed
         function renderX(){
-            // Shuffle the X_DATA array for random order
-            const shuffledData = shuffleArray([...X_DATA]);
-            
-            document.getElementById('x-feed').innerHTML=shuffledData.map(item=>`
+            // 1. Official Team
+            document.getElementById('x-feed-official').innerHTML=X_OFFICIAL.map(item=>`
                 <div class="feed-card ${item.cardClass}" onclick="window.open('${item.url}','_blank')">
-                    <div class="category-indicator cat-${item.category}">
-                        <span>${item.category === 'official' ? '●' : item.category === 'verified' ? '◐' : '○'}</span>
-                        <span>${item.category}_feed</span>
+                    <div class="priority-badge ${item.priorityClass}">● OFFICIAL_TEAM</div>
+                    <div class="card-header">
+                        <div class="card-meta">
+                            <div class="card-avatar" style="background:var(--primary);color:white;font-weight:700;">${item.avatar}</div>
+                            <div class="card-author">
+                                <div class="author-name">
+                                    ${item.name}
+                                    ${item.verified?'<span class="verified-check">✓</span>':''}
+                                </div>
+                                <div class="author-handle">${item.handle}</div>
+                            </div>
+                        </div>
+                        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.375rem;">
+                            <span class="card-badge ${item.badgeClass}">${item.badge}</span>
+                            <span class="card-time">${item.time}</span>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-title">${item.title}</div>
+                        <div class="card-text">${item.text}</div>
+                    </div>
+                    <div class="card-stats">
+                        ${item.stats.map(s=>`<span class="stat-item"><span>${s.icon}</span><span>${s.val}</span></span>`).join('')}
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-tags">
+                            ${item.tags.map(t=>`<span class="tag">${t}</span>`).join('')}
+                        </div>
+                        <button class="btn btn-ghost" onclick="event.stopPropagation();window.open('${item.url}','_blank')">View →</button>
+                    </div>
+                </div>
+            `).join('');
+            
+            // 2. Noticed by Official
+            document.getElementById('x-feed-noticed').innerHTML=X_NOTICED.map(item=>`
+                <div class="feed-card ${item.cardClass}" onclick="window.open('${item.url}','_blank')">
+                    <div class="priority-badge ${item.priorityClass}">◐ NOTICED_BY_OFFICIAL</div>
+                    <div class="reply-context">
+                        <strong>${item.replyContext}</strong>
                     </div>
                     <div class="card-header">
                         <div class="card-meta">
@@ -1752,6 +1848,50 @@
                     <div class="card-content">
                         <div class="card-title">${item.title}</div>
                         <div class="card-text">${item.text}</div>
+                    </div>
+                    <div class="card-stats">
+                        ${item.stats.map(s=>`<span class="stat-item"><span>${s.icon}</span><span>${s.val}</span></span>`).join('')}
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-tags">
+                            ${item.tags.map(t=>`<span class="tag">${t}</span>`).join('')}
+                        </div>
+                        <button class="btn btn-ghost" onclick="event.stopPropagation();window.open('${item.url}','_blank')">View →</button>
+                    </div>
+                </div>
+            `).join('');
+            
+            // 3. Alpha Projects Noticed by Trusted Devs
+            document.getElementById('x-feed-alpha').innerHTML=X_ALPHA.map(item=>`
+                <div class="feed-card ${item.cardClass}" onclick="window.open('${item.url}','_blank')">
+                    <div class="priority-badge ${item.priorityClass}">○ ALPHA_NOTICED</div>
+                    <div class="reply-context" style="border-left-color:var(--accent-green);">
+                        <strong style="color:var(--accent-green);">${item.noticedContext}</strong>
+                    </div>
+                    <div class="card-header">
+                        <div class="card-meta">
+                            <div class="card-avatar">${item.avatar}</div>
+                            <div class="card-author">
+                                <div class="author-name">
+                                    ${item.name}
+                                    ${item.verified?'<span class="verified-check">✓</span>':''}
+                                </div>
+                                <div class="author-handle">${item.handle}</div>
+                            </div>
+                        </div>
+                        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.375rem;">
+                            <span class="card-badge ${item.badgeClass}">${item.badge}</span>
+                            <span class="card-time">${item.time}</span>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-title">${item.title}</div>
+                        <div class="card-text">${item.text}</div>
+                        ${item.noticedBy ? `
+                        <div class="noticed-badge">
+                            Noticed by: ${item.noticedBy.map(d => `@${d}`).join(', ')}
+                        </div>
+                        ` : ''}
                     </div>
                     <div class="card-stats">
                         ${item.stats.map(s=>`<span class="stat-item"><span>${s.icon}</span><span>${s.val}</span></span>`).join('')}
@@ -1787,7 +1927,7 @@
                             <span class="tag">FC ${item.channel}</span>
                         </div>
                         <div class="card-stats" style="border:none;padding:0;">
-                            <span class="stat-item">❤ ${item.likes}</span>
+                            <span class="stat-item">♥ ${item.likes}</span>
                             <span class="stat-item">↻ ${item.recasts}</span>
                         </div>
                     </div>
@@ -1800,23 +1940,23 @@
                 <div class="feed-card ${item.project}" onclick="window.open('${item.url}','_blank')">
                     <div class="card-header">
                         <div class="card-meta">
-                            <div class="card-avatar">${item.name[0]}</div>
+                            <div class="card-avatar" style="background:var(--primary);color:white;font-weight:700;">${item.name[0]}</div>
                             <div class="card-author">
                                 <div class="author-name">${item.name}</div>
                                 <div class="author-handle">${item.tagline}</div>
                             </div>
                         </div>
-                        <span class="card-badge badge-${item.project}">${item.metrics.status}</span>
+                        <span class="card-badge badge-alpha">${item.metrics.status}</span>
                     </div>
                     <div class="card-content">
                         <div class="card-text">${item.description}</div>
                         <div style="display:flex;gap:1rem;margin-top:0.875rem;padding:0.625rem;background:var(--bg);border-radius:var(--radius-sm);border:1px solid var(--border);">
                             <div style="text-align:center;">
-                                <div style="font-family:var(--mono);font-weight:700;color:var(--accent-blue);">${item.metrics.users}</div>
+                                <div style="font-family:var(--mono);font-weight:700;color:var(--primary);">${item.metrics.users}</div>
                                 <div style="font-size:0.6rem;color:var(--text-tertiary);">Users</div>
                             </div>
                             <div style="text-align:center;">
-                                <div style="font-family:var(--mono);font-weight:700;color:var(--accent-blue);">${item.metrics.tvl}</div>
+                                <div style="font-family:var(--mono);font-weight:700;color:var(--primary);">${item.metrics.tvl}</div>
                                 <div style="font-size:0.6rem;color:var(--text-tertiary);">TVL</div>
                             </div>
                         </div>
@@ -1846,7 +1986,7 @@
                 <div class="feed-card onchain" onclick="window.open('https://basescan.org/tx/${item.tx}','_blank')">
                     <div class="card-header">
                         <div class="card-meta">
-                            <div class="card-avatar" style="background:var(--accent-green);color:var(--bg);font-size:0.75rem;font-weight:700;">
+                            <div class="card-avatar" style="background:var(--accent-green);color:white;font-size:0.75rem;font-weight:700;">
                                 ${item.type==='sale'?'$':item.type==='mint'?'+':'→'}
                             </div>
                             <div class="card-author">
@@ -1901,7 +2041,7 @@
                                 <div class="author-handle">${item.platform}</div>
                             </div>
                         </div>
-                        <span class="card-badge badge-artist">${item.type}</span>
+                        <span class="card-badge badge-dev">${item.type}</span>
                     </div>
                     <div class="card-content">
                         <div class="card-title">${item.title}</div>
